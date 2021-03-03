@@ -1,5 +1,5 @@
 $(function(){
-	$("#sendBtn").click(send_letter);
+	$("#sendBtn").off().click(send_letter);
 	$(".close").click(delete_msg);
 });
 
