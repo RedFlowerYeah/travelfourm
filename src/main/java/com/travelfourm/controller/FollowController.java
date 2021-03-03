@@ -3,8 +3,10 @@ package com.travelfourm.controller;
 import com.travelfourm.Util.CommunityConstant;
 import com.travelfourm.Util.CommunityUtil;
 import com.travelfourm.Util.HostHolder;
+import com.travelfourm.entity.Event;
 import com.travelfourm.entity.Page;
 import com.travelfourm.entity.User;
+import com.travelfourm.event.EventProducer;
 import com.travelfourm.service.FollowService;
 import com.travelfourm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,24 @@ public class FollowController implements CommunityConstant {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
     @RequestMapping(path = "/follow", method = RequestMethod.POST)
     @ResponseBody
     public String follow(int entityType, int entityId) {
         User user = hostHolder.getUser();
 
         followService.follow(user.getId(), entityType, entityId);
+
+        //触发关注事件
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(entityType)
+                .setEntityId(entityId)
+                .setEntityUserId(entityId);
+        eventProducer.fireEvent(event);
 
         return CommunityUtil.getJsonString(0, "已关注!");
     }
