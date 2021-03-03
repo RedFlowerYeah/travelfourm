@@ -3,6 +3,7 @@ package com.travelfourm.config;
 import com.travelfourm.controller.interceptor.AlphaInterceptor;
 import com.travelfourm.controller.interceptor.LoginRequiredInterceptor;
 import com.travelfourm.controller.interceptor.LoginTicketInterceptor;
+import com.travelfourm.controller.interceptor.MessageInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -19,6 +20,10 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Autowired
     private LoginRequiredInterceptor loginRequiredInterceptor;
 
+    //未读消息拦截器
+    @Autowired
+    private MessageInterceptor messageInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
@@ -31,6 +36,9 @@ public class WebMVCConfig implements WebMvcConfigurer {
 
         //头像拦截器
         registry.addInterceptor(loginRequiredInterceptor)
+                .excludePathPatterns("/css/*","/js/*","/img/*");
+
+        registry.addInterceptor(messageInterceptor)
                 .excludePathPatterns("/css/*","/js/*","/img/*");
     }
 }
