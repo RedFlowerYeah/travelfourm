@@ -52,8 +52,8 @@
 
 
                         <!-- 搜索 -->
-                        <form class="form-inline ml-lg-5" action="site/search.html">
-                            <input class="form-control mr-sm-2" type="search" aria-label="Search" placeholder="请输入你要搜索的帖子"/>
+                        <form class="form-inline ml-lg-5" th:action="@{/search}">
+                            <input class="form-control mr-sm-2" type="search" aria-label="Search" name="keyword" th:value="${keyword}" placeholder="请输入你要搜索的帖子"/>
                             <button class="btn btn-outline-light my-2 my-sm-0" type="submit">搜索</button>
                         </form>
                 </div>
