@@ -16,9 +16,9 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Autowired
     private LoginTicketInterceptor loginTicketInterceptor;
 
-    //判断头像拦截器
-    @Autowired
-    private LoginRequiredInterceptor loginRequiredInterceptor;
+    //注册拦截器
+//    @Autowired
+//    private LoginRequiredInterceptor loginRequiredInterceptor;
 
     //未读消息拦截器
     @Autowired
@@ -35,8 +35,8 @@ public class WebMVCConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/css/*","/js/*","/img/*");
 
         //头像拦截器
-        registry.addInterceptor(loginRequiredInterceptor)
-                .excludePathPatterns("/css/*","/js/*","/img/*");
+//        registry.addInterceptor(loginRequiredInterceptor)
+//                .excludePathPatterns("/css/*","/js/*","/img/*");
 
         registry.addInterceptor(messageInterceptor)
                 .excludePathPatterns("/css/*","/js/*","/img/*");
