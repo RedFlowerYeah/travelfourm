@@ -34,18 +34,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
                 .antMatchers(
                         "/user/setting",
                         "/user/upload",
-                        "/discuss/add",
-                        "/comment/add/**",
-                        "/letter/**",
-                        "/notice/**",
-                        "/like",
-                        "/follow",
-                        "/unfollow"
+                        "discuss/add",
+                        "comment/add/**",
+                        "letter/**",
+                        "notice/**",
+                        "like",
+                        "follow",
+                        "unfollow"
                 )
                 .hasAnyAuthority(
                         AUTHORITY_USER,
                         AUTHORITY_ADMIN,
                         AUTHORITY_MODERATOR
+                )
+                .antMatchers(
+                        "/discuss/top",
+                        "/discuss/wonderful")
+                .hasAnyAuthority(
+                        AUTHORITY_ADMIN,
+                        AUTHORITY_MODERATOR
+                )
+                .antMatchers("/discuss/delete"
+                )
+                .hasAnyAuthority(
+                        AUTHORITY_ADMIN
                 )
                 .anyRequest().permitAll();
 
