@@ -27,11 +27,6 @@ public class AlphaController {
         return "hello,springboot";
     }
 
-    @RequestMapping("/data")
-    @ResponseBody
-    public String getData(){
-        return alphaService.find();
-    }
 
     @RequestMapping("/http")
     public void http(HttpServletRequest request, HttpServletResponse response){

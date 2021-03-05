@@ -1,10 +1,9 @@
 package com.travelfourm.config;
 
 import com.travelfourm.quartz.AlphaJob;
+import com.travelfourm.quartz.PostScoreRefreshJob;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
-import org.quartz.core.jmx.JobDataMapSupport;
-import org.quartz.core.jmx.JobDetailSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
@@ -22,9 +21,9 @@ public class QuartzConfig {
      * 3.将FactoryBean注入给其他的Bean
      * 4.该Bean得到的是FactoryBean所管理的对象的实例*/
 
-    //配置JobDetail
-    @Bean
-    public JobDetailFactoryBean alphaJobDetail(){
+    // 配置JobDetail
+    // @Bean
+    public JobDetailFactoryBean alphaJobDetail() {
         JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
         factoryBean.setJobClass(AlphaJob.class);
         factoryBean.setName("alphaJob");
@@ -34,11 +33,11 @@ public class QuartzConfig {
         return factoryBean;
     }
 
-    //配置Trigger（SimpleTriggerFactoryBean（简单的）CronTriggerFactoryBean（复杂的））
-    @Bean
-    public SimpleTriggerFactoryBean alphaTrigger(JobDetail aplhaJobDetail){
+    // 配置Trigger(SimpleTriggerFactoryBean, CronTriggerFactoryBean)
+    // @Bean
+    public SimpleTriggerFactoryBean alphaTrigger(JobDetail alphaJobDetail) {
         SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
-        factoryBean.setJobDetail(aplhaJobDetail);
+        factoryBean.setJobDetail(alphaJobDetail);
         factoryBean.setName("alphaTrigger");
         factoryBean.setGroup("alphaTriggerGroup");
         factoryBean.setRepeatInterval(3000);
@@ -46,5 +45,27 @@ public class QuartzConfig {
         return factoryBean;
     }
 
+    // 刷新帖子分数任务
+    // 刷新帖子分数任务
+    @Bean
+    public JobDetailFactoryBean postScoreRefreshJobDetail() {
+        JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
+        factoryBean.setJobClass(PostScoreRefreshJob.class);
+        factoryBean.setName("postScoreRefreshJob");
+        factoryBean.setGroup("communityJobGroup");
+        factoryBean.setDurability(true);
+        factoryBean.setRequestsRecovery(true);
+        return factoryBean;
+    }
 
+    @Bean
+    public SimpleTriggerFactoryBean postScoreRefreshTrigger(JobDetail postScoreRefreshJobDetail) {
+        SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
+        factoryBean.setJobDetail(postScoreRefreshJobDetail);
+        factoryBean.setName("postScoreRefreshTrigger");
+        factoryBean.setGroup("communityTriggerGroup");
+        factoryBean.setRepeatInterval(1000 * 60 * 5);
+        factoryBean.setJobDataMap(new JobDataMap());
+        return factoryBean;
+    }
 }
