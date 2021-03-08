@@ -11,11 +11,16 @@
 
     <!-- Bootstrap 的 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+
+    <!--图标库-->
+    <link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
+
     <link rel="stylesheet" th:href="@{/css/global.css}" />
 
     <title>SpringBoot旅游论坛首页</title>
 </head>
 <body>
+
 
 <div class="nk-container">
     <!-- 头部 -->
@@ -27,16 +32,28 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item ml-3 btn-group-vertical">
-                            <a class="nav-link" th:href="@{/index}">论坛首页</a>
+                            <a class="nav-link" th:href="@{/index}">
+                                <i class="fa fa-home"aria-hidden="true" style="font-size: 16px"></i>
+                                论坛首页
+                            </a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser != null}">
-                            <a class="nav-link position-relative" th:href="@{/letter/list}">消息<span class="badge badge-danger" th:text="${allUnreadCount!=0?allUnreadCount:''}">12</span></a>
+                            <a class="nav-link position-relative" th:href="@{/letter/list}">
+                                <i class="fa fa-comments-o" aria-hidden="true" style="font-size: 16px"></i>
+                                消息
+                                <span class="badge badge-danger ml-4" th:text="${allUnreadCount!=0?allUnreadCount:''}">
+                                12
+                                </span>
+                            </a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser == null}">
                             <a class="nav-link" th:href="@{/register}">注册</a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser == null}">
-                            <a class="nav-link" th:href="@{/login}">登录</a>
+                            <a class="nav-link" th:href="@{/login}">
+                                <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                登录
+                            </a>
                         </li>
 
 
@@ -45,9 +62,18 @@
                                 <img th:src="${loginUser.headerUrl}" class="rounded-circle" style="width:30px;"/>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}">个人主页</a>
-                                <a class="dropdown-item text-center" th:href="@{/user/setting}">账号设置</a>
-                                <a class="dropdown-item text-center" th:href="@{/logout}">退出登录</a>
+                                <a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    个人主页
+                                </a>
+                                <a class="dropdown-item text-center" th:href="@{/user/setting}">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                    账号设置
+                                </a>
+                                <a class="dropdown-item text-center" th:href="@{/logout}">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                    退出登录
+                                </a>
                                 <div class="dropdown-divider"></div>
                                 <span class="dropdown-item text-center text-secondary" th:utext="${loginUser.username}">DJ</span>
                             </div>
@@ -57,8 +83,11 @@
 
                         <!-- 搜索 -->
                         <form class="form-inline ml-lg-5" th:action="@{/search}">
-                            <input class="form-control mr-sm-2" type="search" aria-label="Search" name="keyword" th:value="${keyword}" placeholder="请输入你要搜索的帖子"/>
-                            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">搜索</button>
+                            <input class="form-control mr-sm-2" type="search" aria-label="Search" name="keyword" th:value="${keyword}" placeholder="请输入你要搜索的帖子或内容"/>
+                            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">
+                                <i class="fa fa-search" aria-hidden="true" style="font-size: 16px"></i>
+                                搜索
+                            </button>
                         </form>
                 </div>
             </nav>
@@ -132,13 +161,30 @@
                     <div class="media-body">
                         <h6 class="mt-0 mb-3">
                             <a th:href="@{|/discuss/detail/${map.post.id}|}" th:utext="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
-                            <span class="badge badge-secondary bg-primary" th:if="${map.post.type==1}">置顶</span>
-                            <span class="badge badge-secondary bg-danger" th:if="${map.post.status==1}">精华</span>
+                            <span class="badge badge-secondary bg-primary" th:if="${map.post.type==1}">
+                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                置顶
+                            </span>
+                            <span class="badge badge-secondary bg-danger" th:if="${map.post.status==1}">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                精华
+                            </span>
                         </h6>
-                        <div class="text-muted font-size-12">
-                            <u class="mr-3" th:utext="${map.user.username}">寒江雪</u> 发布于 <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
+                        <div class="text-muted font-size-14">
+                            <!--用户图标-->
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            <u class="mr-3" th:utext="${map.user.username}">
+                                寒江雪
+                            </u>
+                            发布于
+                            <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
                             <ul class="d-inline float-right">
-                                <li class="d-inline ml-2">赞 <span th:text="${map.likeCount}">11</span></li>
+                                <li class="d-inline ml-2">
+                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                    赞
+                                    <span th:text="${map.likeCount}">
+                                    </span>
+                                </li>
                                 <li class="d-inline ml-2">|</li>
                                 <li class="d-inline ml-2">回帖 <span th:text="${map.post.commentCount}">7</span></li>
                             </ul>
