@@ -17,6 +17,7 @@ import java.util.Map;
 /**
  * 敏感词过滤器
  * 这是一棵树，用来组合成一个句子或者其他的敏感词进行过滤*/
+
 @Component
 public class SensitiveFilter {
 

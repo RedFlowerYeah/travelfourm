@@ -104,7 +104,10 @@
                         <a th:class="|nav-link ${orderMode==0?'active':''}|" th:href="@{/index(orderMode=0)}">最新</a>
                     </li>
                     <li class="nav-item">
-                        <a th:class="|nav-link ${orderMode==1?'active':''}|" th:href="@{/index(orderMode=1)}">最热</a>
+                        <a th:class="|nav-link ${orderMode==1?'active':''}|" th:href="@{/index(orderMode=1)}">
+                            <i class="fa fa-fire" aria-hidden="true"></i>
+                            最热
+                        </a>
                     </li>
                 </ul>
                 <button type="button" class="btn btn-primary btn-sm position-absolute rt-0" data-toggle="modal" data-target="#publishModal" th:if="${loginUser!=null}">我要发布</button>
@@ -160,7 +163,6 @@
                     </a>
                     <div class="media-body">
                         <h6 class="mt-0 mb-3">
-                            <a th:href="@{|/discuss/detail/${map.post.id}|}" th:utext="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
                             <span class="badge badge-secondary bg-primary" th:if="${map.post.type==1}">
                                 <i class="fa fa-bookmark" aria-hidden="true"></i>
                                 置顶
@@ -169,6 +171,8 @@
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 精华
                             </span>
+                            <!--标题放置顶和精华的后面-->
+                            <a th:href="@{|/discuss/detail/${map.post.id}|}" th:utext="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
                         </h6>
                         <div class="text-muted font-size-14">
                             <!--用户图标-->
