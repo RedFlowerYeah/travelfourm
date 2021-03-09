@@ -36,17 +36,26 @@
 					<span th:utext="${post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</span>
 					<div class="float-right">
 						<input type="hidden" id="postId" th:value="${post.id}">
-						<button type="button" class="btn btn-danger btn-sm" id="topBtn"
-							th:disabled="${post.type==1}" sec:authorize="hasAnyAuthority('moderator')">置顶</button>
+						<button type="button" class="btn btn-primary btn-sm" id="topBtn"
+							th:disabled="${post.type==1}" sec:authorize="hasAnyAuthority('moderator')">
+							<i class="fa fa-bookmark" aria-hidden="true"></i>
+							置顶
+						</button>
 						<button type="button" class="btn btn-danger btn-sm" id="wonderfulBtn"
-							th:disabled="${post.status==1}" sec:authorize="hasAnyAuthority('moderator')">加精</button>
+							th:disabled="${post.status==1}" sec:authorize="hasAnyAuthority('moderator')">
+							<i class="fa fa-star" aria-hidden="true"></i>
+							加精
+						</button>
 						<button type="button" class="btn btn-danger btn-sm" id="deleteBtn"
-							th:disabled="${post.status==2}" sec:authorize="hasAnyAuthority('admin')">删除</button>
+							th:disabled="${post.status==2}" sec:authorize="hasAnyAuthority('admin')">
+							<i class="fa fa-trash" aria-hidden="true"></i>
+							删除
+						</button>
 					</div>
 				</h6>
 				<!-- 作者 -->
 				<div class="media pb-3 border-bottom">
-					<a href="profile.html">
+					<a th:href="@{|/user/profile/${user.id}|}">
 						<img th:src="${user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="用户头像" >
 					</a>
 					<div class="media-body">
@@ -100,7 +109,7 @@
 				<!-- 回帖列表 -->
 				<ul class="list-unstyled mt-4">
 					<li class="media pb-3 pt-3 mb-3 border-bottom" th:each="cvo:${comments}">
-						<a href="profile.html">
+						<a th:href="@{|/user/profile/${cvo.user.id}|}">
 							<img th:src="${cvo.user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="用户头像" >
 						</a>
 						<div class="media-body">

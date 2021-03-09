@@ -24,6 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
 
     @Override
     public void configure(WebSecurity web) throws Exception {
+
+        /**
+         * 拦截静态资源*/
         web.ignoring().antMatchers("/resources/**");
     }
 
@@ -43,9 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
                         "unfollow"
                 )
                 .hasAnyAuthority(
-                        AUTHORITY_USER,
                         AUTHORITY_ADMIN,
-                        AUTHORITY_MODERATOR
+                        AUTHORITY_MODERATOR,
+                        AUTHORITY_USER
                 )
                 .antMatchers(
                         "/discuss/top",
@@ -82,8 +85,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
                     //权限不足时的处理
                     @Override
                     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-                        String xRquestedWith = request.getHeader("x-requested-with");
-                        if ("XMLHttpRequest".equals(xRquestedWith)){
+                        String xRequestedWith = request.getHeader("x-requested-with");
+                        if ("XMLHttpRequest".equals(xRequestedWith)){
+
+                            //异步请求，期待返回xml->json
                             response.setContentType("application/plain;charset=utf-8");
                             PrintWriter writer = response.getWriter();
                             writer.write(CommunityUtil.getJsonString(403,"您没有此功能的访问权限,请联系管理员"));
@@ -95,6 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
 
         //Security底层默认会拦截/logout请求，进行退出处理
         //覆盖logout底层代码逻辑，执行自己的logout代码请求
+
         http.logout().logoutUrl("/securitylogout");
     }
 }
