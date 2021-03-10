@@ -72,6 +72,8 @@
             <artifactId>mybatis-spring</artifactId>
             <version>2.0.4</version>
         </dependency>
+
+        <!--mybatis启动器-->
         <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -79,6 +81,7 @@
             <version>2.0.1</version>
         </dependency>
 
+        <!--commonslang3工具类-->
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -158,6 +161,30 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
+
+        <!--阿里云oss对象存储-->
+        <!-- https://mvnrepository.com/artifact/com.aliyun.oss/aliyun-sdk-oss -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.4.2</version>
+        </dependency>
+
+        <!--日期工具栏-->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+
+        <!--七牛云对象存储-->
+        <!-- https://mvnrepository.com/artifact/com.qiniu/qiniu-java-sdk -->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>7.2.23</version>
+        </dependency>
+
 
     </dependencies>
 

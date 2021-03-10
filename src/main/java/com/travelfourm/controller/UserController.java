@@ -1,5 +1,7 @@
 package com.travelfourm.controller;
 
+import com.qiniu.util.Auth;
+import com.qiniu.util.StringMap;
 import com.travelfourm.Util.CommunityConstant;
 import com.travelfourm.Util.CommunityUtil;
 import com.travelfourm.Util.HostHolder;
@@ -9,17 +11,13 @@ import com.travelfourm.service.FollowService;
 import com.travelfourm.service.LikeService;
 import com.travelfourm.service.UserService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.javassist.bytecode.analysis.MultiArrayType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -55,12 +53,55 @@ public class UserController implements CommunityConstant {
     @Autowired
     private FollowService followService;
 
+    @Value("${qiniu.key.access}")
+    private String accessKey;
+
+    @Value("${qiniu.key.secret}")
+    private String secretKey;
+
+    @Value("${qiniu.bucket.header.name}")
+    private String headerBucketName;
+
+    @Value("${qiniu.bucket.header.url}")
+    private String headerBucketUrl;
+
     @LoginRequired
-    @RequestMapping(path = "/setting",method = RequestMethod.GET)
-    public String getSettingPage(){
+    //@RequestMapping(path = "/setting",method = RequestMethod.GET)
+    @GetMapping("/setting")
+    public String getSettingPage(Model model){
+        //上传名称
+        String fileName = CommunityUtil.generateUUID();
+
+        //设置响应信息
+        StringMap policy = new StringMap();
+        policy.put("returnBody",CommunityUtil.getJsonString(0));
+
+        //生成上传凭证
+        Auth auth = Auth.create(accessKey,secretKey);
+        String uploadToken = auth.uploadToken(headerBucketName,fileName,3600,policy);
+
+        model.addAttribute("uploadToken",uploadToken);
+        model.addAttribute("fileName",fileName);
+
         return "/site/setting";
     }
 
+
+    //更新头像路径
+    @PostMapping("/header/url")
+    @ResponseBody
+    public String updateHeaderUrl(String fileName){
+        if (StringUtils.isBlank(fileName)){
+            return CommunityUtil.getJsonString(1,"文件名不能为空！");
+        }
+
+        String url = headerBucketUrl + "/" + fileName;
+        userService.updateHeader(hostHolder.getUser().getId(),url);
+
+        return CommunityUtil.getJsonString(0);
+    }
+    /**
+     * upload方法暂时废弃*/
     @LoginRequired
     @RequestMapping(path = "/upload",method = RequestMethod.POST)
     public String uploadHeader(MultipartFile headerImage, Model model){

@@ -14,9 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * 记录用户的操作日志（访问的Service层）*/
 @Component
 @Aspect
 public class ServiceLogAspect {
+
+    //Logger是slf4j测试包里面的一个方法
     private static final Logger logger = LoggerFactory.getLogger(ServiceLogAspect.class);
 
     @Pointcut("execution(* com.travelfourm.service.*.*(..))")

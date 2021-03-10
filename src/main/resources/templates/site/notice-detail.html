@@ -40,7 +40,7 @@
 				<!-- 通知列表 -->
 				<ul class="list-unstyled mt-4">
 					<li class="media pb-3 pt-3 mb-2" th:each="map:${notices}">
-						<img th:src="${map.fromUser.headerUrl}" class="mr-4 rounded-circle user-header" alt="系统图标">
+						<img src="tarvelfourm/resources/images/SystemAlert.jpeg" class="mr-4 rounded-circle user-header" alt="系统图标">
 						<div class="toast show d-lg-block" role="alert" aria-live="assertive" aria-atomic="true">
 							<div class="toast-header">
 								<strong class="mr-auto" th:utext="${map.fromUser.username}">落基山脉下的闲人</strong>
