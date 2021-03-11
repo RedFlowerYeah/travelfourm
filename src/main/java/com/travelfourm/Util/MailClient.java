@@ -13,13 +13,21 @@ import javax.mail.internet.MimeMessage;
 
 @Component
 public class MailClient {
+
+    /**
+     * 获取当前类的日志*/
     private static final Logger logger = LoggerFactory.getLogger(MailClient.class);
 
+    /**
+     * 注入SpringBoot-mail的使用接口*/
     @Autowired
     private JavaMailSender mailSender;
 
+    /**
+     * 将application.proprities的自定义外部值动态注入到Bean中*/
     @Value("${spring.mail.username}")
     private String from;
+
 
     public void sendMail(String to, String subject, String content) {
         try {

@@ -40,7 +40,7 @@ public class LikeController implements CommunityConstant {
         User user = hostHolder.getUser();
 
         // 点赞
-        likeService.like(user.getId(), entityType, entityId, entityUserId);
+            likeService.like(user.getId(), entityType, entityId, entityUserId);
 
         // 数量
         long likeCount = likeService.findEntityLikeCount(entityType, entityId);

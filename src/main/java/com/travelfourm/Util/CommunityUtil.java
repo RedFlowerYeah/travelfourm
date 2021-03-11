@@ -24,12 +24,29 @@ public class CommunityUtil {
         return DigestUtils.md5DigestAsHex(key.getBytes());
     }
 
+    /**
+     * 方法由上往下继承*/
+    /**
+     * Map<String,Object> map是一个接口类，包含一个key对象和一个value对象，key-value一一对应
+     * 主要找到了对应的key值，就可以找到对应的value值 */
     public static String getJsonString(int code, String msg, Map<String,Object> map){
+
+        /**
+         * 直接构建一个JSONObject对象*/
         JSONObject jsonObject =new JSONObject();
+
+        /**
+         * 通过put将数据写入*/
         jsonObject.put("code",code);
         jsonObject.put("msg",msg);
         if (map != null){
+            /**
+             * keySet（）就是获取map中key的名称*/
+
             for (String key : map.keySet()){
+
+                /**
+                 * 将key-value值放入对应的jsonObject对象中*/
                 jsonObject.put(key,map.get(key));
             }
         }

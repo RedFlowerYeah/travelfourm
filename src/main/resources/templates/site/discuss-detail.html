@@ -30,6 +30,7 @@
 		<div class="main">
 			<!-- 帖子详情 -->
 			<div class="container">
+
 				<!-- 标题 -->
 				<h6 class="mb-4">
 					<img src="http://static.nowcoder.com/images/img/icons/ico-discuss.png"/>
@@ -37,12 +38,12 @@
 					<div class="float-right">
 						<input type="hidden" id="postId" th:value="${post.id}">
 						<button type="button" class="btn btn-primary btn-sm" id="topBtn"
-							th:disabled="${post.type==1}" sec:authorize="hasAnyAuthority('moderator')">
+							th:disabled="${post.type==1}" sec:authorize="hasAnyAuthority('moderator','admin')">
 							<i class="fa fa-bookmark" aria-hidden="true"></i>
 							置顶
 						</button>
 						<button type="button" class="btn btn-danger btn-sm" id="wonderfulBtn"
-							th:disabled="${post.status==1}" sec:authorize="hasAnyAuthority('moderator')">
+							th:disabled="${post.status==1}" sec:authorize="hasAnyAuthority('moderator','admin')">
 							<i class="fa fa-star" aria-hidden="true"></i>
 							加精
 						</button>
@@ -53,6 +54,7 @@
 						</button>
 					</div>
 				</h6>
+
 				<!-- 作者 -->
 				<div class="media pb-3 border-bottom">
 					<a th:href="@{|/user/profile/${user.id}|}">
@@ -66,13 +68,13 @@
 							<ul class="d-inline float-right">
 								<li class="d-inline ml-2">
 
-									<!--此处暂时有bug，前端传参问题，暂未fix-->
-									<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+									<!--此处暂时有bug，如果该用户未登陆，那么就不允许他点赞-->
 									<a href="javascript:;" th:onclick="|like(this,1,${post.id},${post.userId},${post.id});|" class="text-primary">
-										<b th:text="${likeStatus==1?'已赞':'赞'}">赞</b>
+										<i class="fa fa-thumbs-up" aria-hidden="true" th:text="${likeStatus==1?' 已赞':' 赞'}">
+											赞
+										</i>
 										(<i th:text="${likeCount}"></i>)
 									</a>
-
 								</li>
 
 								<li class="d-inline ml-2">|</li>
@@ -128,7 +130,9 @@
 								<ul class="d-inline float-right">
 									<li class="d-inline ml-2">
 										<a href="javascript:;" th:onclick="|like(this,2,${cvo.comment.id},${cvo.comment.userId},${post.id});|" class="text-primary">
-											<b th:text="${cvo.likeStatus==1?'已赞':'赞'}">赞</b>
+											<i class="fa fa-thumbs-up" aria-hidden="true" th:text="${cvo.likeStatus==1?' 已赞':' 赞'}">
+												赞
+											</i>
 											(<i th:text="${cvo.likeCount}"></i>)
 										</a></li>
 									<li class="d-inline ml-2">|</li>

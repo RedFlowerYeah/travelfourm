@@ -31,18 +31,30 @@
                 <!-- 功能 -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item ml-3 btn-group-vertical">
+                        <li class="nav-item ml-5 btn-group-vertical">
                             <a class="nav-link" th:href="@{/index}">
                                 <i class="fa fa-home"aria-hidden="true" style="font-size: 16px"></i>
                                 论坛首页
                             </a>
                         </li>
+
+                        <!-- 搜索 -->
+                        <form class="form-inline ml-lg-4" th:action="@{/search}">
+                            <input class="form-control mr-sm-2" style="width: 350px;" type="search" aria-label="Search" name="keyword" th:value="${keyword}" placeholder="请输入你要搜索的帖子或帖子的相关内容"/>
+                            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">
+                                <i class="fa fa-search" aria-hidden="true" style="font-size: 16px"></i>
+                                搜索
+                            </button>
+                        </form>
+                    </ul>
+
+                    <ul class="navbar-nav mr-md-5">
                         <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser != null}">
                             <a class="nav-link position-relative" th:href="@{/letter/list}">
                                 <i class="fa fa-comments-o" aria-hidden="true" style="font-size: 16px"></i>
                                 消息
                                 <span class="badge badge-danger ml-4" th:text="${allUnreadCount!=0?allUnreadCount:''}">
-                                12
+                                 12
                                 </span>
                             </a>
                         </li>
@@ -55,8 +67,6 @@
                                 登录
                             </a>
                         </li>
-
-
                         <li class="nav-item ml-3 btn-group-vertical dropdown" th:if="${loginUser!=null}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img th:src="${loginUser.headerUrl}" class="rounded-circle" style="width:30px;"/>
@@ -72,23 +82,13 @@
                                 </a>
                                 <a class="dropdown-item text-center" th:href="@{/logout}">
                                     <i class="fa fa-sign-out" aria-hidden="true"></i>
-                                    退出登录
+                                        退出登录
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <span class="dropdown-item text-center text-secondary" th:utext="${loginUser.username}">DJ</span>
                             </div>
                         </li>
                     </ul>
-
-
-                        <!-- 搜索 -->
-                        <form class="form-inline ml-lg-5" th:action="@{/search}">
-                            <input class="form-control mr-sm-2" type="search" aria-label="Search" name="keyword" th:value="${keyword}" placeholder="请输入你要搜索的帖子或内容"/>
-                            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">
-                                <i class="fa fa-search" aria-hidden="true" style="font-size: 16px"></i>
-                                搜索
-                            </button>
-                        </form>
                 </div>
             </nav>
         </div>
@@ -101,7 +101,10 @@
                 <!-- 筛选条件 -->
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
-                        <a th:class="|nav-link ${orderMode==0?'active':''}|" th:href="@{/index(orderMode=0)}">最新</a>
+                        <a th:class="|nav-link ${orderMode==0?'active':''}|" th:href="@{/index(orderMode=0)}">
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            最新
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a th:class="|nav-link ${orderMode==1?'active':''}|" th:href="@{/index(orderMode=1)}">
@@ -207,14 +210,18 @@
                     <li class="page-item">
                         <a class="page-link" th:href="@{${page.path}(current=1)}">首页</a>
                     </li>
+
                     <li th:class="|page-item ${page.current==1?'disabled':''}|">
                         <a class="page-link" th:href="@{${page.path}(current=${page.current-1})}">上一页</a></li>
+
                     <li th:class="|page-item ${i==page.current?'active':''}|" th:each="i:${#numbers.sequence(page.from,page.to)}">
-                        <a class="page-link" href="#" th:text="${i}">1</a>
+                        <a class="page-link" th:href="@{${page.path}(current=${i})}" th:text="${i}">1</a>
                     </li>
+
                     <li th:class="|page-item ${page.current==page.total?'disabled':''}|">
                         <a class="page-link" th:href="@{${page.path}(current=${page.current+1})}">下一页</a>
                     </li>
+
                     <li class="page-item">
                         <a class="page-link" th:href="@{${page.path}(current=${page.total})}">末页</a>
                     </li>

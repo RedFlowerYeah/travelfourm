@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
@@ -100,8 +101,10 @@ public class UserController implements CommunityConstant {
 
         return CommunityUtil.getJsonString(0);
     }
+
+
     /**
-     * upload方法暂时废弃*/
+     * upload到本地头像的方法暂时废弃*/
     @LoginRequired
     @RequestMapping(path = "/upload",method = RequestMethod.POST)
     public String uploadHeader(MultipartFile headerImage, Model model){
