@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -46,7 +43,8 @@ public class DiscussPostController implements CommunityConstant {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @RequestMapping(path = "/add", method = RequestMethod.POST)
+    //@RequestMapping(path = "/add", method = RequestMethod.POST)
+    @PostMapping("/add")
     @ResponseBody
     public String addDiscussPost(String title, String content) {
         User user = hostHolder.getUser();
@@ -77,7 +75,8 @@ public class DiscussPostController implements CommunityConstant {
         return CommunityUtil.getJsonString(0, "发布成功!");
     }
 
-    @RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)
+    //@RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)
+    @GetMapping("/detail/{discussPostId}")
     public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
         // 帖子
         DiscussPost post = discussPostService.findDiscussPostById(discussPostId);
@@ -163,7 +162,8 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     // 置顶
-    @RequestMapping(path = "/top", method = RequestMethod.POST)
+    //@RequestMapping(path = "/top", method = RequestMethod.POST)
+    @PostMapping("/top")
     @ResponseBody
     public String setTop(int id) {
         discussPostService.updateType(id, 1);
@@ -180,7 +180,8 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     // 加精
-    @RequestMapping(path = "/wonderful", method = RequestMethod.POST)
+    //@RequestMapping(path = "/wonderful", method = RequestMethod.POST)
+    @PostMapping("/wonderful")
     @ResponseBody
     public String setWonderful(int id) {
         discussPostService.updateStatus(id, 1);
@@ -201,7 +202,8 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     // 删除
-    @RequestMapping(path = "/delete", method = RequestMethod.POST)
+    //@RequestMapping(path = "/delete", method = RequestMethod.POST)
+    @PostMapping("/delete")
     @ResponseBody
     public String setDelete(int id) {
         discussPostService.updateStatus(id, 2);

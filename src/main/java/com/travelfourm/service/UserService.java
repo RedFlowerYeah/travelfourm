@@ -45,6 +45,7 @@ public class UserService {
     @Value("${server.servlet.context-path}")
     private String contextpath;
 
+    //通过id查找相关User
     public User findUserById(int id){
         //return userMapper.selectById(id);
         User user = getCache(id);
@@ -106,6 +107,7 @@ public class UserService {
         return map;
     }
 
+    //判断是否通过邮箱激活账号
     public int activation(int userId, String code) {
         User user=userMapper.selectById(userId);
         if (user.getStatus() == 1) {    //表示已经激活过
@@ -175,12 +177,14 @@ public class UserService {
         redisTemplate.opsForValue().set(redisKey,loginTicket);
     }
 
+    //登录凭证
     public LoginTicket findLoginTicket(String ticket){
         //return loginTicketMapper.selectByTicket(ticket);
         String redisKey = RedisKeyUtil.getTicketKey(ticket);
         return (LoginTicket) redisTemplate.opsForValue().get(redisKey);
     }
 
+    //更新头像的方法
     public int updateHeader(int userId, String headerUrl) {
 //        return userMapper.updateHeader(userId, headerUrl);
         int rows = userMapper.updateHeader(userId, headerUrl);
@@ -188,6 +192,7 @@ public class UserService {
         return rows;
     }
 
+    //通过username查找相关User信息
     public User findUserByName(String username){
 
         return userMapper.selectByName(username);
@@ -206,6 +211,7 @@ public class UserService {
         redisTemplate.opsForValue().set(redisKey,user,3600, TimeUnit.SECONDS);
         return user;
     }
+
     //3.数据变更时，清除缓存数据
     private void clearCache(int userId){
         String redisKey = RedisKeyUtil.getUserKey(userId);

@@ -73,8 +73,8 @@ public class DiscussPostService {
                         return discussPostMapper.selectDiscussPosts(0,offset,limit,1);
                     }
                 });
-        //初始化帖子总数缓存
 
+        //初始化帖子总数缓存
         postRowsCache = Caffeine.newBuilder()
                 .maximumSize(maxSize)
                 .expireAfterWrite(expireSeconds,TimeUnit.SECONDS)
@@ -130,18 +130,22 @@ public class DiscussPostService {
         return discussPostMapper.selectDiscussPostById(id);
     }
 
+    //更新评论总数
     public int updateCommentCount(int id, int commentCount) {
         return discussPostMapper.updateCommentCount(id, commentCount);
     }
 
+    //更新帖子的形式
     public int updateType(int id,int type){
         return discussPostMapper.updateType(id, type);
     }
 
+    //更新帖子的状态
     public int updateStatus(int id,int status){
         return discussPostMapper.updateStatus(id,status);
     }
 
+    //更新帖子的分数
     public int updateScore(int id, double score) {
         return discussPostMapper.updateScore(id, score);
     }
