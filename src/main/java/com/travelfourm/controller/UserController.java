@@ -6,14 +6,13 @@ import com.travelfourm.Util.CommunityConstant;
 import com.travelfourm.Util.CommunityUtil;
 import com.travelfourm.Util.HostHolder;
 import com.travelfourm.annotation.LoginRequired;
+import com.travelfourm.entity.Comment;
 import com.travelfourm.entity.DiscussPost;
 import com.travelfourm.entity.Page;
 import com.travelfourm.entity.User;
-import com.travelfourm.service.DiscussPostService;
-import com.travelfourm.service.FollowService;
-import com.travelfourm.service.LikeService;
-import com.travelfourm.service.UserService;
+import com.travelfourm.service.*;
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.omg.CORBA.OBJ_ADAPTER;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +63,9 @@ public class UserController implements CommunityConstant {
 
     @Autowired
     private DiscussPostService discussPostService;
+
+    @Autowired
+    private CommentService commentService;
 
     @Value("${qiniu.key.access}")
     private String accessKey;
@@ -246,5 +248,46 @@ public class UserController implements CommunityConstant {
         model.addAttribute("userId",userId);
         model.addAttribute("discussPosts",discussPosts);
         return "/site/my-post";
+    }
+
+    //我回复的帖子
+    @GetMapping("/profile/{userId}/minereply")
+    public String getProfileMineReply(@PathVariable("userId")int userId,Model model,Page page){
+        User user = userService.findUserById(userId);
+
+        if (user == null){
+            throw new RuntimeException("该用户不存在！");
+        }
+
+        if (hostHolder.getUser() == null || userId != hostHolder.getUser().getId()){
+            return "redirect:/index";
+        }
+
+        page.setPath("/user/profile/" + userId + "/minereply");
+
+        //我的回复数量统计
+        page.setRows(commentService.findCommentCount(userId));
+
+        List<Comment> commentList = commentService.findCommentsByUserId(userId,page.getOffset(),page.getLimit());
+
+        //回复列表
+        List<Map<String ,Object>> commentVoList = new ArrayList<>();
+        if (commentList != null){
+            for (Comment comment:commentList){
+                //评论VO
+                Map<String,Object> commentVo = new HashMap<>();
+
+                //评论
+                if (comment.getEntityType() == ENTITY_TYPE_POST){
+                    commentVo.put("comment",comment);
+                    DiscussPost discussPost = discussPostService.findDiscussPostById(comment.getEntityId());
+                    commentVo.put("post",discussPost);
+                    commentVoList.add(commentVo);
+                }
+            }
+        }
+        model.addAttribute("comments",commentVoList);
+        model.addAttribute("commentCount",commentService.findCommentCount(userId));
+        return "/site/my-reply";
     }
 }

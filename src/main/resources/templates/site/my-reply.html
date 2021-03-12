@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- 必须的 meta 标签 -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!--访问该页面时，为了防止csrf攻击，生成了csrf令牌-->
+	<meta name="_csrf" th:content="${_csrf.token}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+
+	<!-- Bootstrap 的 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+
+	<!--图标库-->
+	<link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
+
+	<link rel="stylesheet" th:href="@{/css/global.css}" />
+
+	<title>我的回复</title>
+</head>
+<body>
+	<div class="nk-container">
+		<!-- 头部 -->
+		<header class="bg-dark sticky-top" th:replace="index::header">
+		</header>
+
+		<!-- 内容 -->
+		<div class="main">
+			<div class="container">
+				<!-- 选项 -->
+				<div class="position-relative">
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{|/user/profile/${loginUser.id}|}">个人信息</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link " th:href="@{|/user/profile/${loginUser.id}/minepost|}">我的帖子</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active" th:href="@{|/user/profile/${loginUser.id}/minereply|}">我的回复</a>
+						</li>
+					</ul>
+					<a th:href="@{|/user/profile/${loginUser.id}|}" class="text-muted position-absolute rt-0">返回个人主页</a>
+				</div>
+				<!-- 我的回复 -->
+				<div class="mt-4">
+					<h6><b class="square"></b> 回复的帖子(<span th:text="@{${commentCount}}">93</span>)</h6>
+					<ul class="list-unstyled mt-4 pl-3 pr-3" th:each="cvo:${comments}">
+
+						<div class="float-right">
+							<button type="button" class="btn btn-danger btn-sm" id="deleteComment" th:onclick="|setDelete2(${cvo.comment.id});|">删除</button>
+						</div>
+						<li class="border-bottom pb-3 mt-4">
+							<div class="font-size-16 text-info">
+								<a th:href="@{|/discuss/detail/${cvo.post.id}|}" th:utext="${cvo.post.title}" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
+							</div>
+							<div class="mt-1 font-size-14" th:utext="${cvo.comment.content}">
+								顶顶顶!
+							</div>
+							<div class="text-right font-size-12 text-muted" >
+								回复于 <span th:text="${#dates.format(cvo.comment.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</span>
+							</div>
+						</li>
+					</ul>
+
+					<!-- 分页 -->
+					<nav class="mt-5" th:if="${page.rows>0}" th:fragment="pagination">
+						<ul class="pagination justify-content-center">
+							<li class="page-item">
+								<a class="page-link" th:href="@{${page.path}(current=1)}">首页</a>
+							</li>
+
+							<li th:class="|page-item ${page.current==1?'disabled':''}|">
+								<a class="page-link" th:href="@{${page.path}(current=${page.current-1})}">上一页</a></li>
+
+							<li th:class="|page-item ${i==page.current?'active':''}|" th:each="i:${#numbers.sequence(page.from,page.to)}">
+								<a class="page-link" th:href="@{${page.path}(current=${i})}" th:text="${i}">1</a>
+							</li>
+
+							<li th:class="|page-item ${page.current==page.total?'disabled':''}|">
+								<a class="page-link" th:href="@{${page.path}(current=${page.current+1})}">下一页</a>
+							</li>
+
+							<li class="page-item">
+								<a class="page-link" th:href="@{${page.path}(current=${page.total})}">末页</a>
+							</li>
+						</ul>
+					</nav>
+				</div>				
+			</div>
+		</div>
+
+	</div>
+
+	<!-- 选项 1：jQuery 和 Bootstrap 集成包（集成了 Popper） -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+	<script th:src="@{/js/global.js}"></script>
+</body>
+</html>
