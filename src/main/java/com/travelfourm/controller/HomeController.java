@@ -32,7 +32,6 @@ public class HomeController implements CommunityConstant {
     @Autowired
     private LikeService likeService;
 
-    //@RequestMapping(path = "/index",method = RequestMethod.GET)
     @GetMapping("/index")
     public String getIndexPage(Model model, Page page,
                                @RequestParam(name = "orderMode",defaultValue = "0")int orderMode){
@@ -64,6 +63,7 @@ public class HomeController implements CommunityConstant {
         return "/index";
     }
 
+    //报错
     @GetMapping("/denied")
     public String getDeniedPage(){
         return "/error/404";

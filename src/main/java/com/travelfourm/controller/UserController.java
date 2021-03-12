@@ -152,7 +152,8 @@ public class UserController implements CommunityConstant {
         return "redirect:/index";
     }
 
-    @RequestMapping(path = "/header/{filename}",method = RequestMethod.GET)
+    //@RequestMapping(path = "/header/{filename}",method = RequestMethod.GET)
+    @GetMapping("/header/{filename}")
     public void getHeader(@PathVariable("filename")String filename, HttpServletResponse response) {
         //服务器存放的位置
         filename = uploadPath + "/" + filename;

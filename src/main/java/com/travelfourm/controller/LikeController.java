@@ -34,7 +34,8 @@ public class LikeController implements CommunityConstant {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @RequestMapping(path = "/like", method = RequestMethod.POST)
+    //点赞事件
+    @PostMapping("/like")
     @ResponseBody
     public String like(int entityType, int entityId, int entityUserId, int postId) {
         User user = hostHolder.getUser();

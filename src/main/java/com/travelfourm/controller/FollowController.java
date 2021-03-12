@@ -32,7 +32,7 @@ public class FollowController implements CommunityConstant {
     @Autowired
     private EventProducer eventProducer;
 
-    //@RequestMapping(path = "/follow", method = RequestMethod.POST)
+    //关注帖子的发起人
     @PostMapping("/follow")
     @ResponseBody
     public String follow(int entityType, int entityId) {
@@ -52,7 +52,8 @@ public class FollowController implements CommunityConstant {
         return CommunityUtil.getJsonString(0, "已关注!");
     }
 
-    //@RequestMapping(path = "/unfollow", method = RequestMethod.POST)
+
+    //取消关注
     @PostMapping("/unfollow")
     @ResponseBody
     public String unfollow(int entityType, int entityId) {
@@ -63,7 +64,7 @@ public class FollowController implements CommunityConstant {
         return CommunityUtil.getJsonString(0, "已取消关注!");
     }
 
-    //@RequestMapping(path = "/followees/{userId}",method = RequestMethod.GET)
+    //查看关注列表
     @GetMapping("/followees/{userId}")
     public String getFollowees(@PathVariable("userId")int userId, Page page, Model model){
         User user = userService.findUserById(userId);
@@ -88,7 +89,8 @@ public class FollowController implements CommunityConstant {
         return "/site/followee";
     }
 
-    //@RequestMapping(path = "/followers/{userId}", method = RequestMethod.GET)
+
+    //查看粉丝
     @GetMapping("/followers/{userId}")
     public String getFollowers(@PathVariable("userId") int userId, Page page, Model model) {
         User user = userService.findUserById(userId);

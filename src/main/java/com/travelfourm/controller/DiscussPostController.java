@@ -43,7 +43,7 @@ public class DiscussPostController implements CommunityConstant {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    //@RequestMapping(path = "/add", method = RequestMethod.POST)
+    //增加帖子
     @PostMapping("/add")
     @ResponseBody
     public String addDiscussPost(String title, String content) {
@@ -75,7 +75,7 @@ public class DiscussPostController implements CommunityConstant {
         return CommunityUtil.getJsonString(0, "发布成功!");
     }
 
-    //@RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)
+    //查看帖子详情
     @GetMapping("/detail/{discussPostId}")
     public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
         // 帖子
@@ -162,7 +162,6 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     // 置顶
-    //@RequestMapping(path = "/top", method = RequestMethod.POST)
     @PostMapping("/top")
     @ResponseBody
     public String setTop(int id) {
@@ -180,7 +179,6 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     // 加精
-    //@RequestMapping(path = "/wonderful", method = RequestMethod.POST)
     @PostMapping("/wonderful")
     @ResponseBody
     public String setWonderful(int id) {
@@ -202,7 +200,6 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     // 删除
-    //@RequestMapping(path = "/delete", method = RequestMethod.POST)
     @PostMapping("/delete")
     @ResponseBody
     public String setDelete(int id) {

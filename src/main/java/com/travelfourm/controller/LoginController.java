@@ -15,10 +15,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
@@ -48,19 +45,22 @@ public class LoginController implements CommunityConstant {
     private String contextPath;
 
     //跳转到注册页面
-    @RequestMapping(path = "/register",method = RequestMethod.GET)
+    //@RequestMapping(path = "/register",method = RequestMethod.GET)
+    @GetMapping("/register")
     public String getRegisterPage() {
         return "/site/register";
     }
 
     //跳转到登录页面
-    @RequestMapping(path = "/login",method = RequestMethod.GET)
+    //@RequestMapping(path = "/login",method = RequestMethod.GET)
+    @GetMapping("/login")
     public String getLoginPage(){
         return "/site/login";
     }
 
     //注册
-    @RequestMapping(path = "/register",method = RequestMethod.POST)
+    //@RequestMapping(path = "/register",method = RequestMethod.POST)
+    @PostMapping("/register")
     public String register(Model model, User user){
         Map<String,Object> map=userService.register(user);
         if (map == null || map.isEmpty()){
@@ -76,7 +76,9 @@ public class LoginController implements CommunityConstant {
     }
 
     // http://localhost:8080/community/activation/101/code
-    @RequestMapping(path = "/activation/{userId}/{code}", method = RequestMethod.GET)
+    //激活账号
+    @GetMapping("/activation/{userId}/{code}")
+    //@RequestMapping(path = "/activation/{userId}/{code}", method = RequestMethod.GET)
     public String activation(Model model, @PathVariable("userId") int userId, @PathVariable("code") String code) {
         int result = userService.activation(userId, code);
         if (result == ACTIVATION_SUCCESS) {
@@ -93,7 +95,7 @@ public class LoginController implements CommunityConstant {
     }
 
     //验证码功能
-    @RequestMapping(path = "/kaptcha",method = RequestMethod.GET)
+    @GetMapping("/kaptcha")
     public void getKaptcha(HttpServletResponse response, HttpSession session){
         //生成验证码
         String text=kaptcharProducer.createText();
@@ -121,7 +123,9 @@ public class LoginController implements CommunityConstant {
         }
     }
 
-    @RequestMapping(path = "/login",method = RequestMethod.POST)
+    //登录验证
+    //@RequestMapping(path = "/login",method = RequestMethod.POST)
+    @PostMapping("/login")
     public String login(String username,String password,String code,boolean rememberme,
                         Model model/*HttpSession httpSession*/,HttpServletResponse response,
                         @CookieValue("kaptchaOwner")String kaptchaOwner) {
@@ -155,7 +159,8 @@ public class LoginController implements CommunityConstant {
         }
     }
 
-    @RequestMapping(path = "/logout",method = RequestMethod.GET)
+    //登出功能
+    @GetMapping("/logout")
     public String logout(@CookieValue("ticket")String ticket){
         userService.logout(ticket);
         SecurityContextHolder.clearContext();
