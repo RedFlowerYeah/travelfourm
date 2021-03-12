@@ -6,11 +6,15 @@ import com.travelfourm.Util.CommunityConstant;
 import com.travelfourm.Util.CommunityUtil;
 import com.travelfourm.Util.HostHolder;
 import com.travelfourm.annotation.LoginRequired;
+import com.travelfourm.entity.DiscussPost;
+import com.travelfourm.entity.Page;
 import com.travelfourm.entity.User;
+import com.travelfourm.service.DiscussPostService;
 import com.travelfourm.service.FollowService;
 import com.travelfourm.service.LikeService;
 import com.travelfourm.service.UserService;
 import org.apache.commons.lang3.StringUtils;
+import org.omg.CORBA.OBJ_ADAPTER;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -53,6 +61,9 @@ public class UserController implements CommunityConstant {
 
     @Autowired
     private FollowService followService;
+
+    @Autowired
+    private DiscussPostService discussPostService;
 
     @Value("${qiniu.key.access}")
     private String accessKey;
@@ -190,5 +201,50 @@ public class UserController implements CommunityConstant {
             model.addAttribute("hasFollowed",hasFollowed);
 
         return "/site/profile";
+    }
+
+    //我的帖子
+    @GetMapping("/profile/{userId}/minepost")
+    public String getProfileMinePost(@PathVariable("userId")int userId, Model model, Page page){
+
+        //先找出这个user的信息
+        User user = userService.findUserById(userId);
+
+        if (user == null){
+            throw new RuntimeException("该用户不存在！");
+        }
+
+        //如果session中存取的holder的user不等于从数据库取出来的user信息，则跳转到index页面
+        if (hostHolder.getUser() == null && userId != hostHolder.getUser().getId()){
+            return "redirect:/index";
+        }
+
+        //查找我的帖子的总数
+        int postCount = discussPostService.findDiscussPostRows(userId);
+        page.setRows(postCount);
+
+        //分页信息
+        page.setPath("/user/profile/" + userId + "/minepost");
+        List<DiscussPost> list = discussPostService.findDiscussPosts(userId,page.getOffset(),page.getLimit(),0);
+
+        List<Map<String , Object>> discussPosts = new ArrayList<>();
+        if (list != null){
+            for (DiscussPost post :list){
+                Map<String ,Object> map = new HashMap<>();
+                map.put("post",post);
+
+                user = userService.findUserById(post.getUserId());
+                map.put("user",user);
+
+                long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST,post.getId());
+                map.put("likeCount",likeCount);
+                discussPosts.add(map);
+            }
+        }
+
+        model.addAttribute("postCount",postCount);
+        model.addAttribute("userId",userId);
+        model.addAttribute("discussPosts",discussPosts);
+        return "/site/my-post";
     }
 }

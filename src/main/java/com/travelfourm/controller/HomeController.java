@@ -36,6 +36,7 @@ public class HomeController implements CommunityConstant {
     @GetMapping("/index")
     public String getIndexPage(Model model, Page page,
                                @RequestParam(name = "orderMode",defaultValue = "0")int orderMode){
+
         //方法调用，SpringMVC会自动实例化Modal和Page，并将这两个注入到Modal中
         //所以，在thymeleaf中可以直接访问Page对象中的数据
         page.setRows(discussPostService.findDiscussPostRows(0));
@@ -49,6 +50,7 @@ public class HomeController implements CommunityConstant {
             for (DiscussPost post: list){
                 Map<String,Object> map=new HashMap<>();
                 map.put("post",post);
+
                 User user=userService.findUserById(post.getUserId());
                 map.put("user",user);
 
