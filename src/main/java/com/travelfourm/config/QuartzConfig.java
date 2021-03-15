@@ -45,7 +45,7 @@ public class QuartzConfig {
         return factoryBean;
     }
 
-    // 刷新帖子分数任务
+
     // 刷新帖子分数任务
     @Bean
     public JobDetailFactoryBean postScoreRefreshJobDetail() {

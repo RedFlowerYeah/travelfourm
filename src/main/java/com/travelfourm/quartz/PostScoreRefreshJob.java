@@ -80,9 +80,11 @@ public class PostScoreRefreshJob implements Job, CommunityConstant {
 
         // 计算权重
         double w = (wonderful ? 75 : 0) + commentCount * 10 + likeCount * 2;
+
         // 分数 = 帖子权重 + 距离天数
         double score = Math.log10(Math.max(w, 1))
                 + (post.getCreateTime().getTime() - epoch.getTime()) / (1000 * 3600 * 24);
+
         // 更新帖子分数
         discussPostService.updateScore(postId, score);
         // 同步搜索数据
