@@ -10,6 +10,7 @@ import com.travelfourm.service.CommentService;
 import com.travelfourm.service.DiscussPostService;
 import com.travelfourm.service.LikeService;
 import com.travelfourm.service.UserService;
+import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -48,6 +49,7 @@ public class DiscussPostController implements CommunityConstant {
     @ResponseBody
     public String addDiscussPost(String title, String content) {
         User user = hostHolder.getUser();
+
         if (user == null) {
             return CommunityUtil.getJsonString(403, "你还没有登录哦!");
         }
@@ -57,7 +59,14 @@ public class DiscussPostController implements CommunityConstant {
         post.setTitle(title);
         post.setContent(content);
         post.setCreateTime(new Date());
-        discussPostService.addDiscussPost(post);
+
+        //如果此时post等于-1，则抛出异常
+        //如果等于0，则继续执行
+        if (discussPostService.addDiscussPost(post) == -1){
+            return CommunityUtil.getJsonString(1,"发布失败，帖子标题或内容存在敏感内容，请重新输入");
+        }
+        //多余的语句
+//        discussPostService.addDiscussPost(post);
 
         // 触发发帖事件
         Event event = new Event()
@@ -73,6 +82,7 @@ public class DiscussPostController implements CommunityConstant {
 
         // 报错的情况,将来统一处理.
         return CommunityUtil.getJsonString(0, "发布成功!");
+
     }
 
     //查看帖子详情

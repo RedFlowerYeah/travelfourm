@@ -1,11 +1,18 @@
 package com.travelfourm.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.travelfourm.Util.AuthService;
+//import com.travelfourm.Util.CheckContent;
+import com.travelfourm.Util.HttpUtil;
 import com.travelfourm.Util.SensitiveFilter;
+import com.travelfourm.config.BaiduSensitiveConfig;
 import com.travelfourm.dao.DiscussPostMapper;
 import com.travelfourm.entity.DiscussPost;
+import com.travelfourm.entity.TextCheckReturn;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
@@ -16,7 +23,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.PostConstruct;
+import javax.xml.soap.Text;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -119,11 +131,46 @@ public class DiscussPostService {
         discussPost.setTitle(HtmlUtils.htmlEscape(discussPost.getTitle()));
         discussPost.setContent(HtmlUtils.htmlEscape(discussPost.getContent()));
 
-        //过滤敏感词
-        discussPost.setTitle(sensitiveFilter.filter(discussPost.getTitle()));
-        discussPost.setContent(sensitiveFilter.filter(discussPost.getContent()));
+        /**
+         * 通过百度智能云过滤敏感词*/
+        //获取标题和文本内容
+        String title = discussPost.getTitle();
+        String content = discussPost.getContent();
 
-        return discussPostMapper.insertDiscussPost(discussPost);
+//        //获取access_token
+        String access_token = AuthService.getAuth();
+        try {
+            //设置请求的编码
+            String param = "text=" + URLEncoder.encode(title, "UTF-8");
+            String param1 = "text=" + URLEncoder.encode(content,"UTF-8");
+
+            //调用文本审核接口并取得结果（标题）
+            String result = HttpUtil.post(BaiduSensitiveConfig.CHECK_TEXT_URL,access_token,param);
+
+            //调用文本审核接口并取得结果（内容）
+            String result1 = HttpUtil.post(BaiduSensitiveConfig.CHECK_TEXT_URL,access_token,param1);
+
+            // JSON解析对象（标题和内容）
+            TextCheckReturn tcr = JSONObject.parseObject(result, TextCheckReturn.class);
+            TextCheckReturn tcr1 = JSONObject.parseObject(result1,TextCheckReturn.class);
+
+            Integer conclusionType = tcr.getConclusionType();
+            Integer conclusionType1 = tcr1.getConclusionType();
+
+            //先判断标题是否符合规定，再判断内容是否符合规定
+            if (conclusionType != 1 && !conclusionType.equals("1")){
+                throw new IllegalArgumentException("该标题存在非法内容，请重新输入");
+            }else if (conclusionType1 != 1 && !conclusionType1.equals("1")){
+                throw new IllegalArgumentException("该内容存在非法内容，请重新输入");
+            }else{
+                discussPost.setTitle(title);
+                discussPost.setContent(content);
+                return discussPostMapper.insertDiscussPost(discussPost);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public DiscussPost findDiscussPostById(int id){

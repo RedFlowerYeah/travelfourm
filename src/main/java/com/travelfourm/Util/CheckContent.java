@@ -1,4 +1,5 @@
-package com.travelfourm.service;
+package com.travelfourm.Util;
+
 
 import com.alibaba.fastjson.JSON;
 import com.travelfourm.Util.AuthService;
@@ -11,9 +12,10 @@ import java.net.URLEncoder;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CheckContentService {
+public class CheckContent {
     public static Map<String, Object> checkText(String text) {
         Map<String, Object> map = new TreeMap<String, Object>();
+
         //获取access_token
         String access_token = AuthService.getAuth();
         try {
@@ -27,10 +29,10 @@ public class CheckContentService {
             Integer conclusionType = tcr.getConclusionType();
             if (conclusionType != 1 && !conclusionType.equals("1")) {
                 map.put("code", ReturnStatusEnum.FAILURE.getValue());
-                map.put("log_id", tcr.getLog_id());
                 map.put("conclusion", tcr.getConclusion());
-                map.put("conclusionType", conclusionType);
+                map.put("log_id", tcr.getLog_id());
                 map.put("data", tcr.getData());
+                map.put("conclusionType", conclusionType);
                 return map;
             }
             map.put("code", ReturnStatusEnum.SUCCESS.getValue());

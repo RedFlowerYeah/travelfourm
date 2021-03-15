@@ -1,6 +1,7 @@
 package com.travelfourm.entity;
 
 public enum ReturnStatusEnum {
+
     SUCCESS(0),//成功
     FAILURE(1);//失败
 
