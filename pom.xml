@@ -180,7 +180,7 @@
         </dependency>
 
 
-        <!--引入百度文本审核api-->
+        <!--引入百度文本审核等官方sdk-->
         <!-- https://mvnrepository.com/artifact/com.baidu.aip/java-sdk -->
         <dependency>
             <groupId>com.baidu.aip</groupId>
