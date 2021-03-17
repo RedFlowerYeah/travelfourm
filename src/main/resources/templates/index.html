@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <!-- 必须的 meta 标签 -->
     <meta charset="utf-8">
@@ -87,6 +87,10 @@
                                     <i class="fa fa-cog" aria-hidden="true"></i>
                                     账号设置
                                 </a>
+                                <a class="dropdown-item text-center" th:href="@{/data}" sec:authorize="hasAnyAuthority('admin')">
+                                    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                                    网站数据统计
+                                </a>
                                 <a class="dropdown-item text-center" th:href="@{/logout}">
                                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                                     退出登录
@@ -137,6 +141,7 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
+            <br><br>
             <div class="position-relative">
                 <!-- 筛选条件 -->
                 <ul class="nav nav-tabs mb-3">

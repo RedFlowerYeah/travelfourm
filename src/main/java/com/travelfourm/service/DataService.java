@@ -29,12 +29,18 @@ public class DataService {
     }
 
     //统计日期范围内的UV
+    /**
+     * 此处存在bug，若是前一个日期>后一个日期，执行会报错*/
     public long calculateUV(Date start,Date end){
-        if (start == null || end ==null){
-            throw  new IllegalArgumentException("参数不能为空！");
+
+        long startTime = start.getTime();
+        long endTime = end.getTime();
+
+        if (start == null || end ==null) {
+            throw new IllegalArgumentException("参数不能为空！");
         }
 
-        //整理日期范围内的key
+//        //整理日期范围内的key
         List<String> keyList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(start);
