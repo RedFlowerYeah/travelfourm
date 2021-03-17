@@ -60,8 +60,6 @@ public class DiscussPostController implements CommunityConstant {
         post.setContent(content);
         post.setCreateTime(new Date());
 
-        /**
-         * 这里代码可以优化*/
         //如果此时post等于-1，则抛出异常
         //如果等于0，则继续执行
         if (discussPostService.addDiscussPost(post) == -1){

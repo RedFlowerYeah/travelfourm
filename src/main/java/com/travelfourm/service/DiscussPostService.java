@@ -159,9 +159,9 @@ public class DiscussPostService {
 
             //先判断标题是否符合规定，再判断内容是否符合规定
             if (conclusionType != 1 && !conclusionType.equals("1")){
-                throw new IllegalArgumentException("该标题存在非法内容，请重新输入");
+                return -1;
             }else if (conclusionType1 != 1 && !conclusionType1.equals("1")){
-                throw new IllegalArgumentException("该内容存在非法内容，请重新输入");
+                return -1;
             }else{
                 discussPost.setTitle(title);
                 discussPost.setContent(content);
