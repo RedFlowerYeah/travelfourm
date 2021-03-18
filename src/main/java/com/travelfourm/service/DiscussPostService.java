@@ -132,12 +132,12 @@ public class DiscussPostService {
         discussPost.setContent(HtmlUtils.htmlEscape(discussPost.getContent()));
 
         /**
-         * 通过百度智能云过滤敏感词*/
+         * 通过百度智能云过滤敏感词（此处为新发布的帖子的评论和内容都需要进行过滤）*/
         //获取标题和文本内容
         String title = discussPost.getTitle();
         String content = discussPost.getContent();
 
-//        //获取access_token
+        //获取access_token
         String access_token = AuthService.getAuth();
         try {
             //设置请求的编码

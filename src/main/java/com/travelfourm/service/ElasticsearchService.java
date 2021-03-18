@@ -57,6 +57,8 @@ public class ElasticsearchService {
                         new HighlightBuilder.Field("content").preTags("<em>").postTags("</em>")
                 ).build();
 
+        /**
+         * 这里的代码可以优化，需要抛出一个与数据库中查询的数据不一致的异常*/
         return elasticsearchTemplate.queryForPage(searchQuery, DiscussPost.class, new SearchResultMapper() {
             @Override
             public <T> AggregatedPage<T> mapResults(SearchResponse searchResponse, Class<T> aClass, Pageable pageable) {

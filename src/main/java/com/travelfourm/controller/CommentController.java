@@ -38,7 +38,7 @@ public class CommentController implements CommunityConstant {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    //@RequestMapping(path = "/add/{discussPostId}", method = RequestMethod.POST)
+
     @PostMapping("/add/{discussPostId}")
     public String addComment(@PathVariable("discussPostId") int discussPostId, Comment comment) {
         comment.setUserId(hostHolder.getUser().getId());

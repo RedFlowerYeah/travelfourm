@@ -39,12 +39,13 @@ public class CommentService implements CommunityConstant {
             throw new IllegalArgumentException("参数不能为空!");
         }
 
-        // 添加评论
+        //转义HTML的评论
         comment.setContent(HtmlUtils.htmlEscape(comment.getContent()));
         comment.setContent(sensitiveFilter.filter(comment.getContent()));
+
         int rows = commentMapper.insertComment(comment);
 
-        // 更新帖子评论数量
+        //更新帖子评论数量
         if (comment.getEntityType() == ENTITY_TYPE_POST) {
             int count = commentMapper.selectCountByEntity(comment.getEntityType(), comment.getEntityId());
             discussPostService.updateCommentCount(comment.getEntityId(), count);

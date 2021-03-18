@@ -33,23 +33,22 @@ public class DataService {
      * 此处存在bug，若是前一个日期>后一个日期，执行会报错*/
     public long calculateUV(Date start,Date end){
 
-        long startTime = start.getTime();
-        long endTime = end.getTime();
-
         if (start == null || end ==null) {
             throw new IllegalArgumentException("参数不能为空！");
         }
 
-//        //整理日期范围内的key
+        //整理日期范围内的key
         List<String> keyList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(start);
+
 
         while (!calendar.getTime().after(end)){
             String key = RedisKeyUtil.getUVkey(simpleDateFormat.format(calendar.getTime()));
             keyList.add(key);
             calendar.add(Calendar.DATE,1);
         }
+
 
         //合并统计数据
         String redisKey = RedisKeyUtil.getUVKey(simpleDateFormat.format(start),simpleDateFormat.format(end));
