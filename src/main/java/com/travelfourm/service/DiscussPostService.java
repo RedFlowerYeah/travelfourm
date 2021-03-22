@@ -173,6 +173,7 @@ public class DiscussPostService {
         return -1;
     }
 
+    //查询帖子
     public DiscussPost findDiscussPostById(int id){
         return discussPostMapper.selectDiscussPostById(id);
     }

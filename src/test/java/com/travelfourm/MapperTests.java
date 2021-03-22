@@ -4,11 +4,11 @@ import com.travelfourm.dao.DiscussPostMapper;
 import com.travelfourm.dao.LoginTicketMapper;
 import com.travelfourm.dao.MessageMapper;
 import com.travelfourm.dao.UserMapper;
-import com.travelfourm.entity.DiscussPost;
 import com.travelfourm.entity.LoginTicket;
 import com.travelfourm.entity.Message;
 import com.travelfourm.entity.User;
-import lombok.AllArgsConstructor;
+import com.travelfourm.service.DiscussPostService;
+import com.travelfourm.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,6 +35,12 @@ public class MapperTests {
     @Autowired
     private MessageMapper messageMapper;
 
+    @Autowired
+    private DiscussPostService discussPostService;
+
+    @Autowired
+    private UserService userService;
+
     @Test
     public void selectUserById(){
         User user=userMapper.selectById(1);
@@ -50,7 +55,7 @@ public class MapperTests {
     }
 
     @Test
-    public void testInsrtUser(){
+    public void testInsertUser(){
         User user=new User();
         user.setUsername("test");
         user.setPassword("123456");
@@ -131,4 +136,5 @@ public class MapperTests {
         count = messageMapper.selectLetterUnreadCount(131,"111_113");
         System.out.println(count);
     }
+
 }

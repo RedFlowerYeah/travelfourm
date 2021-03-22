@@ -59,7 +59,6 @@ public class LoginController implements CommunityConstant {
     }
 
     //注册
-    //@RequestMapping(path = "/register",method = RequestMethod.POST)
     @PostMapping("/register")
     public String register(Model model, User user){
         Map<String,Object> map=userService.register(user);
@@ -78,7 +77,6 @@ public class LoginController implements CommunityConstant {
     // http://localhost:8080/community/activation/101/code
     //激活账号
     @GetMapping("/activation/{userId}/{code}")
-    //@RequestMapping(path = "/activation/{userId}/{code}", method = RequestMethod.GET)
     public String activation(Model model, @PathVariable("userId") int userId, @PathVariable("code") String code) {
         int result = userService.activation(userId, code);
         if (result == ACTIVATION_SUCCESS) {

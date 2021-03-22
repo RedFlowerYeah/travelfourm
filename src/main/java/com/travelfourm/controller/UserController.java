@@ -80,7 +80,6 @@ public class UserController implements CommunityConstant {
     private String headerBucketUrl;
 
     @LoginRequired
-    //@RequestMapping(path = "/setting",method = RequestMethod.GET)
     @GetMapping("/setting")
     public String getSettingPage(Model model){
         //上传名称
@@ -152,7 +151,7 @@ public class UserController implements CommunityConstant {
         return "redirect:/index";
     }
 
-    //@RequestMapping(path = "/header/{filename}",method = RequestMethod.GET)
+    //上传文件到七牛云服务器中
     @GetMapping("/header/{filename}")
     public void getHeader(@PathVariable("filename")String filename, HttpServletResponse response) {
         //服务器存放的位置

@@ -225,5 +225,4 @@ public class DiscussPostController implements CommunityConstant {
 
         return CommunityUtil.getJsonString(0);
     }
-
 }

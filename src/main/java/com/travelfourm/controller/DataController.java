@@ -29,12 +29,16 @@ public class DataController {
     @PostMapping("/data/uv")
     public String getUV(@DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
                         @DateTimeFormat(pattern = "yyyy-MM-dd") Date end, Model model){
-        long uv = dataService.calculateUV(start,end);
-        model.addAttribute("uvResult",uv);
-        model.addAttribute("uvStartDate",start);
-        model.addAttribute("uvEndDate",end);
+        if (start.after(end)){
+            return "/error/404";
+        }else {
+            long uv = dataService.calculateUV(start, end);
+            model.addAttribute("uvResult", uv);
+            model.addAttribute("uvStartDate", start);
+            model.addAttribute("uvEndDate", end);
 
-        return "forward:/data";
+            return "forward:/data";
+        }
     }
 
 
@@ -42,12 +46,17 @@ public class DataController {
     @PostMapping("/data/dau")
     public String getDAU(@DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
                          @DateTimeFormat(pattern = "yyyy-MM-dd") Date end, Model model){
-        long dau = dataService.calculateDAU(start,end);
 
-        model.addAttribute("dauResult",dau);
-        model.addAttribute("dauStartDate",start);
-        model.addAttribute("dauEndDate",end);
+        if (start.after(end)) {
+            return "/error/404";
+        }else {
+            long dau = dataService.calculateDAU(start, end);
 
-        return "forward:/data";
+            model.addAttribute("dauResult", dau);
+            model.addAttribute("dauStartDate", start);
+            model.addAttribute("dauEndDate", end);
+
+            return "forward:/data";
+        }
     }
 }
