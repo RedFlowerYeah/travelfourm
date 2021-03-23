@@ -55,7 +55,7 @@ public class UserService {
         return user;
     }
 
-    //注册方法
+    //用户注册
     public Map<String,Object>register(User user){
         Map<String,Object> map=new HashMap<>();
 
@@ -98,7 +98,7 @@ public class UserService {
         Context context = new Context();
         context.setVariable("email", user.getEmail());
 
-        // http://localhost:8080/activation/101/code
+        // http://localhost:8080/travelfourm/activation/101/code
         String url = domain  + contextpath + "/activation/" + user.getId() + "/" + user.getActivationcode();
         context.setVariable("url", url);
         String content = templateEngine.process("/mail/activation", context);
@@ -160,7 +160,10 @@ public class UserService {
         loginTicket.setTicket(CommunityUtil.generateUUID());
         loginTicket.setStatus(0);
         loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000));
-        //loginTicketMapper.insertLoginTicket(loginTicket);
+
+        //此处为重构前的判断用户身份的代码，已废弃
+        // loginTicketMapper.insertLoginTicket(loginTicket);
+
         String redisKey = RedisKeyUtil.getTicketKey(loginTicket.getTicket());
         redisTemplate.opsForValue().set(redisKey,loginTicket);
 
@@ -218,6 +221,7 @@ public class UserService {
         redisTemplate.delete(redisKey);
     }
 
+    //权限控制
     public Collection<? extends GrantedAuthority> getAuthorities(int userId){
         User  user = this.findUserById(userId);
 

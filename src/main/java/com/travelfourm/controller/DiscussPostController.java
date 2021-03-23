@@ -213,7 +213,10 @@ public class DiscussPostController implements CommunityConstant {
     @PostMapping("/delete")
     @ResponseBody
     public String setDelete(int id) {
+        //目前是假删，后续需要真删
         discussPostService.updateStatus(id, 2);
+
+
 
         // 触发删帖事件
         Event event = new Event()
