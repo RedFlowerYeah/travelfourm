@@ -1,21 +1,20 @@
 package com.travelfourm.controller;
 
-import com.travelfourm.Util.CommunityConstant;
-import com.travelfourm.Util.CommunityUtil;
-import com.travelfourm.Util.HostHolder;
-import com.travelfourm.Util.RedisKeyUtil;
+import com.travelfourm.Util.*;
 import com.travelfourm.entity.*;
 import com.travelfourm.event.EventProducer;
 import com.travelfourm.service.CommentService;
 import com.travelfourm.service.DiscussPostService;
 import com.travelfourm.service.LikeService;
 import com.travelfourm.service.UserService;
-import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.*;
 
@@ -43,6 +42,18 @@ public class DiscussPostController implements CommunityConstant {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    @Autowired
+    private MailClient mailClient;
+
+    @Value("${community.path.domain}")
+    private String domain;
+
+    @Value("${server.servlet.context-path}")
+    private String contextpath;
 
     //增加帖子
     @PostMapping("/add")
@@ -213,10 +224,21 @@ public class DiscussPostController implements CommunityConstant {
     @PostMapping("/delete")
     @ResponseBody
     public String setDelete(int id) {
+
+        //可以通过查找帖子的user_id再来获取相应的user的email
+        DiscussPost post = discussPostService.findDiscussPostById(id);
+        User user = userService.findUserById(post.getUserId());
+
+        // 激活邮件
+        Context context = new Context();
+        context.setVariable("email", user.getEmail());
+
+        // http://localhost:8080/travelfourm/deletediscusspost
+        String content = templateEngine.process("/mail/deletediscusspost",context);
+        mailClient.sendMail(user.getEmail(), "删除帖子", content);
+
         //目前是假删，后续需要真删
         discussPostService.updateStatus(id, 2);
-
-
 
         // 触发删帖事件
         Event event = new Event()

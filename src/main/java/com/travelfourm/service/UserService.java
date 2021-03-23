@@ -3,7 +3,6 @@ package com.travelfourm.service;
 import com.travelfourm.Util.CommunityUtil;
 import com.travelfourm.Util.MailClient;
 import com.travelfourm.Util.RedisKeyUtil;
-import com.travelfourm.dao.LoginTicketMapper;
 import com.travelfourm.dao.UserMapper;
 import com.travelfourm.entity.LoginTicket;
 import com.travelfourm.entity.User;
