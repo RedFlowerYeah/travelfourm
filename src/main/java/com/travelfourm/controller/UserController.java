@@ -321,5 +321,4 @@ public class UserController implements CommunityConstant {
         return map;
     }
 
-
 }

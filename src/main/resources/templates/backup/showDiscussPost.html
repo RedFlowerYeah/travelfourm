@@ -9,7 +9,7 @@
     <!--引入layui-->
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
 
-    <title>用户信息</title>
+    <title>帖子管理</title>
 </head>
 <body  class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -62,26 +62,29 @@
 </div>
 
 <script>
-        layui.use('table',function () {
-            var table=layui.table;
+    layui.use('table',function () {
+        var table=layui.table;
 
-            //第一个实例
-             table.render({
-                elem: '#demo'
-                ,height: 350
-                ,url: 'showAllUser' //数据接口
-                ,page: true //开启分页
-                ,limits:[5,10,15,20,25,30]
-                ,toolbar: '#mytoolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
-                ,cols: [
-                    [ //表头
-                        {field: 'id', title: '用户编号', width:80, sort: true, fixed: 'left',checkbox: true}
-                        ,{field: 'id', title: '用户编号', width:120, sort: true, fixed: 'left'}
-                        ,{field: 'username', title: '用户名', width:120}
-                        ,{field: 'email', title: '邮箱' , width:200}
-                    ]]
-            });
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            ,height: 350
+            ,url: 'showAllDiscussPost' //数据接口
+            ,page: true //开启分页
+            ,limits:[5,10,15,20,25,30]
+            ,toolbar: '#mytoolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            ,cols: [
+                [ //表头
+                    {field: 'id', title: '帖子编号', width:80, sort: true, fixed: 'left',checkbox: true}
+                    ,{field: 'id', title: '帖子编号', width:120, sort: true, fixed: 'left'}
+                    ,{field: 'title', title: '标题', width:120}
+                    ,{field: 'content', title: '内容' , width:200}
+                    ,{field: 'createTime', title: '创建时间', width:200, sort: true,
+                    templet:"<div>{{layui.util.toDateString(d.createTime,'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                    ,{field: 'score', title: '帖子积分', width:200}
+                ]]
         });
+    });
 </script>
 <script>
     layui.use('element', function(){

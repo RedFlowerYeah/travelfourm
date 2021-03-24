@@ -101,6 +101,11 @@ public class DiscussPostService {
                 });
     }
 
+    //查找全部帖子列表（不加入到缓存中）
+    public List<DiscussPost> findAllDiscussPost(){
+        return discussPostMapper.selectAllDiscussPost();
+    }
+
     public List<DiscussPost> findDiscussPosts(int userId,int offset,int limit,int orderMode){
 //        if (userId == 0 && orderMode == 1){
 //            return postListCache.get(offset + ":" + limit);

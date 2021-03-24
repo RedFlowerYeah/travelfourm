@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface DiscussPostMapper {
 
+    List<DiscussPost> selectAllDiscussPost();
     List<DiscussPost> selectDiscussPosts(int userId,int offset,int limit,int orderMode);
 
     //@Param注解用于给参数取别名

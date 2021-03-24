@@ -1,5 +1,7 @@
 package com.travelfourm.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.travelfourm.Util.*;
 import com.travelfourm.entity.*;
 import com.travelfourm.event.EventProducer;
@@ -249,5 +251,37 @@ public class DiscussPostController implements CommunityConstant {
         eventProducer.fireEvent(event);
 
         return CommunityUtil.getJsonString(0);
+    }
+
+    //表格跳转页面
+    @GetMapping("/showLayui1")
+    public String showAllUserLayui(){
+        return "/backup/showDiscussPost";
+    }
+
+    //用户信息接口
+    @GetMapping("/showAllDiscussPost")
+    @ResponseBody
+    public Map<String ,Object>  showAllDiscussPost(@RequestParam(required = false,defaultValue = "0")String type,
+                                            @RequestParam(required = false,defaultValue = "")String content,
+                                            @RequestParam(required = false,defaultValue = "1")int page,
+                                            @RequestParam(required = false,defaultValue = "10")int limit){
+        //开始分页
+        PageHelper.startPage(page,limit);
+
+        //分页查询
+        List<DiscussPost> list = new ArrayList<>();
+        if (type.equals("0")){
+//            list = userService.findAllUser();
+            list = discussPostService.findAllDiscussPost();
+        }
+        //封装数据
+        PageInfo pageInfo = new PageInfo(list);
+        Map<String ,Object> map = new HashMap<>();
+        map.put("code",0);
+        map.put("msg","查询成功");
+        map.put("count",pageInfo.getTotal());
+        map.put("data",pageInfo.getList());
+        return map;
     }
 }
