@@ -25,6 +25,10 @@ public class CommentService implements CommunityConstant {
     @Autowired
     private DiscussPostService discussPostService;
 
+    public List<Comment> findAllComment(){
+        return commentMapper.selectAllComment();
+    }
+
     public List<Comment> findCommentsByEntity(int entityType, int entityId, int offset, int limit) {
         return commentMapper.selectCommentsByEntity(entityType, entityId, offset, limit);
     }

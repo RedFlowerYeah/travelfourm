@@ -1,23 +1,23 @@
 package com.travelfourm.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.travelfourm.Util.CommunityConstant;
 import com.travelfourm.Util.HostHolder;
 import com.travelfourm.Util.RedisKeyUtil;
 import com.travelfourm.entity.Comment;
 import com.travelfourm.entity.DiscussPost;
 import com.travelfourm.entity.Event;
+import com.travelfourm.entity.User;
 import com.travelfourm.event.EventProducer;
 import com.travelfourm.service.CommentService;
 import com.travelfourm.service.DiscussPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.util.*;
 
 @Controller
 @RequestMapping("/comment")
@@ -78,4 +78,34 @@ public class CommentController implements CommunityConstant {
         return "redirect:/discuss/detail/" + discussPostId;
     }
 
+    //表格跳转页面
+    @GetMapping("/showLayui2")
+    public String showAllCommentLayui(){
+        return "/backup/showAllComment";
+    }
+
+    //用户信息接口
+    @GetMapping("/showAllComment")
+    @ResponseBody
+    public Map<String ,Object> showAllUser(@RequestParam(required = false,defaultValue = "0")String type,
+                                           @RequestParam(required = false,defaultValue = "")String content,
+                                           @RequestParam(required = false,defaultValue = "1")int page,
+                                           @RequestParam(required = false,defaultValue = "10")int limit){
+        //开始分页
+        PageHelper.startPage(page,limit);
+
+        //分页查询
+        List<Comment> list = new ArrayList<>();
+        if (type.equals("0")){
+            list = commentService.findAllComment();
+        }
+        //封装数据
+        PageInfo pageInfo = new PageInfo(list);
+        Map<String ,Object> map = new HashMap<>();
+        map.put("code",0);
+        map.put("msg","查询成功");
+        map.put("count",pageInfo.getTotal());
+        map.put("data",pageInfo.getList());
+        return map;
+    }
 }

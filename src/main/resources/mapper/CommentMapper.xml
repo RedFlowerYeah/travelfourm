@@ -8,6 +8,11 @@
         id, user_id, entity_type, entity_id, target_id, content, status, create_time
     </sql>
 
+    <select id="selectAllComment" resultType="Comment">
+        select id, user_id, entity_type, entity_id, target_id, content, status, create_time
+        from comment
+    </select>
+
     <select id="selectCommentsByEntity" resultType="Comment">
         select id, user_id, entity_type, entity_id, target_id, content, status, create_time
         from comment
