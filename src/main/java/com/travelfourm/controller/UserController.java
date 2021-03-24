@@ -1,15 +1,14 @@
 package com.travelfourm.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import com.travelfourm.Util.CommunityConstant;
 import com.travelfourm.Util.CommunityUtil;
 import com.travelfourm.Util.HostHolder;
 import com.travelfourm.annotation.LoginRequired;
-import com.travelfourm.entity.Comment;
-import com.travelfourm.entity.DiscussPost;
-import com.travelfourm.entity.Page;
-import com.travelfourm.entity.User;
+import com.travelfourm.entity.*;
 import com.travelfourm.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.units.qual.A;
@@ -290,4 +289,37 @@ public class UserController implements CommunityConstant {
         model.addAttribute("commentCount",commentService.findCommentCount(userId));
         return "/site/my-reply";
     }
+
+    //表格跳转页面
+    @GetMapping("/showLayui")
+    public String showAllUserLayui(){
+        return "/backup/showAllUser";
+    }
+
+    //用户信息接口
+    @GetMapping("/showAllUser")
+    @ResponseBody
+    public Map<String ,Object>  showAllUser(@RequestParam(required = false,defaultValue = "0")String type,
+                                            @RequestParam(required = false,defaultValue = "")String content,
+                                            @RequestParam(required = false,defaultValue = "1")int page,
+                                            @RequestParam(required = false,defaultValue = "10")int limit){
+        //开始分页
+        PageHelper.startPage(page,limit);
+
+        //分页查询
+        List<User> list = new ArrayList<>();
+        if (type.equals("0")){
+            list = userService.findAllUser();
+        }
+        //封装数据
+        PageInfo pageInfo = new PageInfo(list);
+        Map<String ,Object> map = new HashMap<>();
+        map.put("code",0);
+        map.put("msg","查询成功");
+        map.put("count",pageInfo.getTotal());
+        map.put("data",pageInfo.getList());
+        return map;
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package com.travelfourm.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.travelfourm.Util.CommunityUtil;
 import com.travelfourm.Util.MailClient;
 import com.travelfourm.Util.RedisKeyUtil;
@@ -43,6 +45,11 @@ public class UserService {
 
     @Value("${server.servlet.context-path}")
     private String contextpath;
+
+    //查找全部用户信息
+    public List<User> findAllUser(){
+        return userMapper.selectAllUser();
+    }
 
     //通过id查找相关User
     public User findUserById(int id){

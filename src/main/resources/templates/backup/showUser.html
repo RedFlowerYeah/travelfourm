@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/layui/layui.js}"></script>
+
+    <!--引入layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+    <!--图标库-->
+    <link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
+
+    <title>论坛后台管理</title>
+</head>
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">论坛信息管理后台</div>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item layui-this">
+                    <a href="javascript:;">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                        操作
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a th:href="@{/index}">
+                                <i class="fa fa-home"aria-hidden="true"></i>
+                                返回论坛
+                            </a>
+                        </dd>
+                        <dd>
+                            <a th:href="@{/logout}">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                退出登录
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-side">
+            <div class="layui-side-scroll layui-bg-black">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;">论坛信息模块</a>
+                        <dl class="layui-nav-child">
+                            <dd><a th:href="@{/user/showLayui}">用户信息</a></dd>
+                            <dd><a href="">帖子信息</a></dd>
+                            <dd><a href="">评论信息</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <h5>您好，欢迎您管理员！</h5>
+        </div>
+    </div>
+
+    <script>
+        layui.use('element', function(){
+            var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+            //监听导航点击
+            element.on('nav(demo)', function(elem){
+                //console.log(elem)
+                layer.msg(elem.text());
+            });
+        });
+    </script>
+</body>
+</html>

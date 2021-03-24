@@ -68,4 +68,9 @@ public class HomeController implements CommunityConstant {
     public String getDeniedPage(){
         return "/error/404";
     }
+
+    @GetMapping("/showUser")
+    public String getShowUser(){
+        return "/backup/showUser";
+    }
 }
