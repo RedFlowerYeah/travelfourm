@@ -84,7 +84,7 @@ public class CommentController implements CommunityConstant {
         return "/backup/showAllComment";
     }
 
-    //用户信息接口
+    //评论信息接口
     @GetMapping("/showAllComment")
     @ResponseBody
     public Map<String ,Object> showAllUser(@RequestParam(required = false,defaultValue = "0")String type,

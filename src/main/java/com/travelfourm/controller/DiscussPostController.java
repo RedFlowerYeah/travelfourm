@@ -240,6 +240,8 @@ public class DiscussPostController implements CommunityConstant {
         mailClient.sendMail(user.getEmail(), "删除帖子", content);
 
         //目前是假删，后续需要真删
+        //这里目前只假删了帖子，后续如果需要删除帖子，还需要把此帖子的评论一并删除掉
+        //这里要进行判断，要先删除贴子中的评论，再删除帖子
         discussPostService.updateStatus(id, 2);
 
         // 触发删帖事件
@@ -259,7 +261,7 @@ public class DiscussPostController implements CommunityConstant {
         return "/backup/showDiscussPost";
     }
 
-    //用户信息接口
+    //帖子信息接口
     @GetMapping("/showAllDiscussPost")
     @ResponseBody
     public Map<String ,Object>  showAllDiscussPost(@RequestParam(required = false,defaultValue = "0")String type,
