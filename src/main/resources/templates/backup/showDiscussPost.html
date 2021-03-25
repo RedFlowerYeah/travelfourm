@@ -9,6 +9,9 @@
     <!--引入layui-->
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
 
+    <!--图标库-->
+    <link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
+
     <title>帖子管理</title>
 </head>
 <body  class="layui-layout-body">
@@ -77,8 +80,9 @@
                 [ //表头
                     {field: 'id', title: '帖子编号', width:80, sort: true, fixed: 'left',checkbox: true}
                     ,{field: 'id', title: '帖子编号', width:120, sort: true, fixed: 'left'}
-                    ,{field: 'title', title: '标题', width:120}
+                    ,{field: 'title', title: '标题', width:200}
                     ,{field: 'content', title: '内容' , width:200}
+                    ,{field: 'commentCount', title: '评论总数',width:200 , sort:true}
                     ,{field: 'createTime', title: '创建时间', width:200, sort: true,
                     templet:"<div>{{layui.util.toDateString(d.createTime,'yyyy-MM-dd HH:mm:ss')}}</div>"}
                     ,{field: 'score', title: '帖子积分', width:200}
@@ -86,16 +90,6 @@
         });
     });
 </script>
-<script>
-    layui.use('element', function(){
-        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-
-        //监听导航点击
-        element.on('nav(demo)', function(elem){
-            //console.log(elem)
-            layer.msg(elem.text());
-        });
-    });
-</script>
+<script th:src="@{/js/backupGlobal.js}"></script>
 </body>
 </html>
