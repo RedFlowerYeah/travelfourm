@@ -321,4 +321,21 @@ public class UserController implements CommunityConstant {
         return map;
     }
 
+
+    /**
+     * 更新用户部分信息*/
+    @PostMapping("/editUser")
+    @ResponseBody
+    public Object editUser(User userInfo){
+        int i = userService.updateUserInfo(userInfo);
+        Map map= new HashMap<>();
+        if(i>0){
+            map.put("code",0);
+            map.put("message","修改成功");
+        }else {
+            map.put("code",1);
+            map.put("message","修改失败");
+        }
+        return map;
+    }
 }

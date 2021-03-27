@@ -46,9 +46,12 @@
         update tbl_user set header_url = #{headerUrl} where id = #{id};
     </update>
 
-    <update id="updatePassword">
-        update tbl_user set password = #{password} where id = #{id};
+    <update id="updateUserInfo">
+        update tbl_user
+        set username= #{username},
+            email = #{email},
+            type = #{type}
+        where id = #{id};
     </update>
-
 
 </mapper>

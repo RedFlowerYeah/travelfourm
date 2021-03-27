@@ -74,8 +74,8 @@ public class MapperTests {
         int rows=userMapper.updateStatus(1,0);
         System.out.println(rows);
 
-        rows=userMapper.updatePassword(2,"goudongxi");
-        System.out.println(rows);
+//        rows=userMapper.updatePassword(2,"goudongxi");
+//        System.out.println(rows);
 
         rows=userMapper.updateHeader(1,"http://www.xiurenwang.com/1.png");
         System.out.println(rows);

@@ -54,13 +54,32 @@ public class UserService {
     }
 
     /**
-     * 通过id查找相关User*/
+     * 通过id查找用户信息*/
     public User findUserById(int id){
         User user = getCache(id);
         if (user == null){
             user = initCache(id);
         }
         return user;
+    }
+
+    /**
+     * 判断是否通过邮箱激活账号*/
+    public int activation(int userId, String code) {
+        User user=userMapper.selectById(userId);
+
+        /**
+         * if status == 1 则为表示已经注册过的状态
+         * if status == 0 则进行注册*/
+        if (user.getStatus() == 1) {
+            return ACTIVATION_REPEAT;
+        } else if (user.getActivationcode().equals(code)) {
+            userMapper.updateStatus(userId,1);
+            clearCache(userId);
+            return ACTIVATION_SUCCESS;
+        } else {
+            return ACTIVATION_FAILURE;
+        }
     }
 
     /**
@@ -114,25 +133,6 @@ public class UserService {
         mailClient.sendMail(user.getEmail(), "激活账号", content);
 
         return map;
-    }
-
-    /**
-     * 判断是否通过邮箱激活账号*/
-    public int activation(int userId, String code) {
-        User user=userMapper.selectById(userId);
-
-        /**
-         * if status == 1 则为表示已经注册过的状态
-         * if status == 0 则进行注册*/
-        if (user.getStatus() == 1) {
-            return ACTIVATION_REPEAT;
-        } else if (user.getActivationcode().equals(code)) {
-            userMapper.updateStatus(userId,1);
-            clearCache(userId);
-            return ACTIVATION_SUCCESS;
-        } else {
-            return ACTIVATION_FAILURE;
-        }
     }
 
     /**
@@ -200,13 +200,29 @@ public class UserService {
     }
 
     /**
-     * 更新头像的方法*/
+     * 更新用户头像*/
     public int updateHeader(int userId, String headerUrl) {
         int rows = userMapper.updateHeader(userId, headerUrl);
+
+        /**
+         * 清楚缓存*/
         clearCache(userId);
+
         return rows;
     }
 
+    /**
+     * 更新用户信息*/
+    public int updateUserInfo(User userInfo){
+        int result = userMapper.updateUserInfo(userInfo);
+        int userId = userInfo.getId();
+
+        /**
+         * 清除缓存*/
+        clearCache(userId);
+
+        return result;
+    }
 
     /**通过username查找相关User信息*/
     public User findUserByName(String username){
