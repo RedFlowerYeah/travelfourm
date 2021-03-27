@@ -20,6 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 34612
+ */
+
 @Controller
 public class HomeController implements CommunityConstant {
 
@@ -63,12 +67,13 @@ public class HomeController implements CommunityConstant {
         return "/index";
     }
 
-    //报错
+    /**报错*/
     @GetMapping("/denied")
     public String getDeniedPage(){
         return "/error/404";
     }
 
+    /**跳转到后台页面*/
     @GetMapping("/showUser")
     public String getShowUser(){
         return "/backup/showUser";

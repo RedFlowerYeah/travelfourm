@@ -18,7 +18,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * SpringSecurity 配置类*/
+ * SpringSecurity 配置类
+ * @author 34612*/
+
 @Component
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements CommunityConstant {
 

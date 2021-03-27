@@ -99,7 +99,7 @@ public class UserController implements CommunityConstant {
     }
 
 
-    //更新头像路径
+    /**更新头像路径*/
     @PostMapping("/header/url")
     @ResponseBody
     public String updateHeaderUrl(String fileName){
@@ -150,7 +150,7 @@ public class UserController implements CommunityConstant {
         return "redirect:/index";
     }
 
-    //上传文件到七牛云服务器中
+    /**上传头像到七牛云服务器中*/
     @GetMapping("/header/{filename}")
     public void getHeader(@PathVariable("filename")String filename, HttpServletResponse response) {
         //服务器存放的位置
@@ -171,7 +171,7 @@ public class UserController implements CommunityConstant {
         }
     }
 
-    //个人主页
+    /**个人主页*/
     @GetMapping("/profile/{userId}")
     public String getProfilePage(@PathVariable("userId")int userId,Model model){
         User user = userService.findUserById(userId);
@@ -204,7 +204,7 @@ public class UserController implements CommunityConstant {
         return "/site/profile";
     }
 
-    //我的帖子
+    /**我的帖子*/
     @GetMapping("/profile/{userId}/minepost")
     public String getProfileMinePost(@PathVariable("userId")int userId, Model model, Page page){
 
@@ -249,7 +249,7 @@ public class UserController implements CommunityConstant {
         return "/site/my-post";
     }
 
-    //我回复的帖子
+    /**我回复的帖子*/
     @GetMapping("/profile/{userId}/minereply")
     public String getProfileMineReply(@PathVariable("userId")int userId,Model model,Page page){
         User user = userService.findUserById(userId);
@@ -290,13 +290,13 @@ public class UserController implements CommunityConstant {
         return "/site/my-reply";
     }
 
-    //表格跳转页面
+    /**表格跳转页面*/
     @GetMapping("/showLayui")
     public String showAllUserLayui(){
         return "/backup/showAllUser";
     }
 
-    //用户信息接口
+    /**用户信息接口*/
     @GetMapping("/showAllUser")
     @ResponseBody
     public Map<String ,Object>  showAllUser(@RequestParam(required = false,defaultValue = "0")String type,

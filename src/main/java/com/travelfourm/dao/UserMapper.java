@@ -10,6 +10,9 @@ import java.util.List;
 @Repository
 public interface UserMapper {
 
+    /**
+     * 查询全部用户
+     * return List*/
     List<User> selectAllUser();
 
     User selectById(int id);

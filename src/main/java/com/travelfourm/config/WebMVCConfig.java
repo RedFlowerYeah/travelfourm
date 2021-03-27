@@ -6,18 +6,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * @author 34612
+ */
+
 @Configuration
 public class WebMVCConfig implements WebMvcConfigurer {
 
-    //登录注册拦截器
+    /**登录注册拦截器*/
     @Autowired
     private LoginTicketInterceptor loginTicketInterceptor;
 
-    //注册拦截器
-//    @Autowired
-//    private LoginRequiredInterceptor loginRequiredInterceptor;
 
-    //未读消息拦截器
+    /**未读消息拦截器*/
     @Autowired
     private MessageInterceptor messageInterceptor;
 
@@ -34,9 +35,6 @@ public class WebMVCConfig implements WebMvcConfigurer {
         registry.addInterceptor(loginTicketInterceptor)
                 .excludePathPatterns("/css/*","/js/*","/img/*");
 
-        //头像拦截器
-//        registry.addInterceptor(loginRequiredInterceptor)
-//                .excludePathPatterns("/css/*","/js/*","/img/*");
 
         registry.addInterceptor(messageInterceptor)
                 .excludePathPatterns("/css/*","/js/*","/img/*");

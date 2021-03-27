@@ -27,6 +27,10 @@ import java.io.OutputStream;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author 34612
+ */
+
 @Controller
 public class LoginController implements CommunityConstant {
 
@@ -44,21 +48,19 @@ public class LoginController implements CommunityConstant {
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
-    //跳转到注册页面
-    //@RequestMapping(path = "/register",method = RequestMethod.GET)
+    /**跳转到注册页面*/
     @GetMapping("/register")
     public String getRegisterPage() {
         return "/site/register";
     }
 
-    //跳转到登录页面
-    //@RequestMapping(path = "/login",method = RequestMethod.GET)
+    /**跳转到登录页面*/
     @GetMapping("/login")
     public String getLoginPage(){
         return "/site/login";
     }
 
-    //注册
+    /**注册方法*/
     @PostMapping("/register")
     public String register(Model model, User user){
         Map<String,Object> map=userService.register(user);
@@ -75,7 +77,7 @@ public class LoginController implements CommunityConstant {
     }
 
     // http://localhost:8080/community/activation/101/code
-    //激活账号
+    /**激活账号方式*/
     @GetMapping("/activation/{userId}/{code}")
     public String activation(Model model, @PathVariable("userId") int userId, @PathVariable("code") String code) {
         int result = userService.activation(userId, code);
@@ -92,7 +94,7 @@ public class LoginController implements CommunityConstant {
         return "/site/operate-result";
     }
 
-    //验证码功能
+    /**验证码功能*/
     @GetMapping("/kaptcha")
     public void getKaptcha(HttpServletResponse response, HttpSession session){
         //生成验证码
@@ -100,7 +102,6 @@ public class LoginController implements CommunityConstant {
         BufferedImage image=kaptcharProducer.createImage(text);
 
         //将验证码存入session
-        //session.setAttribute("kaptcha",text);
         String kaptchaOwner = CommunityUtil.generateUUID();
         Cookie cookie = new Cookie("kaptchaOwner",kaptchaOwner);
         cookie.setMaxAge(60);
@@ -121,16 +122,11 @@ public class LoginController implements CommunityConstant {
         }
     }
 
-    //登录验证
-    //@RequestMapping(path = "/login",method = RequestMethod.POST)
+    /**登录验证*/
     @PostMapping("/login")
     public String login(String username,String password,String code,boolean rememberme,
                         Model model/*HttpSession httpSession*/,HttpServletResponse response,
                         @CookieValue("kaptchaOwner")String kaptchaOwner) {
-
-        // 检查验证码
-        //String kaptcha = (String) httpSession.getAttribute("kaptcha");
-
         String kaptcha = null;
         if (StringUtils.isNoneBlank(kaptchaOwner)){
             String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
@@ -157,7 +153,7 @@ public class LoginController implements CommunityConstant {
         }
     }
 
-    //登出功能
+    /**登出论坛网站*/
     @GetMapping("/logout")
     public String logout(@CookieValue("ticket")String ticket){
         userService.logout(ticket);

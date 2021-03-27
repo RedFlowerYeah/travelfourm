@@ -49,4 +49,6 @@
     <update id="updatePassword">
         update tbl_user set password = #{password} where id = #{id};
     </update>
+
+
 </mapper>

@@ -22,6 +22,10 @@ import java.util.concurrent.TimeUnit;
 
 import static com.travelfourm.Util.CommunityConstant.*;
 
+/**
+ * @author 34612
+ */
+
 @Service
 public class UserService {
 
@@ -37,8 +41,6 @@ public class UserService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-//    @Autowired
-//    private LoginTicketMapper loginTicketMapper;
 
     @Value("${community.path.domain}")
     private String domain;
@@ -46,14 +48,14 @@ public class UserService {
     @Value("${server.servlet.context-path}")
     private String contextpath;
 
-    //查找全部用户信息
+    /**查找全部用户信息*/
     public List<User> findAllUser(){
         return userMapper.selectAllUser();
     }
 
-    //通过id查找相关User
+    /**
+     * 通过id查找相关User*/
     public User findUserById(int id){
-        //return userMapper.selectById(id);
         User user = getCache(id);
         if (user == null){
             user = initCache(id);
@@ -61,7 +63,8 @@ public class UserService {
         return user;
     }
 
-    //用户注册
+    /**
+     * 用户注册*/
     public Map<String,Object>register(User user){
         Map<String,Object> map=new HashMap<>();
 
@@ -113,10 +116,15 @@ public class UserService {
         return map;
     }
 
-    //判断是否通过邮箱激活账号
+    /**
+     * 判断是否通过邮箱激活账号*/
     public int activation(int userId, String code) {
         User user=userMapper.selectById(userId);
-        if (user.getStatus() == 1) {    //表示已经激活过
+
+        /**
+         * if status == 1 则为表示已经注册过的状态
+         * if status == 0 则进行注册*/
+        if (user.getStatus() == 1) {
             return ACTIVATION_REPEAT;
         } else if (user.getActivationcode().equals(code)) {
             userMapper.updateStatus(userId,1);
@@ -127,7 +135,8 @@ public class UserService {
         }
     }
 
-    //用户登录
+    /**
+     * 用户登录*/
     public Map<String,Object> login(String username,String password,int expiredSeconds){
         Map<String,Object> map=new HashMap<>();
 
@@ -167,9 +176,6 @@ public class UserService {
         loginTicket.setStatus(0);
         loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000));
 
-        //此处为重构前的判断用户身份的代码，已废弃
-        // loginTicketMapper.insertLoginTicket(loginTicket);
-
         String redisKey = RedisKeyUtil.getTicketKey(loginTicket.getTicket());
         redisTemplate.opsForValue().set(redisKey,loginTicket);
 
@@ -177,43 +183,44 @@ public class UserService {
         return map;
     }
 
-    //用户登出
+    /**
+     * 用户登出*/
     public void logout(String ticket){
-        //loginTicketMapper.updateStatus(ticket,1);
         String redisKey = RedisKeyUtil.getTicketKey(ticket);
         LoginTicket loginTicket = (LoginTicket) redisTemplate.opsForValue().get(redisKey);
         loginTicket.setStatus(1);
         redisTemplate.opsForValue().set(redisKey,loginTicket);
     }
 
-    //登录凭证
+    /**登录凭证
+     * 后期可以废弃掉*/
     public LoginTicket findLoginTicket(String ticket){
-        //return loginTicketMapper.selectByTicket(ticket);
         String redisKey = RedisKeyUtil.getTicketKey(ticket);
         return (LoginTicket) redisTemplate.opsForValue().get(redisKey);
     }
 
-    //更新头像的方法
+    /**
+     * 更新头像的方法*/
     public int updateHeader(int userId, String headerUrl) {
-//        return userMapper.updateHeader(userId, headerUrl);
         int rows = userMapper.updateHeader(userId, headerUrl);
         clearCache(userId);
         return rows;
     }
 
-    //通过username查找相关User信息
+
+    /**通过username查找相关User信息*/
     public User findUserByName(String username){
 
         return userMapper.selectByName(username);
     }
 
-    //1.优先从缓存中读取数据
+    /**1.优先从缓存中读取数据*/
     private User getCache(int userId){
         String redisKey = RedisKeyUtil.getUserKey(userId);
         return (User) redisTemplate.opsForValue().get(redisKey);
     }
 
-    //2.取不到时，初始化缓存数据
+    /**2.取不到时，初始化缓存数据*/
     private User initCache(int userId){
         User user = userMapper.selectById(userId);
         String redisKey = RedisKeyUtil.getUserKey(userId);
@@ -221,13 +228,13 @@ public class UserService {
         return user;
     }
 
-    //3.数据变更时，清除缓存数据
+    /**3.数据变更时，清除缓存数据*/
     private void clearCache(int userId){
         String redisKey = RedisKeyUtil.getUserKey(userId);
         redisTemplate.delete(redisKey);
     }
 
-    //权限控制
+    /**权限控制*/
     public Collection<? extends GrantedAuthority> getAuthorities(int userId){
         User  user = this.findUserById(userId);
 

@@ -1,5 +1,8 @@
 package com.travelfourm.config;
 
+/**
+ * @author 34612
+ */
 public class BaiduSensitiveConfig {
 
     public static final String APP_ID = "23797100";
