@@ -3,7 +3,6 @@ package com.travelfourm.service;
 import com.travelfourm.dao.elasticsearch.DiscussPostRepository;
 import com.travelfourm.entity.DiscussPost;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -19,7 +18,6 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+/**
+ * @author 34612
+ */
 
 @Service
 public class ElasticsearchService {
@@ -37,14 +39,20 @@ public class ElasticsearchService {
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+    /**
+     * 保存帖子*/
     public void saveDiscussPost(DiscussPost post){
         discussPostRepository.save(post);
     }
 
+    /**
+     * 删除帖子，调用此函数时，会直接删除es索引里面所存储的帖子，所以当搜索时，不会出现已删除的帖子*/
     public void deleteDiscussPost(int id){
         discussPostRepository.deleteById(id);
     }
 
+    /**
+     * 分页查找帖子*/
     public Page<DiscussPost> searchDiscussPost(String keyword, int current, int limit){
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilders.multiMatchQuery(keyword,"title","content"))

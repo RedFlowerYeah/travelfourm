@@ -81,6 +81,14 @@
                     ,{field: 'id', title: '帖子编号', width:120, sort: true, fixed: 'left'}
                     ,{field: 'title', title: '标题', width:200}
                     ,{field: 'content', title: '内容' , width:200}
+                    ,{field: 'status', title:'帖子状态',width:200,templet:function (data) {
+                        if (data.status == 0)
+                            return '<span class="layui-badge layui-bg-gray">正常</span>'
+                        else if (data.status == 1)
+                            return '<span class="layui-badge layui-bg-red">精华</span>'
+                        else if (data.status == 2)
+                            return '<span class="layui-badge layui-bg-black">拉黑</span>'
+                    }}
                     ,{field: 'commentCount', title: '评论总数',width:200 , sort:true}
                     ,{field: 'createTime', title: '创建时间', width:200, sort: true,
                     templet:"<div>{{layui.util.toDateString(d.createTime,'yyyy-MM-dd HH:mm:ss')}}</div>"}

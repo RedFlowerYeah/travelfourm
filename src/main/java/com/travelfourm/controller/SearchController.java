@@ -16,6 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 34612
+ */
+
 @Controller
 public class SearchController implements CommunityConstant {
 
@@ -28,15 +32,20 @@ public class SearchController implements CommunityConstant {
     @Autowired
     private LikeService likeService;
 
-    //search?keyword=xxx
+    /**
+     * search?keyword=xxx*/
     @GetMapping("/search")
     public String search(String keyword, Page page, Model model){
+
         //搜索帖子
         org.springframework.data.domain.Page<DiscussPost> searchResult =
                 elasticsearchService.searchDiscussPost(keyword, page.getCurrent() - 1, page.getLimit());
 
+
         //聚合数据
         List<Map<String ,Object>> discussPosts = new ArrayList<>();
+
+
         if (searchResult != null){
             for (DiscussPost post : searchResult){
                 Map<String ,Object> map = new HashMap<>();
