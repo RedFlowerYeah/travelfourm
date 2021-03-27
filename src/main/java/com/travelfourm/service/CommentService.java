@@ -69,4 +69,6 @@ public class CommentService implements CommunityConstant {
     public int findCommentCount(int userId){
         return commentMapper.selectCountByUserId(userId);
     }
+
+    public int deleteComment(int id){return  commentMapper.deleteComment(id);}
 }

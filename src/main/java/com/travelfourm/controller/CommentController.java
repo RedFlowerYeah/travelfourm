@@ -3,6 +3,7 @@ package com.travelfourm.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.travelfourm.Util.CommunityConstant;
+import com.travelfourm.Util.CommunityUtil;
 import com.travelfourm.Util.HostHolder;
 import com.travelfourm.Util.RedisKeyUtil;
 import com.travelfourm.entity.Comment;
@@ -78,13 +79,14 @@ public class CommentController implements CommunityConstant {
         return "redirect:/discuss/detail/" + discussPostId;
     }
 
-    //表格跳转页面
+    /**表格跳转页面*/
     @GetMapping("/showLayui2")
     public String showAllCommentLayui(){
         return "/backup/showAllComment";
     }
 
-    //评论信息接口
+    /**
+     * 展示全部评论信息*/
     @GetMapping("/showAllComment")
     @ResponseBody
     public Map<String ,Object> showAllUser(@RequestParam(required = false,defaultValue = "0")String type,
@@ -107,5 +109,14 @@ public class CommentController implements CommunityConstant {
         map.put("count",pageInfo.getTotal());
         map.put("data",pageInfo.getList());
         return map;
+    }
+
+    /**
+     * 删除评论*/
+    @PostMapping("/delete")
+    @ResponseBody
+    public String deleteComment(int id){
+        commentService.deleteComment(id);
+        return CommunityUtil.getJsonString(0,"删除成功");
     }
 }

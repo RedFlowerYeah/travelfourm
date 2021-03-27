@@ -49,8 +49,35 @@
 					<ul class="list-unstyled mt-4 pl-3 pr-3" th:each="cvo:${comments}">
 
 						<div class="float-right">
-							<button type="button" class="btn btn-danger btn-sm" id="deleteComment" th:onclick="|setDelete2(${cvo.comment.id});|">删除</button>
+							<input type="hidden" id="postId" th:value="${cvo.comment.id}">
+							<button type="button" class="fa fa-trash btn btn-danger"
+									data-toggle="modal"
+									data-target="#deleteModal">
+								删除
+							</button>
+
+							<!-- 模态框（也就是俗称的弹窗设定）此处用来管理员删除帖子并给邮箱发布相应的删除信息 -->
+							<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">删除回复</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											是否删除此回复？
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal" >取消</button>
+											<button type="button" class="btn btn-primary" id="deleteBtn2">确定</button>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
+
 						<li class="border-bottom pb-3 mt-4">
 							<div class="font-size-16 text-info">
 								<a th:href="@{|/discuss/detail/${cvo.post.id}|}" th:utext="${cvo.post.title}" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
@@ -98,5 +125,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 	<script th:src="@{/js/global.js}"></script>
+	<script th:src="@{/js/delDiscussOrCom.js}"></script>
 </body>
 </html>

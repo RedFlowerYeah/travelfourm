@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author 34612
+ */
+
 @Mapper
 @Repository
 public interface CommentMapper {
@@ -24,4 +28,6 @@ public interface CommentMapper {
     List<Comment> selectCommentByUserId(int userId,int offset,int limit);
 
     int selectCountByUserId(int userId);
+
+    int deleteComment(int id);
 }

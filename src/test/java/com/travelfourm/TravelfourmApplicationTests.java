@@ -1,7 +1,9 @@
 package com.travelfourm;
 
 import com.travelfourm.dao.AlphaDao;
+import com.travelfourm.entity.Comment;
 import com.travelfourm.service.AlphaService;
+import com.travelfourm.service.CommentService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
@@ -22,6 +24,8 @@ import java.util.Date;
 public class TravelfourmApplicationTests implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
+    @Autowired
+    private CommentService commentService;
     
     @Test
     public void testApplicationContext(){
@@ -69,5 +73,12 @@ public class TravelfourmApplicationTests implements ApplicationContextAware {
         System.out.println(alphaService);
         System.out.println(alphaDao);
         System.out.println(simpleDateFormat);
+    }
+
+    @Test
+    public void testDeleteComment(){
+        int id =41;
+        commentService.deleteComment(41);
+        System.out.println("删除成功");
     }
 }

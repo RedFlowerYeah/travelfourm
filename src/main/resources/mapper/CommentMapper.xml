@@ -58,4 +58,9 @@
         and user_id =  #{userId}
         and entity_type = 1
     </select>
+
+    <update id="deleteComment" parameterType="int">
+        update comment set content = "评论已经删除" where id = #{id};
+    </update>
+
 </mapper>
