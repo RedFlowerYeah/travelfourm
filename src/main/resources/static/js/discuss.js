@@ -79,7 +79,7 @@ function setWonderful() {
     );
 }
 
-//删除
+//管理员删除帖子
 function setDelete() {
     //发送AJAX请求之前，将CSRF的令牌设置到消息的请求头中
     var token = $("meta[name='_csrf']").attr("content");

@@ -226,10 +226,10 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     /**
-     * 删除*/
+     * 管理员删除帖子*/
     @PostMapping("/delete")
     @ResponseBody
-    public String setDelete(int id) {
+    public String setDelete1(int id) {
 
         //可以通过查找帖子的user_id再来获取相应的user的email
         DiscussPost post = discussPostService.findDiscussPostById(id);
@@ -259,13 +259,31 @@ public class DiscussPostController implements CommunityConstant {
         return CommunityUtil.getJsonString(0);
     }
 
-    //表格跳转页面
+    /**
+     * 个人删除自己的帖子*/
+    @PostMapping("/delete1")
+    @ResponseBody
+    public String setDelete2(int id){
+        discussPostService.updateStatus(id,2);
+
+        //触发删帖事件
+        Event event = new Event()
+                .setTopic(TOPIC_DELETE)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(id);
+        eventProducer.fireEvent(event);
+
+        return CommunityUtil.getJsonString(0);
+    }
+
+    /**表格跳转页面*/
     @GetMapping("/showLayui1")
     public String showAllUserLayui(){
         return "/backup/showDiscussPost";
     }
 
-    //帖子信息接口
+    /**帖子信息接口*/
     @GetMapping("/showAllDiscussPost")
     @ResponseBody
     public Map<String ,Object>  showAllDiscussPost(@RequestParam(required = false,defaultValue = "0")String type,
