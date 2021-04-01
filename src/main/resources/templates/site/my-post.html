@@ -60,11 +60,46 @@
 
 								<div class="float-right">
 									<input type="hidden" id="postId" th:value="${map.post.id}">
+
+									<button type="button" class="fa fa-pencil-square-o btn btn-primary"
+											data-toggle="modal" data-target="#updateModal">
+										修改
+									</button>
+
 									<button type="button" class="fa fa-trash btn btn-danger"
 											data-toggle="modal" data-target="#deleteModal">
 										删除
 									</button>
 
+									<!-- 弹出框发布帖子的输入框 -->
+									<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-lg" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="updateModalLabel">修改帖子信息</h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<form>
+														<div class="form-group">
+															<label for="recipient-name" class="col-form-label">标题：</label>
+															<input type="text" class="form-control" id="recipient-name" th:value="${map.post.title}">
+														</div>
+														<div class="form-group">
+															<label for="message-text" class="col-form-label">正文：</label>
+															<textarea class="form-control" id="message-text" rows="15" th:value="${map.post.content}"></textarea>
+														</div>
+													</form>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+													<button type="button" class="btn btn-primary" id="updateBtn">修改</button>
+												</div>
+											</div>
+										</div>
+									</div>
 									<!-- 模态框（也就是俗称的弹窗设定）此处用来管理员删除帖子并给邮箱发布相应的删除信息 -->
 									<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog">

@@ -12,7 +12,8 @@ public class EventProducer {
     @Autowired
     private KafkaTemplate kafkaTemplate;
 
-    //处理事件
+    /**
+     * 处理事件*/
     public void fireEvent(Event event){
 
         //将事件发布到指定主题

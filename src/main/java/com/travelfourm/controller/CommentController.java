@@ -20,6 +20,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/**
+ * @author 34612
+ */
+
 @Controller
 @RequestMapping("/comment")
 public class CommentController implements CommunityConstant {

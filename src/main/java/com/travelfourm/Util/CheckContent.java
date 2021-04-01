@@ -12,6 +12,10 @@ import java.net.URLEncoder;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * @author 34612
+ */
+
 public class CheckContent {
     public static Map<String, Object> checkText(String text) {
         Map<String, Object> map = new TreeMap<String, Object>();

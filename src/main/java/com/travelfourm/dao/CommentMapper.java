@@ -15,6 +15,8 @@ import java.util.List;
 @Repository
 public interface CommentMapper {
 
+    /**
+     * 此处是作为后台查询所有评论的mapper*/
     List<Comment> selectAllComment();
 
     List<Comment> selectCommentsByEntity(int entityType,int entityId,int offset,int limit);

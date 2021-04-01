@@ -57,7 +57,8 @@ public class DiscussPostController implements CommunityConstant {
     @Value("${server.servlet.context-path}")
     private String contextpath;
 
-    //增加帖子
+    /**
+     * 创建帖子*/
     @PostMapping("/add")
     @ResponseBody
     public String addDiscussPost(String title, String content) {

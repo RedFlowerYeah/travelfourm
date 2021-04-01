@@ -19,6 +19,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author 34612
+ */
+
 @Component
 public class EventConsumer implements CommunityConstant {
 
