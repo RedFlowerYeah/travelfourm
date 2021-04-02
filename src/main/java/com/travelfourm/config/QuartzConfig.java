@@ -33,37 +33,40 @@ public class QuartzConfig {
         factoryBean.setJobDetail(postScoreRefreshJobDetail);
         factoryBean.setName("postScoreRefreshTrigger");
         factoryBean.setGroup("communityTriggerGroup");
+
+        /**
+         * 这里是以毫秒为单位的计算 1000ms =  1s ，这里也就是5分钟刷新一次*/
         factoryBean.setRepeatInterval(1000 * 60 * 5);
         factoryBean.setJobDataMap(new JobDataMap());
         return factoryBean;
     }
 
 
-    /**
-     * 频率（多长时间执行一次）
+    /***
+     * 刷新天气
      */
-    private static final Integer TIME = 1800;
-
     @Bean
-    public JobDetail weatherDataSyncJobJobDetail() {
-        return JobBuilder
-                .newJob(WeatherDataSyncJob.class)
-                .withIdentity("weatherDataSyncJobJobDetail")
-                .storeDurably()
-                .build();
+    public JobDetailFactoryBean weatherRefreshJobDetail() {
+        JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
+        factoryBean.setJobClass(WeatherDataSyncJob.class);
+        factoryBean.setName("weatherRefreshJob");
+        factoryBean.setGroup("weatherJobGroup");
+        factoryBean.setDurability(true);
+        factoryBean.setRequestsRecovery(true);
+        return factoryBean;
     }
 
     @Bean
-    public Trigger weatherDataSyncJobTrigger() {
-        SimpleScheduleBuilder schedule = SimpleScheduleBuilder
-                .simpleSchedule()
-                .withIntervalInSeconds(TIME)
-                .repeatForever();
-        return TriggerBuilder
-                .newTrigger()
-                .forJob(weatherDataSyncJobJobDetail())
-                .withIdentity("weatherDataSyncJobTrigger")
-                .withSchedule(schedule)
-                .build();
+    public SimpleTriggerFactoryBean weatherRefreshTrigger(JobDetail weatherRefreshJobDetail) {
+        SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
+        factoryBean.setJobDetail(weatherRefreshJobDetail);
+        factoryBean.setName("weatherRefreshTrigger");
+        factoryBean.setGroup("weatherTriggerGroup");
+
+        /**
+         * 这里定时任务，60分钟去调一次api接口*/
+        factoryBean.setRepeatInterval(1000 * 60 * 60);
+        factoryBean.setJobDataMap(new JobDataMap());
+        return factoryBean;
     }
 }

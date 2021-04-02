@@ -98,6 +98,7 @@ public class WeatherService {
      * 把天气数据保存到缓存中
      *
      * @param uri
+     * 考虑到接口的并发数问题，先选用部分城市，后续有需要可以接其他接口
      */
     private void saveWeatherData(String uri) {
         String key = uri;
@@ -106,6 +107,8 @@ public class WeatherService {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
         if (StatusCodeConstant.OK == responseEntity.getStatusCodeValue()) {
             strBody = responseEntity.getBody();
+        }else if (StatusCodeConstant.Fail == responseEntity.getStatusCodeValue()){
+            logger.error("调取接口异常，请测试接口返回数据！");
         }
         ops.set(key, strBody, RedisConstant.TIME_OUT, TimeUnit.SECONDS);
     }

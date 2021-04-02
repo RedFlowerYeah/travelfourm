@@ -7,4 +7,6 @@ package com.travelfourm.Util;
 public interface StatusCodeConstant {
 
     Integer OK = 200;
+
+    Integer Fail = 504;
 }

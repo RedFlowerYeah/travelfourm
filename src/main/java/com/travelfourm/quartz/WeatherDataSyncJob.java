@@ -4,6 +4,7 @@ import com.travelfourm.dao.City;
 import com.travelfourm.service.CityService;
 import com.travelfourm.service.WeatherService;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import java.util.List;
  * @CreateTime 2021/4/1 19:13
  */
 @Slf4j
-public class WeatherDataSyncJob extends QuartzJobBean {
+public class WeatherDataSyncJob implements Job {
 
     @Autowired
     private CityService cityService;
@@ -25,23 +26,23 @@ public class WeatherDataSyncJob extends QuartzJobBean {
     private WeatherService weatherDataService;
 
     @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        log.info("开始获取天气！");
+    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+            log.info("开始获取天气！");
 
-        // 获取城市ID列表
-        List<City> cityList = null;
-        try {
-            cityList = cityService.listCity();
-        } catch (Exception e) {
-            log.error("Exception!", e);
-        }
+            // 获取城市ID列表
+            List<City> cityList = null;
+            try {
+                cityList = cityService.listCity();
+            } catch (Exception e) {
+                log.error("Exception!", e);
+            }
 
-        // 遍历城市ID，获取天气
-        for (City city : cityList) {
-            String cityId = city.getCityId();
-            log.info("城市天气ID：" + cityId);
-            weatherDataService.syncDataByCityId(cityId);
-        }
-        log.info("获取天气结束！");
+            // 遍历城市ID，获取天气
+            for (City city : cityList) {
+                String cityId = city.getCityId();
+                log.info("城市天气ID：" + cityId);
+                weatherDataService.syncDataByCityId(cityId);
+            }
+            log.info("获取天气结束！");
     }
 }

@@ -7,6 +7,6 @@ package com.travelfourm.Util;
 public interface RedisConstant {
 
     /**
-     * 过期时间设置1800s*/
-    long TIME_OUT = 1800L;
+     * 过期时间设置60分钟=3600秒*/
+    long TIME_OUT = 3600L;
 }
