@@ -31,7 +31,7 @@
 
 <div class="nk-container">
     <!-- 头部 -->
-    <header class="bg-info sticky-top" th:fragment="header">
+    <header class="bg-dark sticky-top" th:fragment="header">
         <div class="container">
 
             <!-- 导航 -->
@@ -67,7 +67,10 @@
                             </a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical">
-                            <a class="nav-link" th:href="@{/report/cityId/101280101}">天气预报</a>
+                            <a class="nav-link" th:href="@{/report/cityId/101280101}">
+                                <i class="fa fa-sun-o" aria-hidden="true"></i>
+                                天气预报
+                            </a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser == null}">
                             <a class="nav-link" th:href="@{/register}">注册</a>

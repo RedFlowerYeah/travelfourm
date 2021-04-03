@@ -17,8 +17,85 @@ body {
 }
 
 .container {
-	width: 960px;
+	width: 1024px;
 	padding: 0;
+}
+
+.weather-banner-header-right {
+	margin: 0;
+	float: right;
+}
+
+.weather-banner-header-left{
+	margin: 0;
+	float: left;
+}
+
+.weather-banner-header{
+	height: 50px;
+	line-height: 50px;
+}
+
+.weather-banner-content{
+	margin-top: 45px;
+	height: 79px;
+}
+
+.weather-banner-content-left{
+	float: left;
+}
+
+.weather-banner-content-city{
+	position: relative;
+	font-size: 45px;
+	line-height: 79px;
+	color: #FFFFFF;
+}
+
+.weather-banner-content-right{
+	margin-top: 45px;
+	margin-left: 30px;
+	float: left;
+}
+
+.weather-banner-forecast{
+	position: relative;
+	z-index: 999;
+	width: 895px;
+	height: 250px;
+	color: #FFFFFF;
+	padding: 10px 16px 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border-radius: 3px;
+	background-color: rgba(0,0,0,.1);
+	margin: 0 auto;
+}
+
+.weather-5day-content-box{
+	position: relative;
+	display: inline-block;
+	width: 107px;
+	height: 200px;
+	overflow: hidden;
+	margin-left: 55px;
+}
+
+.weather-15day-content{
+	height: 409px;
+}
+
+.weather-day{
+	position: relative;
+	display: inline-block;
+	width: 107px;
+	height: 200px;
+}
+
+.weather-tips{
+	margin-left: 300px;
+	margin-top: 20px;
 }
 
 header .navbar-brand {
