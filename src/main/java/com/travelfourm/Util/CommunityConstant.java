@@ -2,7 +2,8 @@ package com.travelfourm.Util;
 
 
 /**
- * 自定义常量接口，方便调用*/
+ * 自定义常量接口，方便调用
+ * @author 34612*/
 public interface CommunityConstant {
 
     /**

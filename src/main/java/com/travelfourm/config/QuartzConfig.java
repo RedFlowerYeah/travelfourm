@@ -9,12 +9,19 @@ import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 
 
-/**配置 -> 数据库 -> 调用
- *@author 34612*/
+/**
+ * 配置 -> 数据库 -> 调用
+ * @author 34612
+ * 定时任务配置类
+ * Quartz两大组件：一个是Job，一个是Trigger
+ * Job表示任务是什么
+ * Trigger表示何时触发任务*/
+
 @Configuration
 public class QuartzConfig {
     /***
      * 刷新帖子分数任务
+     * 通过调用工厂方法来设置一个新的job对象
      */
     @Bean
     public JobDetailFactoryBean postScoreRefreshJobDetail() {
@@ -27,6 +34,9 @@ public class QuartzConfig {
         return factoryBean;
     }
 
+    /**
+     * 触发任务工厂方法
+     * 后续进行相应的设置*/
     @Bean
     public SimpleTriggerFactoryBean postScoreRefreshTrigger(JobDetail postScoreRefreshJobDetail) {
         SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
@@ -43,7 +53,7 @@ public class QuartzConfig {
 
 
     /***
-     * 刷新天气
+     * 刷新天气任务
      */
     @Bean
     public JobDetailFactoryBean weatherRefreshJobDetail() {

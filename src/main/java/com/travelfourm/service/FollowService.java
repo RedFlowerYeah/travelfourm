@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * @author 34612
+ */
+
 @Service
 public class FollowService implements CommunityConstant {
 
@@ -56,25 +60,25 @@ public class FollowService implements CommunityConstant {
         });
     }
 
-    // 查询关注的实体的数量
+    /** 查询关注的实体的数量*/
     public long findFolloweeCount(int userId, int entityType) {
         String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
         return redisTemplate.opsForZSet().zCard(followeeKey);
     }
 
-    // 查询实体的粉丝的数量
+    /** 查询实体的粉丝的数量*/
     public long findFollowerCount(int entityType, int entityId) {
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
         return redisTemplate.opsForZSet().zCard(followerKey);
     }
 
-    // 查询当前用户是否已关注该实体
+    /** 查询当前用户是否已关注该实体*/
     public boolean hasFollowed(int userId, int entityType, int entityId) {
         String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
         return redisTemplate.opsForZSet().score(followeeKey, entityId) != null;
     }
 
-    // 查询某用户关注的人
+    /** 查询某用户关注的人*/
     public List<Map<String, Object>> findFollowees(int userId, int offset, int limit) {
         String followeeKey = RedisKeyUtil.getFolloweeKey(userId, ENTITY_TYPE_USER);
         Set<Integer> targetIds = redisTemplate.opsForZSet().reverseRange(followeeKey, offset, offset + limit - 1);
@@ -97,7 +101,7 @@ public class FollowService implements CommunityConstant {
     }
 
 
-    // 查询某用户的粉丝
+    /** 查询某用户的粉丝*/
     public List<Map<String, Object>> findFollowers(int userId, int offset, int limit) {
         String followerKey = RedisKeyUtil.getFollowerKey(ENTITY_TYPE_USER, userId);
         Set<Integer> targetIds = redisTemplate.opsForZSet().reverseRange(followerKey, offset, offset + limit - 1);
