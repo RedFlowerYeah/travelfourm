@@ -18,14 +18,17 @@ public class DataController {
     private DataService dataService;
 
 
-    //统计页面
+    /**
+     * 跳转到统计页面*/
     @RequestMapping(path = "/data",method = {RequestMethod.GET,RequestMethod.POST})
     public String getDataPage(){
         return "/site/admin/data";
     }
 
 
-    //统计uv
+    /**
+     * 统计UV
+     * UV : 网站独立访客（通过ip地址访问）*/
     @PostMapping("/data/uv")
     public String getUV(@DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
                         @DateTimeFormat(pattern = "yyyy-MM-dd") Date end, Model model){
@@ -42,7 +45,8 @@ public class DataController {
     }
 
 
-    //统计活跃用户
+    /**
+     * 统计网站日活跃用户*/
     @PostMapping("/data/dau")
     public String getDAU(@DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
                          @DateTimeFormat(pattern = "yyyy-MM-dd") Date end, Model model){

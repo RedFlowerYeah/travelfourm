@@ -45,8 +45,6 @@ public class HomeController implements CommunityConstant {
         page.setRows(discussPostService.findDiscussPostRows(0));
         page.setPath("/index?orderMode="+orderMode);
 
-        //方法调用，SpringMVC会自动实例化Modal和Page，并注入到对应Modal中
-        //所以，在thymeleaf中可以访问page中的对象
         List<DiscussPost> list=discussPostService.findDiscussPosts(0,page.getOffset(),page.getLimit(),orderMode);
         List<Map<String,Object>> discussPosts=new ArrayList<>();
         if (list!=null){

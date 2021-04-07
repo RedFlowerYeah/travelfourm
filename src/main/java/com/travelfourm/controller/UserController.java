@@ -79,17 +79,23 @@ public class UserController implements CommunityConstant {
     @Value("${qiniu.bucket.header.url}")
     private String headerBucketUrl;
 
+    /**
+     * 设置页面*/
     @LoginRequired
     @GetMapping("/setting")
     public String getSettingPage(Model model){
-        //上传名称
+
+        /**
+         * 上传文件的名称 UUID加密*/
         String fileName = CommunityUtil.generateUUID();
 
-        //设置响应信息
+        /**
+         * 设置相应信息*/
         StringMap policy = new StringMap();
         policy.put("returnBody",CommunityUtil.getJsonString(0));
 
-        //生成上传凭证
+        /**
+         * 生成上传凭证*/
         Auth auth = Auth.create(accessKey,secretKey);
         String uploadToken = auth.uploadToken(headerBucketName,fileName,3600,policy);
 
@@ -100,7 +106,9 @@ public class UserController implements CommunityConstant {
     }
 
 
-    /**更新头像路径*/
+    /**
+     * 更新本地头像路径
+     * */
     @PostMapping("/header/url")
     @ResponseBody
     public String updateHeaderUrl(String fileName){
@@ -154,11 +162,17 @@ public class UserController implements CommunityConstant {
     /**上传头像到七牛云服务器中*/
     @GetMapping("/header/{filename}")
     public void getHeader(@PathVariable("filename")String filename, HttpServletResponse response) {
-        //服务器存放的位置
+
+        /**
+         * 服务器存放位置*/
         filename = uploadPath + "/" + filename;
-        //文件后缀
+
+        /**
+         * 文件后缀名*/
         String suffix = filename.substring(filename.lastIndexOf("."));
-        //响应图片
+
+        /**
+         * 响应图片信息*/
         response.setContentType("image/" + suffix);
         try (OutputStream outputStream = response.getOutputStream();
              FileInputStream fileInputStream = new FileInputStream(filename);){
@@ -180,22 +194,27 @@ public class UserController implements CommunityConstant {
             throw new RuntimeException("该用户不存在！");
         }
 
-        //用户
+        /**
+         * 用户数量*/
         model.addAttribute("user",user);
 
-        //点赞数量
+        /**
+         * 点赞数量*/
         int likeCount = likeService.findUserLikeCount(userId);
         model.addAttribute("likeCount",likeCount);
 
-        //关注数量
+        /**
+         * 关注数量*/
         long followeeCount = followService.findFolloweeCount(userId, ENTITY_TYPE_USER);
         model.addAttribute("followeeCount",followeeCount);
 
-        //粉丝数量
+        /**
+         * 粉丝数量*/
         long followerCount = followService.findFollowerCount(ENTITY_TYPE_USER, userId);
         model.addAttribute("followerCount",followerCount);
 
-        //是否已关注
+        /**
+         * 是否已关注*/
         boolean hasFollowed = false;
             if( hostHolder.getUser() != null){
                 hasFollowed = followService.hasFollowed(hostHolder.getUser().getId(),ENTITY_TYPE_USER,userId);
@@ -209,23 +228,27 @@ public class UserController implements CommunityConstant {
     @GetMapping("/profile/{userId}/minepost")
     public String getProfileMinePost(@PathVariable("userId")int userId, Model model, Page page){
 
-        //先找出这个user的信息
+        /**
+         * 先找出这个user*/
         User user = userService.findUserById(userId);
 
         if (user == null){
             throw new RuntimeException("该用户不存在！");
         }
 
-        //如果session中存取的holder的user不等于从数据库取出来的user信息，则跳转到index页面
+        /**
+         * 如果session中存取的holder的user不等于从数据库取出来的user信息，则跳转到index页面*/
         if (hostHolder.getUser() == null && userId != hostHolder.getUser().getId()){
             return "redirect:/index";
         }
 
-        //查找我的帖子的总数
+        /**
+         * 查找我的帖子的总数*/
         int postCount = discussPostService.findDiscussPostRows(userId);
         page.setRows(postCount);
 
-        //分页信息
+        /**
+         * 分页信息*/
         page.setPath("/user/profile/" + userId + "/minepost");
         List<DiscussPost> list = discussPostService.findDiscussPosts(userId,page.getOffset(),page.getLimit(),0);
 

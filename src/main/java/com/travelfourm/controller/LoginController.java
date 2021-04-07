@@ -97,36 +97,50 @@ public class LoginController implements CommunityConstant {
     /**验证码功能*/
     @GetMapping("/kaptcha")
     public void getKaptcha(HttpServletResponse response, HttpSession session){
-        //生成验证码
+        /**
+         * 创建文本以及以图片的形式创建验证码*/
         String text=kaptcharProducer.createText();
         BufferedImage image=kaptcharProducer.createImage(text);
 
-        //将验证码存入session
+        /**
+         * 将验证码存入session中*/
         String kaptchaOwner = CommunityUtil.generateUUID();
         Cookie cookie = new Cookie("kaptchaOwner",kaptchaOwner);
         cookie.setMaxAge(60);
         cookie.setPath(contextPath);
         response.addCookie(cookie);
 
-        //将验证码存入redis
+        /**
+         * 将验证码存入redis中*/
         String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
         redisTemplate.opsForValue().set(redisKey,text,60, TimeUnit.SECONDS);
 
-        //将图片输出给浏览器
+        /**
+         * 服务器发送给浏览器的类型*/
         response.setContentType("image/png");
         try {
+
+            /**
+             * 将图片输出*/
             OutputStream outputStream=response.getOutputStream();
             ImageIO.write(image,"png",outputStream);
         }catch (IOException e){
-            logger.error("相应验证码失败："+e.getMessage());
+            logger.error("获取验证码失败："+e.getMessage());
         }
     }
 
-    /**登录验证*/
+    /**
+     * 登录验证
+     * @CookieValue 用来获取浏览器中存放验证码的Cookie */
     @PostMapping("/login")
     public String login(String username,String password,String code,boolean rememberme,
                         Model model/*HttpSession httpSession*/,HttpServletResponse response,
                         @CookieValue("kaptchaOwner")String kaptchaOwner) {
+
+        /**
+         * 首先判断用户是否填写了表单中的验证码，
+         * 如果右则去判断是否等于存放在Redis中的验证码
+         * 如果为空，且验证码不正确或过期等情况，则提示验证码不正确*/
         String kaptcha = null;
         if (StringUtils.isNoneBlank(kaptchaOwner)){
             String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
@@ -137,10 +151,14 @@ public class LoginController implements CommunityConstant {
             return "/site/login";
         }
 
-        //检查账号密码
+        /**
+         * 判断账号密码是否和当前登录的对象一致*/
         int expiredSeconds = rememberme ? REMEMBER_EXPIRED_SECONDS : DEFAULT_EXPIRED_SECONDS;
         Map<String,Object> map=userService.login(username,password,expiredSeconds);
         if (map.containsKey("ticket")){
+
+            /**
+             * 获取Cookie中的对象值*/
             Cookie cookie=new Cookie("ticket",map.get("ticket").toString());
             cookie.setPath(contextPath);
             cookie.setMaxAge(expiredSeconds);

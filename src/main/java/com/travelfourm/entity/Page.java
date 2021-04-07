@@ -1,7 +1,8 @@
 package com.travelfourm.entity;
 
 /**
- * 分页的信息管理*/
+ * 分页的信息管理
+ * @author 34612*/
 public class Page {
     //当前页面
     private int current = 1;

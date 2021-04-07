@@ -44,6 +44,11 @@ public class CommentController implements CommunityConstant {
     private RedisTemplate redisTemplate;
 
 
+    /**
+     * 增加评论
+     * @Post 提交参数
+     * @PathVariable int discussPostId
+     * Comment对象（评论内容）*/
     @PostMapping("/add/{discussPostId}")
     public String addComment(@PathVariable("discussPostId") int discussPostId, Comment comment) {
         comment.setUserId(hostHolder.getUser().getId());
@@ -51,24 +56,38 @@ public class CommentController implements CommunityConstant {
         comment.setCreateTime(new Date());
         commentService.addComment(comment);
 
-        // 触发评论事件
+        /**
+         * 触发评论事件*/
         Event event = new Event()
                 .setTopic(TOPIC_COMMENT)
                 .setUserId(hostHolder.getUser().getId())
                 .setEntityType(comment.getEntityType())
                 .setEntityId(comment.getEntityId())
                 .setData("postId", discussPostId);
+
+        /**
+         * 判断回复的类型是什么，如果回复的是帖子，则存入帖子的评论中
+         * 如果回复的是回复，则存入回复的回复下*/
         if (comment.getEntityType() == ENTITY_TYPE_POST) {
+
             DiscussPost target = discussPostService.findDiscussPostById(comment.getEntityId());
+
             event.setEntityUserId(target.getUserId());
+
         } else if (comment.getEntityType() == ENTITY_TYPE_COMMENT) {
+
             Comment target = commentService.findCommentById(comment.getEntityId());
+
             event.setEntityUserId(target.getUserId());
+
         }
         eventProducer.fireEvent(event);
 
+        /**
+         * 这一段代码有问题*/
         if (comment.getEntityType() == ENTITY_TYPE_POST) {
-            // 触发发帖事件
+            /**
+             * 触发发帖事件*/
             event = new Event()
                     .setTopic(TOPIC_PUBLISH)
                     .setUserId(comment.getUserId())
@@ -77,6 +96,7 @@ public class CommentController implements CommunityConstant {
             eventProducer.fireEvent(event);
             // 计算帖子分数
             String redisKey = RedisKeyUtil.getPostScoreKey();
+
             redisTemplate.opsForSet().add(redisKey, discussPostId);
         }
 

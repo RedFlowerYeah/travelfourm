@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
+/**
+ * @author 34612
+ */
 @Component
 public class LoginRequiredInterceptor implements HandlerInterceptor {
     @Autowired

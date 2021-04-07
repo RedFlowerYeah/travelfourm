@@ -62,6 +62,9 @@ public class DiscussPostController implements CommunityConstant {
     @PostMapping("/add")
     @ResponseBody
     public String addDiscussPost(String title, String content) {
+
+        /**
+         * 获取当前用户的id*/
         User user = hostHolder.getUser();
 
         if (user == null) {
@@ -74,13 +77,13 @@ public class DiscussPostController implements CommunityConstant {
         post.setContent(content);
         post.setCreateTime(new Date());
 
-        //如果此时post等于-1，则抛出异常
-        //如果等于0，则继续执行
+        /**如果此时post等于-1，则抛出异常；否则继续执行*/
         if (discussPostService.addDiscussPost(post) == -1){
             return CommunityUtil.getJsonString(1,"发布失败，帖子标题或内容存在敏感内容，请重新输入");
         }
 
-        // 触发发帖事件
+        /**
+         * 触发发帖事件*/
         Event event = new Event()
                 .setTopic(TOPIC_PUBLISH)
                 .setUserId(user.getId())
@@ -88,7 +91,8 @@ public class DiscussPostController implements CommunityConstant {
                 .setEntityId(post.getId());
         eventProducer.fireEvent(event);
 
-        // 计算帖子分数
+        /**
+         * 在Redis中统计分数*/
         String redisKey = RedisKeyUtil.getPostScoreKey();
         redisTemplate.opsForSet().add(redisKey, post.getId());
 
@@ -102,51 +106,79 @@ public class DiscussPostController implements CommunityConstant {
     public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
         // 帖子
         DiscussPost post = discussPostService.findDiscussPostById(discussPostId);
+
+        /**
+         * 如果帖子的状态没有被拉黑*/
         if (post.getStatus() != 2) {
             model.addAttribute("post", post);
-            // 作者
+
+            /**
+             * 帖子发起人*/
             User user = userService.findUserById(post.getUserId());
+
             model.addAttribute("user", user);
-            // 点赞数量
+
+            /**
+             * 点赞数量*/
             long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPostId);
+
             model.addAttribute("likeCount", likeCount);
-            // 点赞状态
+
+            /**
+             * 点赞状态*/
             int likeStatus = hostHolder.getUser() == null ? 0 :
                     likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_POST, discussPostId);
             model.addAttribute("likeStatus", likeStatus);
 
-            // 评论分页信息
+            /**
+             * 评论分页信息*/
             page.setLimit(5);
             page.setPath("/discuss/detail/" + discussPostId);
             page.setRows(post.getCommentCount());
 
-            // 评论: 给帖子的评论
-            // 回复: 给评论的评论
-            // 评论列表
+            /**
+             * 评论: 给帖子的评论
+             * 回复: 给评论的评论
+             * 评论列表*/
             List<Comment> commentList = commentService.findCommentsByEntity(
                     ENTITY_TYPE_POST, post.getId(), page.getOffset(), page.getLimit());
-            // 评论VO列表
+
+            /**
+             * 评论VO列表*/
             List<Map<String, Object>> commentVoList = new ArrayList<>();
             if (commentList != null) {
                 for (Comment comment : commentList) {
-                    // 评论VO
+
+                    /**
+                     * 评论VO*/
                     Map<String, Object> commentVo = new HashMap<>();
-                    // 评论
+
+                    /**
+                     * 评论*/
                     commentVo.put("comment", comment);
-                    // 作者
+
+                    /**
+                     * 帖子发起人*/
                     commentVo.put("user", userService.findUserById(comment.getUserId()));
-                    // 点赞数量
+
+                    /**
+                     * 点赞数量*/
                     likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, comment.getId());
                     commentVo.put("likeCount", likeCount);
-                    // 点赞状态
+
+                    /**
+                     * 点赞状态*/
                     likeStatus = hostHolder.getUser() == null ? 0 :
                             likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_COMMENT, comment.getId());
                     commentVo.put("likeStatus", likeStatus);
 
-                    // 回复列表
+                    /**
+                     * 回复列表*/
                     List<Comment> replyList = commentService.findCommentsByEntity(
                             ENTITY_TYPE_COMMENT, comment.getId(), 0, Integer.MAX_VALUE);
-                    // 回复VO列表
+
+                    /**
+                     * 回复VO列表*/
                     List<Map<String, Object>> replyVoList = new ArrayList<>();
                     if (replyList != null) {
                         for (Comment reply : replyList) {
@@ -244,9 +276,10 @@ public class DiscussPostController implements CommunityConstant {
         String content = templateEngine.process("/mail/deletediscusspost",context);
         mailClient.sendMail(user.getEmail(), "删除帖子", content);
 
-        //目前是假删，后续需要真删
-        //这里目前只假删了帖子，后续如果需要删除帖子，还需要把此帖子的评论一并删除掉
-        //这里要进行判断，要先删除贴子中的评论，再删除帖子
+        /**
+         * 删除帖子仅做假删
+         * 为了防止数据库需要恢复数据的原因
+         * 其实还有一个办法是读写分离，但是考虑成本代价的问题放弃了*/
         discussPostService.updateStatus(id, 2);
 
         // 触发删帖事件

@@ -10,6 +10,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author 34612
+ * @HandlerIntercetor 表示自定义拦截器，用继承的方式来编写自定义的拦截器
+ */
 @Component
 public class DataInterceptor implements HandlerInterceptor {
 

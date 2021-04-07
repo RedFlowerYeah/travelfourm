@@ -29,22 +29,33 @@ public class MessageController implements CommunityConstant {
     @Autowired
     private UserService userService;
 
+    /**
+     * 私信列表*/
     @GetMapping("/letter/list")
     public String getLetterList(Model model, Page page){
 
         User user = hostHolder.getUser();
 
-        //分页信息
+        /**
+         * 分页信息
+         * 通过统计conversation的数量来进行setRows*/
         page.setLimit(5);
         page.setPath("/letter/list");
         page.setRows(messageService.findConversationCount(user.getId()));
 
-        //会话列表
+        /**
+         * 会话列表*/
         List<Message> conversationList = messageService.findConversations(
                 user.getId(),page.getOffset(),page.getLimit());
+
         List<Map<String , Object>> conversations = new ArrayList<>();
         if (conversationList != null){
             for (Message message : conversationList){
+
+                /**
+                 * 创建一个HashMap用来存放相应的信息
+                 * 这里考虑是否要使用线程安全的方式来实现
+                 * 将所需要的数据放置在map中*/
                 Map<String , Object> map = new HashMap<>();
                 map.put("conversation",message);
                 map.put("letterCount",messageService.findLetterCount(message.getConversationId()));
@@ -62,12 +73,15 @@ public class MessageController implements CommunityConstant {
         //查询未读消息数量
         int letterUnreadCount = messageService.findLetterUnreadCount(user.getId(),null);
         model.addAttribute("letterUnreadCount",letterUnreadCount);
+
         int noticeUnreadCount = messageService.findNoticeUnreadCount(user.getId(),null);
         model.addAttribute(noticeUnreadCount);
 
         return "/site/letter";
     }
 
+    /**
+     * 私信通话内容*/
     @GetMapping("/letter/detail/{conversationId}")
     public String getLetterDetail(@PathVariable("conversationId")String conversationId,Page page,Model model){
         //分页信息
@@ -81,6 +95,8 @@ public class MessageController implements CommunityConstant {
         if (letterList != null){
             for (Message message : letterList){
                 Map<String , Object> map = new HashMap<>();
+                /**
+                 * 告诉定位索引*/
                 map.put("letter",message);
                 map.put("fromUser",userService.findUserById(message.getFromId()));
                 letters.add(map);
@@ -89,10 +105,12 @@ public class MessageController implements CommunityConstant {
 
         model.addAttribute("letters",letters);
 
-        //私信目标
+        /**
+         * 私信目标*/
         model.addAttribute("target",getLetterTarget(conversationId));
 
-        //设置已读
+        /**
+         * 设置已读*/
         List<Integer> ids = getLetterIds(letterList);
         if (!ids.isEmpty()){
             messageService.readMessage(ids);
@@ -101,6 +119,8 @@ public class MessageController implements CommunityConstant {
         return "/site/letter-detail";
     }
 
+    /**
+     * 获取发送的信息对象*/
     private User getLetterTarget(String conversationId){
         String[] ids = conversationId.split("_");
         int id0 = Integer.parseInt(ids[0]);
@@ -126,6 +146,8 @@ public class MessageController implements CommunityConstant {
         return ids;
     }
 
+    /**
+     * 发送对象*/
     @PostMapping("/letter/send")
     @ResponseBody
     public String sendLetter(String toName,String content){
@@ -151,11 +173,14 @@ public class MessageController implements CommunityConstant {
         return CommunityUtil.getJsonString(0);
     }
 
+    /**
+     * 通知列表*/
     @GetMapping("/notice/list")
     public String getNoticeList(Model model) {
         User user = hostHolder.getUser();
 
-        //查询评论通知
+        /**
+         * 查询评论通知*/
         Message message = messageService.findLatestNotice(user.getId(), TOPIC_COMMENT);
 
         if (message != null) {
@@ -178,7 +203,8 @@ public class MessageController implements CommunityConstant {
             model.addAttribute("commentNotice", messageVo);
         }
 
-        //查询点赞通知
+        /**
+         * 查询点赞通知*/
         message = messageService.findLatestNotice(user.getId(), TOPIC_LIKE);
 
         if (message != null) {
@@ -203,7 +229,8 @@ public class MessageController implements CommunityConstant {
 
 
 
-        //查询关注通知
+        /**
+         * 查询关注通知*/
         message = messageService.findLatestNotice(user.getId(), TOPIC_FOLLOW);
         if (message != null) {
             Map<String, Object> messageVo = new HashMap<>();
@@ -227,7 +254,8 @@ public class MessageController implements CommunityConstant {
         }
 
 
-        //查询未读消息的数量
+        /**
+         * 查询未读通知的数量*/
         int letterUnreadCount = messageService.findLetterUnreadCount(user.getId(), null);
         model.addAttribute("letterUnreadCount", letterUnreadCount);
 
@@ -237,6 +265,8 @@ public class MessageController implements CommunityConstant {
         return "/site/notice";
     }
 
+    /**
+     * 通知的具体*/
     @GetMapping("/notice/detail/{topic}")
     public String getNoticesDetail(@PathVariable("topic") String topic, Page page, Model model) {
         User user = hostHolder.getUser();
@@ -267,8 +297,9 @@ public class MessageController implements CommunityConstant {
         }
         model.addAttribute("notices",noticeVoList);
 
-        //设置已读
-        //获取需要设置已读的id
+        /**
+         * 设置已读
+         * 获取需要设置已读的id*/
         List<Integer> ids = getLetterIds(noticeList);
         if (!ids.isEmpty()) {
             messageService.readMessage(ids);
