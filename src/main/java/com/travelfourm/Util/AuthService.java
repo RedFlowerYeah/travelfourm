@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 百度固定的Auth获取方式*/
 public class AuthService {
 
     /**

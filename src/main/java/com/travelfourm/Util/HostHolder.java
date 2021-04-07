@@ -4,7 +4,8 @@ import com.travelfourm.entity.User;
 import org.springframework.stereotype.Component;
 
 /**
- * 持有用户信息，用于代替session对象*/
+ * 持有用户信息，从session中获取对象信息
+ * @author 34612*/
 @Component
 public class HostHolder {
 

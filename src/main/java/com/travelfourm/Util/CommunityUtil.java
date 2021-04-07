@@ -8,15 +8,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author 34612
+ */
 public class CommunityUtil {
 
-    //生成随机字符串
+    /**
+     * 生成随机字符串*/
     public static String generateUUID(){
         return UUID.randomUUID().toString().replaceAll("-","");
     }
 
-    //MD5加密
-    //hello-->abcdedf213
+    /**
+     * MD5加密
+     * hello-->abcdedf213*/
     public static String md5(String key){
         if(StringUtils.isBlank(key)){
             return null;
@@ -59,12 +64,5 @@ public class CommunityUtil {
 
     public static String getJsonString(int code){
         return getJsonString(code,null,null);
-    }
-
-    public static void main(String args[]){
-        Map<String , Object> map = new HashMap<>();
-        map.put("name","zhangsan");
-        map.put("age",25);
-        System.out.println(getJsonString(0,"ok",map));
     }
 }

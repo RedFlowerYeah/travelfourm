@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+/**
+ * @author 34612
+ * 邮件工具类
+ */
 @Component
 public class MailClient {
 

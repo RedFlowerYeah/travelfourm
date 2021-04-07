@@ -20,16 +20,24 @@ import java.util.List;
 public class CityService {
 
     public List<City> listCity() throws Exception {
-        // 读取XML文件
+        /**
+         * 读取citylist.xml文件*/
         Resource resource = new ClassPathResource("citylist.xml");
         BufferedReader in = new BufferedReader(new InputStreamReader(resource.getInputStream(), "utf-8"));
         StringBuffer buffer = new StringBuffer();
         String line = "";
+
         while (null != (line = in.readLine())) {
+
+            /**
+             * append中的方法中有保护线程安全的关键字:synchronized
+             * 所以只会对单行读写，多线程时阻塞相应的线程*/
             buffer.append(line);
         }
         in.close();
-        // XML转换为对象
+
+        /**
+         * xml转换为Object*/
         CityList cityList = (CityList) XmlBuilderUtil.xmlStrToObject(buffer.toString(), CityList.class);
         return cityList.getCityList();
     }

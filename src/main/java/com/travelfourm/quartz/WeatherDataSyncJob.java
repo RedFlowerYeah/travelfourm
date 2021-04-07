@@ -37,7 +37,8 @@ public class WeatherDataSyncJob implements Job {
                 log.error("Exception!", e);
             }
 
-            // 遍历城市ID，获取天气
+            /**
+             * 遍历cityList中的所有城市Id，获取天气信息*/
             for (City city : cityList) {
                 String cityId = city.getCityId();
                 log.info("城市天气ID：" + cityId);

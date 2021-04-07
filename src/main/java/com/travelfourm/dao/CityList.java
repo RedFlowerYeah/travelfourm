@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * @Author 34612
  * @CreateTime 2021/4/1 18:47
+ * 转换格式
  */
 @Data
 @XmlRootElement(name = "c")

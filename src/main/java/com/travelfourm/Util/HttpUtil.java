@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * http 工具类
+ * @author 34612
  */
 public class HttpUtil {
 

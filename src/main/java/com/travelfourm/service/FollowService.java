@@ -26,6 +26,8 @@ public class FollowService implements CommunityConstant {
     @Autowired
     private UserService userService;
 
+    /**
+     * 关注*/
     public void follow(int userId, int entityType, int entityId) {
         redisTemplate.execute(new SessionCallback() {
             @Override
@@ -43,6 +45,8 @@ public class FollowService implements CommunityConstant {
         });
     }
 
+    /**
+     * 取消关注*/
     public void unfollow(int userId, int entityType, int entityId) {
         redisTemplate.execute(new SessionCallback() {
             @Override
@@ -52,9 +56,13 @@ public class FollowService implements CommunityConstant {
 
                 operations.multi();
 
+                /**
+                 * operations.multi(); 进入事务状态，Redis就会进入阻塞状态，不再响应任何客户端请求*/
                 operations.opsForZSet().remove(followeeKey, entityId);
                 operations.opsForZSet().remove(followerKey, userId);
 
+                /**
+                 * operations.exec(); 解锁 */
                 return operations.exec();
             }
         });

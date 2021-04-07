@@ -37,6 +37,8 @@ public class EventConsumer implements CommunityConstant {
     @Autowired
     private ElasticsearchService elasticsearchService;
 
+    /**
+     * @KafkaListener 监听评论、关注和点赞（发送系统通知）*/
     @KafkaListener(topics = {TOPIC_COMMENT,TOPIC_FOLLOW,TOPIC_LIKE})
     public void handleCommentMessage(ConsumerRecord record){
         if (record == null || record.value() == null){
@@ -44,13 +46,16 @@ public class EventConsumer implements CommunityConstant {
             return;
         }
 
+        /**
+         * 将String字符串转化为相应的JsonObject对象*/
         Event event = JSONObject.parseObject(record.value().toString(),Event.class);
         if (event == null){
             logger.error("消息格式错误!");
             return;
         }
 
-        //发送站内通知
+        /**
+         * 发送站内通知*/
         Message message = new Message();
         message.setFromId(SYSTEM_USER_ID);
         message.setToId(event.getEntityUserId());
@@ -73,7 +78,9 @@ public class EventConsumer implements CommunityConstant {
     }
 
     /**
-     * 消费发帖事件*/
+     * 消费发帖事件
+     * @KafkaListener 实现对发布帖子的监听
+     * */
     @KafkaListener(topics = {TOPIC_PUBLISH})
     public void handlePublishMessage(ConsumerRecord record){
         if (record == null || record.value() == null){

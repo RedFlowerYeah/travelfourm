@@ -21,6 +21,7 @@ import java.util.Date;
 
 /**
  * @author 34612
+ * 继承了接口类Job，重写excute（）方法
  */
 
 public class PostScoreRefreshJob implements Job, CommunityConstant {
@@ -53,6 +54,11 @@ public class PostScoreRefreshJob implements Job, CommunityConstant {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+
+        /**
+         * 首先获取Redis中的键的名称
+         * boundSetOps获取了一个指定操作对象（key）的operator，在一个连接（事务）内只能操作这个key对应的value。
+         * 一定程度上保护了数据的单一性*/
         String redisKey = RedisKeyUtil.getPostScoreKey();
         BoundSetOperations operations = redisTemplate.boundSetOps(redisKey);
 
@@ -95,10 +101,12 @@ public class PostScoreRefreshJob implements Job, CommunityConstant {
         double score = Math.log10(Math.max(w, 1))
                 + (post.getCreateTime().getTime() - epoch.getTime()) / (1000 * 3600 * 24);
 
-        // 更新帖子分数
+        /**
+         * 更新帖子分数*/
         discussPostService.updateScore(postId, score);
 
-        // 同步搜索数据
+        /**
+         * 同步缓存数据库*/
         post.setScore(score);
 
         /**

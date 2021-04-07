@@ -32,6 +32,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
+/**
+ * @author 34612
+ */
 @Service
 public class DiscussPostService {
 
@@ -51,15 +54,18 @@ public class DiscussPostService {
 
     //Caffeine核心接口，Cache，LoadingCache，AsyncLoadingCache
 
-    //帖子缓存列表
+    /**
+     * 帖子缓存列表*/
     private LoadingCache<String ,List<DiscussPost>> postListCache;
 
-    //帖子总数缓存
+    /**
+     * 帖子总数缓存*/
     private LoadingCache<Integer , Integer> postRowsCache;
 
     @PostConstruct
     public void init(){
-        //初始化帖子缓存列表
+        /**
+         * 初始化帖子缓存列表*/
         postListCache = Caffeine.newBuilder()
                 .maximumSize(maxSize)
                 .expireAfterWrite(expireSeconds, TimeUnit.SECONDS)
@@ -79,14 +85,16 @@ public class DiscussPostService {
                         int offset = Integer.valueOf(params[0]);
                         int limit = Integer.valueOf(params[1]);
 
-                        //二级缓存 Redis->mysql
+                        /**
+                         * 二级缓存 Redis->mysql*/
                         logger.debug("load post list from DataBase");
 
                         return discussPostMapper.selectDiscussPosts(0,offset,limit,1);
                     }
                 });
 
-        //初始化帖子总数缓存
+        /**
+         * 初始化帖子总数缓存*/
         postRowsCache = Caffeine.newBuilder()
                 .maximumSize(maxSize)
                 .expireAfterWrite(expireSeconds,TimeUnit.SECONDS)
@@ -101,15 +109,13 @@ public class DiscussPostService {
                 });
     }
 
-    //查找全部帖子列表（不加入到缓存中）
+    /**
+     * 查找全部帖子列表（不加入到缓存中）*/
     public List<DiscussPost> findAllDiscussPost(){
         return discussPostMapper.selectAllDiscussPost();
     }
 
     public List<DiscussPost> findDiscussPosts(int userId,int offset,int limit,int orderMode){
-//        if (userId == 0 && orderMode == 1){
-//            return postListCache.get(offset + ":" + limit);
-//        }
 
         logger.debug("load post list from DataBase");
 
@@ -118,51 +124,54 @@ public class DiscussPostService {
 
     public int findDiscussPostRows(int userId){
 
-//        if (userId == 0){
-//            return postRowsCache.get(userId);
-//        }
-
         logger.debug("load post rows from DataBase");
+
         return discussPostMapper.selectDiscussPostRows(userId);
     }
 
-    //增加帖子
+    /**
+     * 发布帖子*/
     public int addDiscussPost(DiscussPost discussPost){
         if (discussPost == null){
              throw new IllegalArgumentException("参数不能为空！");
         }
 
-        //转义HTML标记
+        /**
+         * 转移HTML标记*/
         discussPost.setTitle(HtmlUtils.htmlEscape(discussPost.getTitle()));
         discussPost.setContent(HtmlUtils.htmlEscape(discussPost.getContent()));
 
         /**
          * 通过百度智能云过滤敏感词（此处为新发布的帖子的评论和内容都需要进行过滤）*/
-        //获取标题和文本内容
+        /**
+         * 获取标题和文本内容*/
         String title = discussPost.getTitle();
         String content = discussPost.getContent();
 
-        //获取access_token
+        /**
+         * 获取accesstoken*/
         String access_token = AuthService.getAuth();
         try {
-            //设置请求的编码
+            /**
+             * 设置请求编码*/
             String param = "text=" + URLEncoder.encode(title, "UTF-8");
             String param1 = "text=" + URLEncoder.encode(content,"UTF-8");
 
-            //调用文本审核接口并取得结果（标题）
+            /**调用文本审核接口并取得结果（标题）*/
             String result = HttpUtil.post(BaiduSensitiveConfig.CHECK_TEXT_URL,access_token,param);
 
-            //调用文本审核接口并取得结果（内容）
+            /**调用文本审核接口并取得结果（内容）*/
             String result1 = HttpUtil.post(BaiduSensitiveConfig.CHECK_TEXT_URL,access_token,param1);
 
-            // JSON解析对象（标题和内容）
+            /**JSON解析对象（标题和内容）*/
             TextCheckReturn tcr = JSONObject.parseObject(result, TextCheckReturn.class);
             TextCheckReturn tcr1 = JSONObject.parseObject(result1,TextCheckReturn.class);
 
             Integer conclusionType = tcr.getConclusionType();
             Integer conclusionType1 = tcr1.getConclusionType();
 
-            //先判断标题是否符合规定，再判断内容是否符合规定
+            /**
+             * 先判断标题是否符合规定，再判断内容是否符合规定*/
             if (conclusionType != 1 && !conclusionType.equals("1")){
                 return -1;
             }else if (conclusionType1 != 1 && !conclusionType1.equals("1")){
@@ -178,27 +187,32 @@ public class DiscussPostService {
         return -1;
     }
 
-    //查询帖子
+    /**
+     * 查询帖子*/
     public DiscussPost findDiscussPostById(int id){
         return discussPostMapper.selectDiscussPostById(id);
     }
 
-    //更新评论总数
+    /**
+     * 更新评论总数*/
     public int updateCommentCount(int id, int commentCount) {
         return discussPostMapper.updateCommentCount(id, commentCount);
     }
 
-    //更新帖子的形式
+    /**
+     * 更新帖子的形式：置顶或不置顶*/
     public int updateType(int id,int type){
         return discussPostMapper.updateType(id, type);
     }
 
-    //更新帖子的状态
+    /**
+     * 更细帖子的状态*/
     public int updateStatus(int id,int status){
         return discussPostMapper.updateStatus(id,status);
     }
 
-    //更新帖子的分数
+    /**
+     * 更新帖子的分数*/
     public int updateScore(int id, double score) {
         return discussPostMapper.updateScore(id, score);
     }
