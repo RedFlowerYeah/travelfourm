@@ -81,7 +81,7 @@
 				</div>						
 				
 				<!-- 私信列表 -->
-				<ul class="list-unstyled mt-4">
+				<ul class="list-unstyled mt-4 bg-dark">
 					<li class="media pb-3 pt-3 mb-2" th:each="map:${letters}">
 						<a th:href="@{|/user/profile/${map.fromUser.id}|}">
 							<img th:src="${map.fromUser.headerUrl}" class="mr-4 rounded-circle user-header" alt="用户头像" >
@@ -100,7 +100,7 @@
 						</div>
 					</li>
 				</ul>
-				<!-- 分页 -->
+
 				<!-- 分页 -->
 				<nav class="mt-5" th:if="${page.rows>0}" th:fragment="pagination">
 					<ul class="pagination justify-content-center">

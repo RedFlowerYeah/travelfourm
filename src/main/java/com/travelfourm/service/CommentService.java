@@ -1,9 +1,14 @@
 package com.travelfourm.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.travelfourm.Util.AuthService;
 import com.travelfourm.Util.CommunityConstant;
+import com.travelfourm.Util.HttpUtil;
 import com.travelfourm.Util.SensitiveFilter;
+import com.travelfourm.config.BaiduSensitiveConfig;
 import com.travelfourm.dao.CommentMapper;
 import com.travelfourm.entity.Comment;
+import com.travelfourm.entity.TextCheckReturn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -11,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.HtmlUtils;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 @Service
@@ -58,6 +64,44 @@ public class CommentService implements CommunityConstant {
         comment.setContent(HtmlUtils.htmlEscape(comment.getContent()));
         comment.setContent(sensitiveFilter.filter(comment.getContent()));
 
+//        /**
+//         * 评论内容*/
+//        String content = comment.getContent();
+//
+//        String access_token = AuthService.getAuth();
+//
+//        try{
+//            /**
+//             * 设置请求编码*/
+//            String param = "text=" + URLEncoder.encode(content,"utf-8");
+//
+//            /**调用文本审核接口并取得结果（评论内容）*/
+//            String result = HttpUtil.post(BaiduSensitiveConfig.CHECK_TEXT_URL,access_token,param);
+//
+//            /**JSON解析对象（标题和内容）*/
+//            TextCheckReturn tcr = JSONObject.parseObject(result, TextCheckReturn.class);
+//
+//            Integer conclusionType = tcr.getConclusionType();
+//
+//            /**
+//             * 判断评论内容是否合规*/
+//            if (conclusionType != 1 && !conclusionType.equals("1")){
+//                return -1;
+//            }else{
+//                int rows = commentMapper.insertComment(comment);
+//                /**
+//                 * 更新帖子评论数量*/
+//                if (comment.getEntityType() == ENTITY_TYPE_POST) {
+//                    int count = commentMapper.selectCountByEntity(comment.getEntityType(), comment.getEntityId());
+//                    discussPostService.updateCommentCount(comment.getEntityId(), count);
+//                }
+//                return rows;
+//            }
+//        }catch (Exception e){
+//
+//            e.printStackTrace();
+//        }
+
         int rows = commentMapper.insertComment(comment);
 
         /**
@@ -68,6 +112,7 @@ public class CommentService implements CommunityConstant {
         }
 
         return rows;
+//        return -1;
     }
 
     /**

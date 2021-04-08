@@ -119,6 +119,10 @@
     <!-- 内容 -->
     <div class="main">
         <div class="container">
+
+            <div class="row">
+            <!-- 左边部分-->
+            <div class="col-sm-9">
             <!--轮播图片-->
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <!--指示符-->
@@ -252,7 +256,12 @@
                                     </span>
                                 </li>
                                 <li class="d-inline ml-2">|</li>
-                                <li class="d-inline ml-2">回帖 <span th:text="${map.post.commentCount}">7</span></li>
+                                <li class="d-inline ml-2">
+                                    <i class="fa fa-comments" aria-hidden="true"></i>
+                                    回帖
+                                    <span th:text="${map.post.commentCount}">7
+                                    </span>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -282,10 +291,37 @@
                     </li>
                 </ul>
             </nav>
+            </div>
+
+                <div class="col-sm-3">
+                    <!-- 用户活跃区 -->
+                    <div class="card bg-light" style="width: 13.5rem;">
+                            <p class="text-center">活跃用户</p>
+                            <li class="media pb-2 pt-2 mb-2" th:each="map:${discussPosts}">
+                                <div style="margin-left: 50px">
+                                <a th:href="@{|/user/profile/${map.user.id}|}" >
+                                    <img th:src="${map.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width: 40px;height:40px;margin-left: 10px">
+                                    <a th:text="${map.user.username}"></a>
+                                </a>
+                                </div>
+                            </li>
+                    </div>
+                    <!-- 24小时热文 -->
+                    <div class="card" style="margin-top: 140px;width: 13.5rem;">
+                        <!-- 标题 -->
+                        <div class="text-center">
+                            疫情城市
+                            <div class="row">
+                                <a class="text-info" style="margin-left: 70px" th:href="@{/CVO/city}">查看当前疫情城市</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <footer class="bg-info">
+    <footer class="bg-dark">
         <div class="container">
             <div class="row">
             </div>

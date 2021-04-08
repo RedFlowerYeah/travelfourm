@@ -17,6 +17,9 @@ import org.springframework.web.util.HtmlUtils;
 
 import java.util.*;
 
+/**
+ * @author 34612
+ */
 @Controller
 public class MessageController implements CommunityConstant {
 

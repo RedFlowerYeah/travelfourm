@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 必须的 meta 标签 -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap 的 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+
+    <!--图标库-->
+    <link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
+
+
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+
+    <title>当前疫情城市</title>
+</head>
+<body>
+<div class="nk-container">
+    <header class="bg-info sticky-top" th:replace="index::header">
+    </header>
+
+    <div class="main">
+        <div class="container" style="background: linear-gradient(to bottom, #82addb 0%, #ebb2b1 100%);">
+            <h3 style="color: #b3d7ff;"  th:text="${CVO.title}"></h3>
+
+            <div class="CVO-content">
+                <div class="weather-banner-content-left">
+                    <div class="row">
+                        <div class="card border-info" th:each="high_list:${CVO.city.result.high_list}">
+                            <a class="text-danger"> 高风险地区：</a>
+                            <div class="card-body text-info">
+                                <p class="card-text" th:text="${high_list.city}">城市</p>
+                                <p class="card-text" th:text="${high_list.county}">乡镇</p>
+                                <p class="card-text" th:text="${'具体地点:' + high_list.area_name}"></p>
+                                <p class="card-text" th:each="communitys:${high_list.communitys}" th:text="${communitys}"></p>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="card border-info" th:each="middle_list:${CVO.city.result.middle_list}">
+                            <a class="text-muted"> 中风险：</a>
+                            <div class="card-body text-info">
+                                <p class="card-text" th:text="${middle_list.city}">城市</p>
+                                <p class="card-text" th:text="${middle_list.county}">乡镇</p>
+                                <p class="card-text" th:text="${'具体地点:' + middle_list.area_name}"></p>
+                                <p class="text-dark" th:each="communitys:${middle_list.communitys}" th:text="${communitys}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+</body>
+
+<!-- 选项 1：jQuery 和 Bootstrap 集成包（集成了 Popper） -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+
+<script th:src="@{/js/global.js}"></script>
+</html>
