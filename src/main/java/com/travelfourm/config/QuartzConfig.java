@@ -1,5 +1,6 @@
 package com.travelfourm.config;
 
+import com.travelfourm.quartz.CVODataSyncJob;
 import com.travelfourm.quartz.PostScoreRefreshJob;
 import com.travelfourm.quartz.WeatherDataSyncJob;
 import org.quartz.*;
@@ -72,6 +73,34 @@ public class QuartzConfig {
         factoryBean.setJobDetail(weatherRefreshJobDetail);
         factoryBean.setName("weatherRefreshTrigger");
         factoryBean.setGroup("weatherTriggerGroup");
+
+        /**
+         * 这里定时任务，60分钟去调一次api接口*/
+        factoryBean.setRepeatInterval(1000 * 60 * 60);
+        factoryBean.setJobDataMap(new JobDataMap());
+        return factoryBean;
+    }
+
+    /**
+     * 刷新疫情城市数据
+     */
+    @Bean
+    public JobDetailFactoryBean CVOCityRefreshJobDetail() {
+        JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
+        factoryBean.setJobClass(CVODataSyncJob.class);
+        factoryBean.setName("CVORefreshJob");
+        factoryBean.setGroup("CVOJobGroup");
+        factoryBean.setDurability(true);
+        factoryBean.setRequestsRecovery(true);
+        return factoryBean;
+    }
+
+    @Bean
+    public SimpleTriggerFactoryBean CVOCityRefreshTrigger(JobDetail CVOCityRefreshJobDetail) {
+        SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
+        factoryBean.setJobDetail(CVOCityRefreshJobDetail);
+        factoryBean.setName("CVOCityRefreshTrigger");
+        factoryBean.setGroup("CVOCityTriggerGroup");
 
         /**
          * 这里定时任务，60分钟去调一次api接口*/

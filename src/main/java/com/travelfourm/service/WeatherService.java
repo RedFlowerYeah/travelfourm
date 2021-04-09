@@ -61,10 +61,10 @@ public class WeatherService {
         /**
          * 因为第三方接口调用有限制，所以先将数据存储到缓存中*/
         if (redisTemplate.hasKey(key)){
-            logger.info("Redis缓存中存在数据");
+            logger.info("Redis缓存中存在天气预报");
             strBody = ops.get(key);
         }else{
-            logger.info("Redis缓存中不存在数据");
+            logger.info("Redis缓存中不存在天气预报，开始调用第三方接口");
 
             /**
              * 缓存中没有数据，调用第三方api*/
