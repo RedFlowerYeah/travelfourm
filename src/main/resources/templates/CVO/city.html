@@ -23,36 +23,32 @@
 
     <div class="main">
         <div class="container" style="background: linear-gradient(to bottom, #82addb 0%, #ebb2b1 100%);">
-            <h3 style="color: #b3d7ff;"  th:text="${CVO.title}"></h3>
+            <h3 class="text-dark"  th:text="${CVO.title}"></h3>
 
             <div class="CVO-content">
-                <div class="weather-banner-content-left">
-                    <div class="row">
-                        <div class="card border-info" th:each="high_list:${CVO.city.result.high_list}">
+                    <div class="CVO-City">
+                        <div class="CVO-card border-dark" th:each="high_list:${CVO.city.result.high_list}">
                             <a class="text-danger"> 高风险地区：</a>
-                            <div class="card-body text-info">
-                                <p class="card-text" th:text="${high_list.city}">城市</p>
-                                <p class="card-text" th:text="${high_list.county}">乡镇</p>
-                                <p class="card-text" th:text="${'具体地点:' + high_list.area_name}"></p>
-                                <p class="card-text" th:each="communitys:${high_list.communitys}" th:text="${communitys}"></p>
+                            <div class="card-body text-dark" th:if="${high_list == null? '无高风险地区':' '}">
+                                <p class="text-danger" th:text="${'疫情地区:' + high_list.area_name}"></p>
+                                <p class="text-dark">如下地区为高风险地区：</p>
+                                <p class="text-dark text-center" th:each="communitys:${high_list.communitys}" th:text="${ communitys}"></p>
                                 </p>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="card border-info" th:each="middle_list:${CVO.city.result.middle_list}">
-                            <a class="text-muted"> 中风险：</a>
-                            <div class="card-body text-info">
-                                <p class="card-text" th:text="${middle_list.city}">城市</p>
-                                <p class="card-text" th:text="${middle_list.county}">乡镇</p>
-                                <p class="card-text" th:text="${'具体地点:' + middle_list.area_name}"></p>
-                                <p class="text-dark" th:each="communitys:${middle_list.communitys}" th:text="${communitys}"></p>
+
+                        <div class="row" style="margin-left: 120px">
+                          <div class="CVO-card border-dark" th:each="middle_list:${CVO.city.result.middle_list}">
+                              <a class="CVO-alert"> 中风险：</a>
+                              <div class="card-body text-dark" th:if="${middle_list == null? '无中风险地区' : ' '}">
+                                       <p class="CVO-alert" th:text="${'疫情地区:' + middle_list.area_name}"></p>
+                                       <p class="text-dark">如下地区为中风险地区：</p>
+                                       <p class="text-dark text-center" th:each="communitys:${middle_list.communitys}" th:text="${ communitys}"></p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
             </div>
         </div>
 
