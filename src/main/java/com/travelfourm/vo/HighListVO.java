@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 public class HighListVO implements Serializable {
 
-    private static final long serialVersionUID = 4089597935549696545L;
+    private static final long serialVersionUID = 8065779234752198809L;
 
     private String type;
 

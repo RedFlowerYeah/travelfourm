@@ -18,6 +18,12 @@ import java.util.concurrent.TimeUnit;
 /**
  * @Author 34612
  * @CreateTime 2021/4/1 16:21
+ * RestTemplate：用于HTTP通信。
+ * 如果使用HttpClien进行http通信，不仅代码复杂，还得手动资源回收等。
+ * RestTemplate是Spring提供的用于访问Rest服务的客户端，
+ * RestTemplate提供了多种便捷访问远程Http服务的方法,能够大大提高客户端的编写效率。
+ * 由于两个方法中都是通过RestTemplate进行http通信，并将返回的json数据转换为java对象，
+ * 所以，便可将相同的代码进行抽取为一个共同的方法（重构）
  */
 
 @Service
@@ -52,6 +58,9 @@ public class WeatherService {
     }
 
 
+    /**
+     * 方法重构
+     * <T> T表示返回值是一个泛型，传递啥，就返回啥类型的数据*/
     private <T> T doGetWeather(String uri, Class<T> type) {
         String key = uri;
         String strBody = null;
@@ -77,7 +86,9 @@ public class WeatherService {
             ops.set(key , strBody , RedisConstant.TIME_OUT, TimeUnit.SECONDS);
         }
 
-
+        /**
+         * 使用了 objectMapper.readValue()方法将json字符串转换为java对象
+         * （json字符串中的key要与对象的属性名及类型相对应）*/
         ObjectMapper objectMapper = new ObjectMapper();
         T t = null;
 
@@ -98,7 +109,7 @@ public class WeatherService {
      * 把天气数据保存到缓存中
      *
      * @param uri
-     * 考虑到接口的并发数问题，先选用部分城市，后续有需要可以接其他接口
+     * 考虑到接口的并发数问题，先选用部分城市，后续有需要可以接其他城市或其他接口
      */
     private void saveWeatherData(String uri) {
         String key = uri;

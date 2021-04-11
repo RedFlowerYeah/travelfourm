@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Data
 public class WeatherResponseVO implements Serializable {
 
-    private static final long serialVersionUID = -8483256225271502962L;
+    private static final long serialVersionUID = -846093222403001177L;
 
     private WeatherVO data;
 

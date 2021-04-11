@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 public class COVCityVO implements Serializable {
 
-    private static final long serialVersionUID = -8483256225271502962L;
+    private static final long serialVersionUID = -103770135947094416L;
 
     private Integer error_code;
 

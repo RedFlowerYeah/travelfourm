@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class WeatherVO implements Serializable {
 
-    private static final long serialVersionUID = 4089597935549696545L;
+    private static final long serialVersionUID = -4829675320196790271L;
 
     private String city;
 

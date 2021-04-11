@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class ResultVO implements Serializable {
 
-    private static final long serialVersionUID = 4089597935549696545L;
+    private static final long serialVersionUID = 2632027054460545728L;
 
     private String updated_date;
 

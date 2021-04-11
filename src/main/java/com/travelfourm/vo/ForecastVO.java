@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Data
 public class ForecastVO implements Serializable {
 
-    private static final long serialVersionUID = 1686655601208573654L;
+    private static final long serialVersionUID = 2335082727627496029L;
 
     private String date;
 

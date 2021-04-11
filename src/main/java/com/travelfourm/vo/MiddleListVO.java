@@ -11,7 +11,8 @@ import java.util.List;
  */
 @Data
 public class MiddleListVO implements Serializable {
-    private static final long serialVersionUID = 1686655601208573654L;
+
+    private static final long serialVersionUID = 3582172346901189663L;
 
     private String type;
 
