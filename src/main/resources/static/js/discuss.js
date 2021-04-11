@@ -46,6 +46,7 @@ function setTop() {
         function (data) {
             data = $.parseJSON(data);
             if (data.code == 0) {
+                window.location.reload();
                 $("#topBtn").attr("disabled", "disabled");
             }else{
                 alert(data.msg)
@@ -71,6 +72,7 @@ function setWonderful() {
         function (data) {
             data = $.parseJSON(data);
             if (data.code == 0) {
+                window.location.reload();
                 $("#wonderfulBtn").attr("disabled", "disabled");
             }else{
                 alert(data.msg)
@@ -96,6 +98,7 @@ function setDelete() {
         function (data) {
             data = $.parseJSON(data);
             if (data.code == 0) {
+                window.location.reload();
                 location.href = CONTEXT_PATH + "/index";
             }else{
                 alert(data.msg)

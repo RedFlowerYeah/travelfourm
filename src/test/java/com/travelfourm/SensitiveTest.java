@@ -1,6 +1,7 @@
 package com.travelfourm;
 
 //import com.travelfourm.Util.CheckContent;
+import com.travelfourm.Util.CheckContent;
 import com.travelfourm.entity.DiscussPost;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,19 +18,19 @@ import java.util.Map;
 @ContextConfiguration(classes = TravelfourmApplication.class)
 public class SensitiveTest {
 
-//    @Test
-//    public void testText() {
-//        //成功
-//        //Map<String, Object> map1 = CheckContent.checkText("你好");
-//        //失败
-//        //Map<String, Object> map = CheckContent.checkText("习近平狗东西");
-//
-//        Iterator<String> iterator = map.keySet().iterator();
-//        while (iterator.hasNext()) {
-//            String key = iterator.next();
-//            Object value = map.get(key);
-//            System.out.println(key + ":" + value);
-//        }
-//    }
+    @Test
+    public void testText() {
+        //成功
+        //Map<String, Object> map1 = CheckContent.checkText("你好");
+        //失败
+        Map<String, Object> map = CheckContent.checkText("习近平狗东西");
+
+        Iterator<String> iterator = map.keySet().iterator();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            Object value = map.get(key);
+            System.out.println(key + ":" + value);
+        }
+    }
 
 }

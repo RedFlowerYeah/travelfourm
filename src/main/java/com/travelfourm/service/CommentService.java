@@ -19,6 +19,9 @@ import org.springframework.web.util.HtmlUtils;
 import java.net.URLEncoder;
 import java.util.List;
 
+/**
+ * @author 34612
+ */
 @Service
 public class CommentService implements CommunityConstant {
 
