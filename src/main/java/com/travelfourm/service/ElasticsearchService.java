@@ -52,7 +52,9 @@ public class ElasticsearchService {
     }
 
     /**
-     * 分页查找帖子*/
+     * 分页查找帖子
+     * 先通过new一个NativeSearchQueryBuilder来构建一个查询
+     * 构建基本的排序机制*/
     public Page<DiscussPost> searchDiscussPost(String keyword, int current, int limit){
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilders.multiMatchQuery(keyword,"title","content"))
@@ -66,7 +68,10 @@ public class ElasticsearchService {
                 ).build();
 
         /**
-         * 这里的代码可以优化，需要抛出一个与数据库中查询的数据不一致的异常*/
+         * 这里的代码可以优化，需要抛出一个与数据库中查询的数据不一致的异常
+         * 分页查询
+         * 并通过重写AggregatedPage来执行搜索
+         * SearchHits获取命中次数，如果命中了则开始遍历所命中的结果*/
         return elasticsearchTemplate.queryForPage(searchQuery, DiscussPost.class, new SearchResultMapper() {
             @Override
             public <T> AggregatedPage<T> mapResults(SearchResponse searchResponse, Class<T> aClass, Pageable pageable) {
@@ -91,6 +96,8 @@ public class ElasticsearchService {
                     String content = hit.getSourceAsMap().get("content").toString();
                     post.setContent(content);
 
+                    /**
+                     * es搜索引擎这里会从哪里拿？*/
                     String status = hit.getSourceAsMap().get("status").toString();
                     post.setStatus(Integer.valueOf(status));
 
@@ -100,7 +107,8 @@ public class ElasticsearchService {
                     String commentCount = hit.getSourceAsMap().get("commentCount").toString();
                     post.setCommentCount(Integer.valueOf(commentCount));
 
-                    //处理高亮显示的结果
+                    /**
+                     * 处理高亮文本显示结果*/
                     HighlightField titleField = hit.getHighlightFields().get("title");
                     if (titleField != null){
                         post.setTitle(titleField.getFragments()[0].toString());

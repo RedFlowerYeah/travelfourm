@@ -119,7 +119,7 @@ public class WeatherService {
         if (StatusCodeConstant.OK == responseEntity.getStatusCodeValue()) {
             strBody = responseEntity.getBody();
         }else if (StatusCodeConstant.Fail == responseEntity.getStatusCodeValue()){
-            logger.error("调取接口异常，请测试接口返回数据！");
+            logger.error("调取接口异常，请查看接口返回数据是否正常！");
         }
         ops.set(key, strBody, RedisConstant.TIME_OUT, TimeUnit.SECONDS);
     }

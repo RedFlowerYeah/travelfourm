@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author 34612
+ */
 @Controller
 public class LikeController implements CommunityConstant {
 

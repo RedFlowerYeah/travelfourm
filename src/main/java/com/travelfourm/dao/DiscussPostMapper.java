@@ -7,11 +7,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author 34612
+ */
 @Mapper
 @Repository
 public interface DiscussPostMapper {
 
     List<DiscussPost> selectAllDiscussPost();
+
     List<DiscussPost> selectDiscussPosts(int userId,int offset,int limit,int orderMode);
 
     //@Param注解用于给参数取别名

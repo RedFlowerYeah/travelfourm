@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author 34612
+ */
 @Mapper
 @Repository
 public interface UserMapper {

@@ -76,8 +76,9 @@ public class LoginController implements CommunityConstant {
         }
     }
 
-    // http://localhost:8080/community/activation/101/code
-    /**激活账号方式*/
+    /**
+     * 激活账号方式
+     * http://localhost:8080/community/activation/101/code*/
     @GetMapping("/activation/{userId}/{code}")
     public String activation(Model model, @PathVariable("userId") int userId, @PathVariable("code") String code) {
         int result = userService.activation(userId, code);

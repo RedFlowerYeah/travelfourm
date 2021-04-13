@@ -13,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 
 /**
  * @author 34612
+ * 这里使用的是163邮箱
  * 邮件工具类
  */
 @Component

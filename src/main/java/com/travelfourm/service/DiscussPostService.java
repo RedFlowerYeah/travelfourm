@@ -6,7 +6,6 @@ import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.travelfourm.Util.AuthService;
-//import com.travelfourm.Util.CheckContent;
 import com.travelfourm.Util.HttpUtil;
 import com.travelfourm.Util.SensitiveFilter;
 import com.travelfourm.config.BaiduSensitiveConfig;
@@ -65,7 +64,11 @@ public class DiscussPostService {
     @PostConstruct
     public void init(){
         /**
-         * 初始化帖子缓存列表*/
+         * 初始化帖子Caffeine缓存列表
+         * 手动加载
+         * .maxmumSize 设置数量上限
+         * .expireAfterWrite 过期时间
+         * load方法为异步加载重写机制，从二级缓存Redis中获取数据*/
         postListCache = Caffeine.newBuilder()
                 .maximumSize(maxSize)
                 .expireAfterWrite(expireSeconds, TimeUnit.SECONDS)

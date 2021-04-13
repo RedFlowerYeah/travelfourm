@@ -21,6 +21,7 @@ import java.util.Map;
 
 /**
  * @author 34612
+ * 通过一个开源的监控去监控数据堆积量，然后去可以手动提高线程来进行消息的并发解决
  */
 
 @Component

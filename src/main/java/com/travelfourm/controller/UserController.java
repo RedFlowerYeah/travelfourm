@@ -34,6 +34,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 34612
+ */
 @Controller
 @RequestMapping("/user")
 public class UserController implements CommunityConstant {
