@@ -61,7 +61,7 @@ public class DiscussPostController implements CommunityConstant {
      * 创建帖子*/
     @PostMapping("/add")
     @ResponseBody
-    public String addDiscussPost(String title, String content) {
+    public String addDiscussPost(String title, String content,String modular) {
 
         /**
          * 获取当前用户的id*/
@@ -76,6 +76,7 @@ public class DiscussPostController implements CommunityConstant {
         post.setTitle(title);
         post.setContent(content);
         post.setCreateTime(new Date());
+        post.setModular(modular);
 
         /**如果此时post等于-1，则抛出异常；否则继续执行*/
         if (discussPostService.addDiscussPost(post) == -1){

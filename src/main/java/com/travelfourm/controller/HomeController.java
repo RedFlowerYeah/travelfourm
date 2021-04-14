@@ -76,4 +76,9 @@ public class HomeController implements CommunityConstant {
     public String getShowUser(){
         return "/backup/showUser";
     }
+
+    @GetMapping("/queryCVO")
+    public String queryCVO(){
+        return "/CVO/queryhsjg";
+    }
 }

@@ -10,7 +10,8 @@ import java.io.StringReader;
  * @CreateTime 2021/4/1 19:42
  */
 public class XmlBuilderUtil {
-    // 将XML转换为指定的POJO
+    /**
+     * 将XML转换为指定的POJO*/
     public static Object xmlStrToObject(String xmlStr, Class<?> clazz) throws Exception {
         Object xmlObject = null;
         JAXBContext context = JAXBContext.newInstance(clazz);

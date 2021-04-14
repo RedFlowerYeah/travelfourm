@@ -107,6 +107,9 @@ public class ElasticsearchService {
                     String commentCount = hit.getSourceAsMap().get("commentCount").toString();
                     post.setCommentCount(Integer.valueOf(commentCount));
 
+                    String modular = hit.getSourceAsMap().get("modular").toString();
+                    post.setModular(modular);
+
                     /**
                      * 处理高亮文本显示结果*/
                     HighlightField titleField = hit.getHighlightFields().get("title");

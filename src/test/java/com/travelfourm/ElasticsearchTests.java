@@ -44,9 +44,14 @@ public class ElasticsearchTests {
 
     @Test
     public void testDelete(){
-        discussRepository.deleteById(145);
-        discussRepository.deleteById(162);
-        discussRepository.deleteById(146);
+        discussRepository.deleteById(168);
+        discussRepository.deleteById(171);
+        discussRepository.deleteById(172);
+        discussRepository.deleteById(173);
+        discussRepository.deleteById(174);
+        discussRepository.deleteById(175);
+        discussRepository.deleteById(176);
+        discussRepository.deleteById(177);
     }
 
 }

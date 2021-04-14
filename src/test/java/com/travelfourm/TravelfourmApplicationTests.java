@@ -1,9 +1,13 @@
 package com.travelfourm;
 
+import com.travelfourm.Util.HostHolder;
 import com.travelfourm.dao.AlphaDao;
 import com.travelfourm.entity.Comment;
+import com.travelfourm.entity.DiscussPost;
+import com.travelfourm.entity.User;
 import com.travelfourm.service.AlphaService;
 import com.travelfourm.service.CommentService;
+import com.travelfourm.service.DiscussPostService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
@@ -26,6 +30,12 @@ public class TravelfourmApplicationTests implements ApplicationContextAware {
     private ApplicationContext applicationContext;
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private HostHolder hostHolder;
+
+    @Autowired
+    private DiscussPostService discussPostService;
     
     @Test
     public void testApplicationContext(){
@@ -80,5 +90,25 @@ public class TravelfourmApplicationTests implements ApplicationContextAware {
         int id =41;
         commentService.deleteComment(41);
         System.out.println("删除成功");
+    }
+
+    @Test
+    public void addDiscussPost(){
+
+        int userId = 166;
+        String title = "这都行？";
+        String content = "这都行？";
+        String modular = "广州";
+
+        DiscussPost post = new DiscussPost();
+        post.setUserId(userId);
+        post.setTitle(title);
+        post.setContent(content);
+        post.setCreateTime(new Date());
+        post.setModular(modular);
+
+        discussPostService.addDiscussPost(post);
+
+        System.out.println("插入成功");
     }
 }

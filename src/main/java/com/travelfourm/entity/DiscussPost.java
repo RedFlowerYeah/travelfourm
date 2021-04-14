@@ -8,6 +8,9 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.Date;
 
+/**
+ * @author 34612
+ */
 @Data
 @Document(indexName = "discusspost", type = "_doc", shards = 6, replicas = 3)
 public class DiscussPost {
@@ -39,6 +42,9 @@ public class DiscussPost {
     @Field(type = FieldType.Double)
     private double score;
 
+    @Field(type = FieldType.Text)
+    private String modular;
+
     @Override
     public String toString() {
         return "DiscussPost{" +
@@ -51,6 +57,7 @@ public class DiscussPost {
                 ", createTime=" + createTime +
                 ", commentCount=" + commentCount +
                 ", score=" + score +
+                ", modular=" + modular +
                 '}';
     }
 }
