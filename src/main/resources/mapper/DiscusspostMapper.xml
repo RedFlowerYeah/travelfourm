@@ -48,6 +48,12 @@
         where id = #{id}
     </select>
 
+    <select id="selectDiscussPostByModular" resultType="DiscussPost">
+        select <include refid="selectFields"></include>
+        from discuss_post
+        where modular = #{modular}
+    </select>
+
     <insert id="insertDiscussPost" parameterType="DiscussPost" keyProperty="id">
         insert into discuss_post (user_id,title,content,type,status,create_time,comment_count,score,modular)
         values (#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score},#{modular})

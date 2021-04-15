@@ -102,6 +102,31 @@ public class DiscussPostController implements CommunityConstant {
 
     }
 
+    /**
+     * 分模块请求*/
+    @GetMapping("/section/{modular}")
+    public String getDiscussPostByModular(@PathVariable("modular") String modular,Model model){
+        List<DiscussPost> list = discussPostService.findDiscussPostByModular(modular);
+
+        List<Map<String , Object>> discussPosts = new ArrayList<>();
+
+        if (list != null){
+            for (DiscussPost post : list){
+                Map<String, Object> map = new HashMap<>();
+                map.put("post",post);
+
+                User user=userService.findUserById(post.getUserId());
+                map.put("user",user);
+
+                long likeCount  = likeService.findEntityLikeCount(ENTITY_TYPE_POST,post.getId());
+                map.put("likeCount", likeCount);
+                discussPosts.add(map);
+            }
+        }
+        model.addAttribute("discussPosts",discussPosts);
+        return "/site/modular";
+    }
+
     /**查看帖子详情*/
     @GetMapping("/detail/{discussPostId}")
     public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
@@ -331,7 +356,6 @@ public class DiscussPostController implements CommunityConstant {
         //分页查询
         List<DiscussPost> list = new ArrayList<>();
         if (type.equals("0")){
-//            list = userService.findAllUser();
             list = discussPostService.findAllDiscussPost();
         }
         //封装数据

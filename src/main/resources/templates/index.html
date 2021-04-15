@@ -46,7 +46,24 @@
                                 论坛首页
                             </a>
                         </li>
-
+                        <li class="nav-item ml-3 btn-group-vertical">
+                            <div class="dropdown">
+                                <a class="fa fa-globe nav-link dropdown-toggle" href="#" id="modularDropDown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    版块分类
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="modularDropDown">
+                                    <a class="dropdown-item" th:href="@{|/discuss/section/北京|}">北京</a>
+                                    <a class="dropdown-item" th:href="@{|/discuss/section/上海|}">上海</a>
+                                    <a class="dropdown-item" th:href="@{|/discuss/section/广东|}">广东</a>
+                                    <a class="dropdown-item" th:href="@{|/discuss/section/广西|}">广西</a>
+                                    <a class="dropdown-item" th:href="@{|/discuss/section/福建|}">福建</a>
+                                    <a class="dropdown-item" th:href="@{|/discuss/section/湖南|}">湖南</a>
+                                    <a class="dropdown-item" th:href="@{|/discuss/section/湖北|}">湖北</a>
+                                    <a class="dropdown-item" th:href="@{|/discuss/section/哈尔滨|}">哈尔滨</a>
+                                    <a class="dropdown-item" th:href="@{|/discuss/section/陕西|}">陕西</a>
+                                </div>
+                            </div>
+                        </li>
                         <!-- 搜索 -->
                         <form class="form-inline ml-lg-4" th:action="@{/search}">
                             <input class="form-control mr-sm-2" style="width: 350px;" type="search" aria-label="Search" name="keyword" th:value="${keyword}" placeholder="请输入你要搜索的帖子或帖子的相关内容"/>
@@ -198,7 +215,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">请选择你所需要发布到的板块：</label>
-                                    <select name="modular-name" id="modular-name" class="selectpicker" data-live-search="true" multiple>
+                                    <select name="modular-name" id="modular-name" class="selectpicker" data-live-search="true">
                                         <option value="北京">北京</option>
                                         <option value="上海">上海</option>
                                         <option value="重庆">重庆</option>
@@ -259,10 +276,7 @@
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <a th:text="${map.post.modular}"></a>
                             </span>
-
                         </h6>
-
-
 
                         <div class="text-muted font-size-14">
                             <!--用户图标-->
@@ -318,7 +332,7 @@
             </div>
 
                 <div class="col-sm-3">
-                    <!-- 用户活跃区 -->
+                    <!-- 用户活跃列表 -->
                     <div class="card bg-light" style="width: 13.5rem;">
                             <p class="text-center">活跃用户</p>
                             <li class="media pb-2 pt-2 mb-2" th:each="map:${discussPosts}">
@@ -330,7 +344,7 @@
                                 </div>
                             </li>
                     </div>
-                    <!-- 24小时热文 -->
+                    <!-- 疫情出行指南 -->
                     <div class="card" style="margin-top: 140px;width: 13.5rem;">
                         <!-- 标题 -->
                         <div class="text-center">

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!-- 必须的 meta 标签 -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--访问该页面时，为了防止csrf攻击，生成了csrf令牌-->
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+
+    <!-- Bootstrap 的 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+    <!--图标库-->
+    <link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
+
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <title>论坛版块</title>
+    <style>
+        /* Make the image fully responsive */
+        .carousel-inner img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nk-container">
+    <!-- 头部 -->
+    <header class="bg-dark sticky-top" th:replace="index::header">
+    </header>
+
+    <!-- 内容 -->
+    <div class="main">
+        <div class="container">
+
+            <div class="row">
+                <!-- 左边部分-->
+                <div class="col-sm-9">
+                    <!--轮播图片-->
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <!--指示符-->
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        </ol>
+                        <!--轮播图片-->
+                        <div class="carousel-inner">
+                            <!--此处的轮播间隔为data-interval，单位为毫秒,并会自动跳转回到第一张图-->
+                            <div class="carousel-item active" data-interval="5000">
+                                <img src="http://qpp8jzghy.hn-bkt.clouddn.com/test1.jpg" class="d-block w-100">
+                            </div>
+                            <div class="carousel-item" data-interval="5000">
+                                <img src="http://qpp8jzghy.hn-bkt.clouddn.com/test2.jpg" class="d-block w-100">
+                            </div>
+                            <div class="carousel-item" data-interval="5000">
+                                <img src="http://qpp8jzghy.hn-bkt.clouddn.com/test4.jpg" class="d-block w-100">
+                            </div>
+                        </div>
+
+                        <!--左右切换按钮-->
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                    <br><br>
+
+                    <!-- 帖子列表 -->
+                    <ul class="list-unstyled">
+                        <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="map:${discussPosts}">
+                            <a th:href="@{|/user/profile/${map.user.id}|}">
+                                <img th:src="${map.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width:50px;height:50px;">
+                            </a>
+                            <div class="media-body">
+                                <h6 class="mt-0 mb-3">
+                                    <span class="badge badge-secondary bg-primary" th:if="${map.post.type==1}">
+                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                        置顶
+                                    </span>
+                                    <span class="badge badge-secondary bg-danger" th:if="${map.post.status==1}">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        精华
+                                    </span>
+                                    <!--标题放置顶和精华的后面-->
+                                    <a th:href="@{|/discuss/detail/${map.post.id}|}" th:utext="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
+
+                                    <!--放置模块标识-->
+                                    <span class="badge badge-secondary bg-dark float-right">
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                        <a th:text="${map.post.modular}"></a>
+                                    </span>
+                                </h6>
+
+                                <div class="text-muted font-size-14">
+                                    <!--用户图标-->
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    <u class="mr-3" th:utext="${map.user.username}">
+                                        寒江雪
+                                    </u>
+                                    发布于
+                                    <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
+                                    <ul class="d-inline float-right">
+                                        <li class="d-inline ml-2">
+                                            <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                            赞
+                                            <span th:text="${map.likeCount}">
+                                    </span>
+                                        </li>
+                                        <li class="d-inline ml-2">|</li>
+                                        <li class="d-inline ml-2">
+                                            <i class="fa fa-comments" aria-hidden="true"></i>
+                                            回帖
+                                            <span th:text="${map.post.commentCount}">7</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <div class="col-sm-3">
+                    <!-- 用户活跃列表 -->
+                    <div class="card bg-light" style="width: 13.5rem;">
+                        <p class="text-center">活跃用户</p>
+                        <li class="media pb-2 pt-2 mb-2" th:each="map:${discussPosts}">
+                            <div style="margin-left: 50px">
+                                <a th:href="@{|/user/profile/${map.user.id}|}" >
+                                    <img th:src="${map.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width: 40px;height:40px;margin-left: 10px">
+                                    <a th:text="${map.user.username}"></a>
+                                </a>
+                            </div>
+                        </li>
+                    </div>
+                    <!-- 疫情出行指南 -->
+                    <div class="card" style="margin-top: 140px;width: 13.5rem;">
+                        <!-- 标题 -->
+                        <div class="text-center">
+                            出行疫情指南
+                            <div class="row">
+                                <a class="text-info" style="margin-left: 70px" th:href="@{/CVO/city}">查看当前疫情城市</a>
+                                <a class="text-info" style="margin-left: 70px" th:href="@{/queryCVO}">查询核酸检测机构</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark">
+        <div class="container">
+            <div class="row">
+            </div>
+        </div>
+    </footer>
+</div>
+<!-- JavaScript 文件是可选的。从以下两种建议中选择一个即可！ -->
+<!-- 选项 1：jQuery 和 Bootstrap 集成包（集成了 Popper） -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+<!-- 选项 2：Popper 和 Bootstrap 的 JS 插件各自独立 -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-gRC4eoaRyQ8xv2X6Mnf+eOIrtON3wId3dAkwO0HQX26OrFBoLpjX/XWOJacSiZhL" crossorigin="anonymous"></script>
+-->
+
+<script th:src="@{/js/global.js}"></script>
+</body>
+</html>

@@ -191,9 +191,15 @@ public class DiscussPostService {
     }
 
     /**
-     * 查询帖子*/
+     * 根据id查询帖子*/
     public DiscussPost findDiscussPostById(int id){
         return discussPostMapper.selectDiscussPostById(id);
+    }
+
+    /**
+     * 根据modular来查询帖子，可以进行分模块*/
+    public List<DiscussPost> findDiscussPostByModular(String modular){
+        return discussPostMapper.selectDiscussPostByModular(modular);
     }
 
     /**

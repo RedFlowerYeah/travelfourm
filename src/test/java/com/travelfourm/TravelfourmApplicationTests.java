@@ -11,6 +11,8 @@ import com.travelfourm.service.DiscussPostService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,6 +31,8 @@ import java.util.Date;
 public class TravelfourmApplicationTests implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
+
+    private static final Logger logger = LoggerFactory.getLogger(TravelfourmApplication.class);
     @Autowired
     private CommentService commentService;
 
@@ -110,5 +115,15 @@ public class TravelfourmApplicationTests implements ApplicationContextAware {
         discussPostService.addDiscussPost(post);
 
         System.out.println("插入成功");
+    }
+
+    @Test
+    public void searchDiscussPostByModular(){
+
+        String modular = "广州";
+
+        List<DiscussPost> modular1 = discussPostService.findDiscussPostByModular(modular);
+
+        logger.info(String.valueOf(modular1));
     }
 }
