@@ -4,10 +4,12 @@ import com.travelfourm.Util.HostHolder;
 import com.travelfourm.dao.AlphaDao;
 import com.travelfourm.entity.Comment;
 import com.travelfourm.entity.DiscussPost;
+import com.travelfourm.entity.Province;
 import com.travelfourm.entity.User;
 import com.travelfourm.service.AlphaService;
 import com.travelfourm.service.CommentService;
 import com.travelfourm.service.DiscussPostService;
+import com.travelfourm.service.ProvinceService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
@@ -125,5 +127,16 @@ public class TravelfourmApplicationTests implements ApplicationContextAware {
         List<DiscussPost> modular1 = discussPostService.findDiscussPostByModular(modular);
 
         logger.info(String.valueOf(modular1));
+    }
+
+    @Autowired
+    private ProvinceService provinceService;
+
+    @Test
+    public void searchProvince(){
+
+        List<Province> province = provinceService.findProvince();
+
+        logger.info(String.valueOf(province));
     }
 }

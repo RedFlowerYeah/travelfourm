@@ -5,10 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.travelfourm.Util.*;
 import com.travelfourm.entity.*;
 import com.travelfourm.event.EventProducer;
-import com.travelfourm.service.CommentService;
-import com.travelfourm.service.DiscussPostService;
-import com.travelfourm.service.LikeService;
-import com.travelfourm.service.UserService;
+import com.travelfourm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -38,6 +35,9 @@ public class DiscussPostController implements CommunityConstant {
 
     @Autowired
     private LikeService likeService;
+
+    @Autowired
+    private ProvinceService provinceService;
 
     @Autowired
     private EventProducer eventProducer;
@@ -106,6 +106,7 @@ public class DiscussPostController implements CommunityConstant {
      * 分模块请求*/
     @GetMapping("/section/{modular}")
     public String getDiscussPostByModular(@PathVariable("modular") String modular,Model model){
+
         List<DiscussPost> list = discussPostService.findDiscussPostByModular(modular);
 
         List<Map<String , Object>> discussPosts = new ArrayList<>();
@@ -123,6 +124,7 @@ public class DiscussPostController implements CommunityConstant {
                 discussPosts.add(map);
             }
         }
+        model.addAttribute("modular",modular);
         model.addAttribute("discussPosts",discussPosts);
         return "/site/modular";
     }
