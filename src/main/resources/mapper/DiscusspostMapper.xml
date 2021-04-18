@@ -33,6 +33,13 @@
         limit #{offset}, #{limit}
     </select>
 
+    <select id="selectDiscussPostsHot" resultType="DiscussPost">
+        select <include refid="selectFields"></include>
+        from discuss_post
+        group by user_id desc
+        limit #{limit}
+    </select>
+
     <select id="selectDiscussPostRows" resultType="int">
         select count(id)
         from discuss_post

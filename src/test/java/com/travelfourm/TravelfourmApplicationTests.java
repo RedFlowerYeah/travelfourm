@@ -139,4 +139,13 @@ public class TravelfourmApplicationTests implements ApplicationContextAware {
 
         logger.info(String.valueOf(province));
     }
+
+    @Test
+    public void getHot(){
+        int limit = 3;
+
+       List<DiscussPost> discussPosts = discussPostService.findDiscussHot(3);
+
+        logger.info(String.valueOf(discussPosts));
+    }
 }

@@ -151,13 +151,13 @@
                 <div class="carousel-inner">
                     <!--此处的轮播间隔为data-interval，单位为毫秒,并会自动跳转回到第一张图-->
                     <div class="carousel-item active" data-interval="5000">
-                        <img src="http://qpp8jzghy.hn-bkt.clouddn.com/test1.jpg" class="d-block w-100">
+                        <img src="https://travelfourm.oss-cn-shenzhen.aliyuncs.com/test1.jpg" class="d-block w-100">
                     </div>
                     <div class="carousel-item" data-interval="5000">
-                        <img src="http://qpp8jzghy.hn-bkt.clouddn.com/test2.jpg" class="d-block w-100">
+                        <img src="https://travelfourm.oss-cn-shenzhen.aliyuncs.com/test2.jpg" class="d-block w-100">
                     </div>
                     <div class="carousel-item" data-interval="5000">
-                        <img src="http://qpp8jzghy.hn-bkt.clouddn.com/test4.jpg" class="d-block w-100">
+                        <img src="https://travelfourm.oss-cn-shenzhen.aliyuncs.com/test4.jpg" class="d-block w-100">
                     </div>
                 </div>
 
@@ -330,15 +330,13 @@
                 <div class="col-sm-3">
                     <!-- 用户活跃列表 -->
                     <div class="card bg-light" style="width: 13.5rem;">
-                            <p class="text-center">活跃用户</p>
-                            <li class="media pb-2 pt-2 mb-2" th:each="map:${discussPosts}">
-                                <div style="margin-left: 50px">
-                                <a th:href="@{|/user/profile/${map.user.id}|}" >
-                                    <img th:src="${map.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width: 40px;height:40px;margin-left: 10px">
-                                    <a th:text="${map.user.username}"></a>
+                            <p class="text-center">活跃用户偏航</p>
+                        <li class="media pb-2 pt-2 mb-2"th:each="map1:${discussPosts1}">
+                               <a th:href="@{|/user/profile/${map1.user.id}|}" >
+                                    <img th:src="${map1.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width: 40px;height:40px;margin-left: 10px">
                                 </a>
-                                </div>
-                            </li>
+                                <a th:text="${map1.user.username}">测试</a>
+                        </li>
                     </div>
                     <!-- 疫情出行指南 -->
                     <div class="card" style="margin-top: 140px;width: 13.5rem;">
@@ -350,11 +348,6 @@
                                 <a class="text-info" style="margin-left: 70px" th:href="@{/queryCVO}">查询核酸检测机构</a>
                             </div>
                         </div>
-                    </div>
-                    <div class="card">
-                        <span th:each="pro:${provinces}">
-                            <a th:text="${provinceName}"></a>
-                        </span>
                     </div>
                 </div>
             </div>

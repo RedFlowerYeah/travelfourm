@@ -125,6 +125,10 @@ public class DiscussPostService {
         return discussPostMapper.selectDiscussPosts(userId, offset, limit,orderMode);
     }
 
+    public List<DiscussPost> findDiscussHot(int limit){
+        return discussPostMapper.selectDiscussPostsHot(limit);
+    }
+
     public int findDiscussPostRows(int userId){
 
         logger.debug("load post rows from DataBase");
