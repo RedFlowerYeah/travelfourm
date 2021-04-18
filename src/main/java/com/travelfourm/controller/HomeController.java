@@ -4,9 +4,11 @@ import com.travelfourm.Util.CommunityConstant;
 import com.travelfourm.Util.CommunityUtil;
 import com.travelfourm.entity.DiscussPost;
 import com.travelfourm.entity.Page;
+import com.travelfourm.entity.Province;
 import com.travelfourm.entity.User;
 import com.travelfourm.service.DiscussPostService;
 import com.travelfourm.service.LikeService;
+import com.travelfourm.service.ProvinceService;
 import com.travelfourm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +37,9 @@ public class HomeController implements CommunityConstant {
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private ProvinceService provinceService;
+
     @GetMapping("/index")
     public String getIndexPage(Model model, Page page,
                                @RequestParam(name = "orderMode",defaultValue = "0")int orderMode){
@@ -46,9 +51,11 @@ public class HomeController implements CommunityConstant {
 
         List<DiscussPost> list = discussPostService.findDiscussPosts(0,page.getOffset(),page.getLimit(),orderMode);
         List<DiscussPost> list1 = discussPostService.findDiscussHot(3);
+        List<Province> list2 = provinceService.findProvince();
 
         List<Map<String,Object>> discussPosts = new ArrayList<>();
         List<Map<String,Object>> discussPosts1 = new ArrayList<>();
+        List<Map<String,Object>> provinces = new ArrayList<>();
 
         if (list!=null){
             for (DiscussPost post: list){
@@ -76,6 +83,16 @@ public class HomeController implements CommunityConstant {
             }
         }
 
+        if (list2 != null){
+            for (Province province : list2){
+                Map<String,Object> map2 = new HashMap<>();
+                map2.put("province",province);
+
+                provinces.add(map2);
+            }
+        }
+
+        model.addAttribute("provinces",provinces);
         model.addAttribute("discussPosts1",discussPosts1);
         model.addAttribute("discussPosts",discussPosts);
         model.addAttribute("orderMode",orderMode);

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author 34612
@@ -23,8 +25,12 @@ public class ProvinceController {
 
     @GetMapping("/getProvince")
     @ResponseBody
-    public List<Province> getProvince(){
+    public Map<String, Object> getProvince(){
+
+        Map<String,Object> map = new HashMap<>();
         List<Province> provinces = provinceService.findProvince();
-        return provinces;
+
+       map.put("data",provinces);
+        return map;
     }
 }
