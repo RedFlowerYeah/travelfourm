@@ -318,22 +318,23 @@
             </nav>
             </div>
 
+                <!--右边部分-->
                 <div class="col-sm-3">
                     <!-- 用户活跃列表 -->
-                    <div class="card bg-light" style="width: 13.5rem;">
+                    <div class="card bg-light" style="width: auto;">
                             <p class="text-center">活跃用户排行</p>
                         <li class="media pb-2 pt-2 mb-2" th:each="map1:${discussPosts1}">
-                               <a style="margin-left: 50px;" th:href="@{|/user/profile/${map1.user.id}|}" >
-                                    <img th:src="${map1.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width: 40px;height:40px;margin-left: 10px">
-                                </a>
-                                <a style="margin-top: 8px" th:text="${map1.user.username}">测试</a>
+                            <a style="margin-left: 50px;" th:href="@{|/user/profile/${map1.user.id}|}" >
+                                <img th:src="${map1.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width: 40px;height:40px;margin-left: 10px">
+                            </a>
+                            <a style="margin-top: 8px" th:text="${map1.user.username}">测试</a>
                         </li>
                     </div>
                     <!-- 疫情出行指南 -->
-                    <div class="card" style="margin-top: 140px;width: 13.5rem;">
+                    <div class="card" style="margin-top: 140px;width: auto;">
                         <!-- 标题 -->
                         <div class="text-center">
-                            出行疫情指南
+                            疫情出行指南
                             <div class="row">
                                 <a class="text-info" style="margin-left: 70px" th:href="@{/CVO/city}">查看当前疫情城市</a>
                                 <a class="text-info" style="margin-left: 70px" th:href="@{/queryCVO}">查询核酸检测机构</a>

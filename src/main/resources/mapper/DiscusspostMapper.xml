@@ -34,10 +34,9 @@
     </select>
 
     <select id="selectDiscussPostsHot" resultType="DiscussPost">
-        select <include refid="selectFields"></include>
-        from discuss_post
-        group by user_id desc
-        limit #{limit}
+        select * from (select * from discuss_post t order by t.create_time desc limit #{limit})
+        a group by a.user_id
+        order by a.create_time desc
     </select>
 
     <select id="selectDiscussPostsHotByModular" resultType="DiscussPost">
@@ -47,6 +46,7 @@
         group by user_id desc
         limit #{limit}
     </select>
+
     <select id="selectDiscussPostRows" resultType="int">
         select count(id)
         from discuss_post
