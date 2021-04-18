@@ -20,6 +20,8 @@ public interface DiscussPostMapper {
 
     List<DiscussPost> selectDiscussPostsHot(int limit);
 
+    List<DiscussPost> selectDiscussPostsHotByModular(@Param("modular")String modular,int limit);
+
     /**
      * 通过modular查找属于相应模块的帖子*/
     List<DiscussPost> selectDiscussPostByModular(@Param("modular") String modular);

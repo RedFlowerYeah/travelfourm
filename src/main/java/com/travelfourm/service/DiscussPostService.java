@@ -129,6 +129,10 @@ public class DiscussPostService {
         return discussPostMapper.selectDiscussPostsHot(limit);
     }
 
+    public List<DiscussPost> findDiscussHotByModular(String modular,int limit){
+        return discussPostMapper.selectDiscussPostsHotByModular(modular,limit);
+    }
+
     public int findDiscussPostRows(int userId){
 
         logger.debug("load post rows from DataBase");

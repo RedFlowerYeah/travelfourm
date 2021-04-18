@@ -17,6 +17,9 @@ import org.thymeleaf.context.Context;
 
 import java.util.*;
 
+/**
+ * @author 34612
+ */
 @Controller
 @RequestMapping("/discuss")
 public class DiscussPostController implements CommunityConstant {
@@ -108,8 +111,12 @@ public class DiscussPostController implements CommunityConstant {
     public String getDiscussPostByModular(@PathVariable("modular") String modular,Model model){
 
         List<DiscussPost> list = discussPostService.findDiscussPostByModular(modular);
+        List<DiscussPost> list1 = discussPostService.findDiscussHotByModular(modular,3);
+        List<Province> list2 = provinceService.findProvince();
 
         List<Map<String , Object>> discussPosts = new ArrayList<>();
+        List<Map<String,Object>> discussPosts1 = new ArrayList<>();
+        List<Map<String,Object>> provinces = new ArrayList<>();
 
         if (list != null){
             for (DiscussPost post : list){
@@ -124,6 +131,31 @@ public class DiscussPostController implements CommunityConstant {
                 discussPosts.add(map);
             }
         }
+
+        if (list1 != null){
+            for (DiscussPost post1 : list1){
+                Map<String ,Object> map1 = new HashMap<>();
+                map1.put("post1",post1);
+
+                User user = userService.findUserById(post1.getUserId());
+                map1.put("user",user);
+
+                discussPosts1.add(map1);
+            }
+        }
+
+        if (list2 != null){
+            for (Province province : list2){
+                Map<String,Object> map2 = new HashMap<>();
+                map2.put("province",province);
+
+                provinces.add(map2);
+            }
+        }
+
+        model.addAttribute("provinces",provinces);
+        model.addAttribute("discussPosts1",discussPosts1);
+        model.addAttribute("discussPosts",discussPosts);
         model.addAttribute("modular",modular);
         model.addAttribute("discussPosts",discussPosts);
         return "/site/modular";

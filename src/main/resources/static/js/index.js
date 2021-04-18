@@ -29,7 +29,7 @@ function publish() {
 	var title = $("#recipient-name").val();
 	var content = $("#message-text").val();
 
-	var modular = $("#modular-name option:selected").val();
+	var modular = $("#province option:selected").val();
 	//发送异步请求（post）
 	$.post(
 		CONTEXT_PATH + "/discuss/add",
@@ -66,9 +66,11 @@ function loadProvince(){
 					var netdata  = jsondata[i];
 					console.log(netdata)
 					//拼接成多个<option><option/>
-					netnames.push('<option value="'+netdata.id+'">'+ netdata.provinceName+'</option>')
+					netnames.push('<option value="'+netdata.provinceName+'">'+ netdata.provinceName+'</option>')
 				}
 				$("#province").html(netnames.join(''));    //根据parkID(根据你自己的ID写)填充到select标签中
+				$('#province').selectpicker('val', '');
+				$('#province').selectpicker('refresh');
 			}
 		},
 		error : function() {

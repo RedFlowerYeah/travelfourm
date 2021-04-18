@@ -40,6 +40,13 @@
         limit #{limit}
     </select>
 
+    <select id="selectDiscussPostsHotByModular" resultType="DiscussPost">
+        select <include refid="selectFields"></include>
+        from discuss_post
+        where modular = #{modular}
+        group by user_id desc
+        limit #{limit}
+    </select>
     <select id="selectDiscussPostRows" resultType="int">
         select count(id)
         from discuss_post
@@ -59,6 +66,7 @@
         select <include refid="selectFields"></include>
         from discuss_post
         where modular = #{modular}
+        group by create_time desc
     </select>
 
     <insert id="insertDiscussPost" parameterType="DiscussPost" keyProperty="id">

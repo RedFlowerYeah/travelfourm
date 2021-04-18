@@ -107,8 +107,10 @@ public class ElasticsearchService {
                     String commentCount = hit.getSourceAsMap().get("commentCount").toString();
                     post.setCommentCount(Integer.valueOf(commentCount));
 
-                    String modular = hit.getSourceAsMap().get("modular").toString();
-                    post.setModular(modular);
+                    /**
+                     * 因为这里可能会存在板块为空的可能，所以es可以不命中这个板块*/
+//                    String modular = hit.getSourceAsMap().get("modular").toString();
+//                    post.setModular(modular);
 
                     /**
                      * 处理高亮文本显示结果*/

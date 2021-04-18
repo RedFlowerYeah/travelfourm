@@ -269,14 +269,12 @@
                 <div class="col-sm-3">
                     <!-- 用户活跃列表 -->
                     <div class="card bg-light" style="width: 13.5rem;">
-                        <p class="text-center">活跃用户</p>
-                        <li class="media pb-2 pt-2 mb-2" th:each="map:${discussPosts}">
-                            <div style="margin-left: 50px">
-                                <a th:href="@{|/user/profile/${map.user.id}|}" >
-                                    <img th:src="${map.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width: 40px;height:40px;margin-left: 10px">
-                                    <a th:text="${map.user.username}"></a>
-                                </a>
-                            </div>
+                        <p class="text-center">活跃用户排行</p>
+                        <li class="media pb-2 pt-2 mb-2" th:each="map1:${discussPosts1}">
+                            <a style="margin-left: 50px;" th:href="@{|/user/profile/${map1.user.id}|}" >
+                                <img th:src="${map1.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width: 40px;height:40px;margin-left: 10px">
+                            </a>
+                            <a style="margin-top: 8px" th:text="${map1.user.username}">测试</a>
                         </li>
                     </div>
                     <!-- 疫情出行指南 -->
@@ -311,6 +309,7 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
+<script th:src="@{/js/index.js}"></script>
 <script th:src="@{/js/global.js}"></script>
 </body>
 </html>

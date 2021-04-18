@@ -53,12 +53,9 @@
                                 <a class="fa fa-globe nav-link dropdown-toggle" href="#" id="modularDropDown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     版块分类
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="modularDropDown" th:each="map2:${provinces}">
-                                    <a class="dropdown-item" th:text="${map2.province.provinceName}" th:href="@{|/discuss/section/${map2.province.provinceName}|}"></a>
-<!--                                    <a class="dropdown-item" th:href="@{|/discuss/section/广东|}">广东</a>-->
-<!--                                    <a class="dropdown-item" th:href="@{|/discuss/section/上海|}">上海</a>-->
-<!--                                    <a class="dropdown-item" th:href="@{|/discuss/section/重庆|}">重庆</a>-->
-<!--                                    <a class="dropdown-item" th:href="@{|/discuss/section/湖南|}">湖南</a>-->
+                                <div class="dropdown-menu" aria-labelledby="modularDropDown">
+                                    <a class="dropdown-item" th:each="map2:${provinces}" th:text="${map2.province.provinceName}" th:href="@{|/discuss/section/${map2.province.provinceName}|}">
+                                    </a>
                                 </div>
                             </div>
                         </li>
@@ -212,16 +209,8 @@
                                     <textarea class="form-control" id="message-text" rows="15"></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <!--因为所引用的组件的底层js无法动态相应的option值，所以后续需要看看是否能够修改-->
+                                    <!--目前提交的值有问题-->
                                     <label for="message-text" class="col-form-label">请选择你所需要发布到的板块：</label>
-<!--                                    <select name="modular-name" id="modular-name" class="selectpicker" data-live-search="true">-->
-<!--                                        <option value="">不选择地区</option>-->
-<!--                                        <option value="北京">北京</option>-->
-<!--                                        <option value="广东">广东</option>-->
-<!--                                        <option value="上海">上海</option>-->
-<!--                                        <option value="重庆">重庆</option>-->
-<!--                                        <option value="湖南">湖南</option>-->
-<!--                                    </select>-->
                                     <select id="province" name="province" class="selectpicker"  type="text" data-live-search="true" >
                                     </select>
                                 </div>
@@ -332,12 +321,12 @@
                 <div class="col-sm-3">
                     <!-- 用户活跃列表 -->
                     <div class="card bg-light" style="width: 13.5rem;">
-                            <p class="text-center">活跃用户偏航</p>
-                        <li class="media pb-2 pt-2 mb-2"th:each="map1:${discussPosts1}">
+                            <p class="text-center">活跃用户排行</p>
+                        <li class="media pb-2 pt-2 mb-2" th:each="map1:${discussPosts1}">
                                <a style="margin-left: 50px;" th:href="@{|/user/profile/${map1.user.id}|}" >
                                     <img th:src="${map1.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width: 40px;height:40px;margin-left: 10px">
                                 </a>
-                                <a th:text="${map1.user.username}">测试</a>
+                                <a style="margin-top: 8px" th:text="${map1.user.username}">测试</a>
                         </li>
                     </div>
                     <!-- 疫情出行指南 -->
