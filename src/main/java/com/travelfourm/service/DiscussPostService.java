@@ -64,7 +64,7 @@ public class DiscussPostService {
     @PostConstruct
     public void init(){
         /**
-         * 初始化帖子Caffeine缓存列表
+         * 初始化帖子Caffeine（Caffeine为本地缓存）缓存列表
          * 手动加载
          * .maxmumSize 设置数量上限
          * .expireAfterWrite 过期时间
@@ -148,7 +148,7 @@ public class DiscussPostService {
         }
 
         /**
-         * 转移HTML标记*/
+         * 转义HTML标记*/
         discussPost.setTitle(HtmlUtils.htmlEscape(discussPost.getTitle()));
         discussPost.setContent(HtmlUtils.htmlEscape(discussPost.getContent()));
 

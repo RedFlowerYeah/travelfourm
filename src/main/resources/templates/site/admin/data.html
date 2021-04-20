@@ -15,6 +15,12 @@
 	<!--图标库-->
 	<link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
 
+	<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+	<script th:src="@{/layui/layui.js}"></script>
+
+	<!--引入layui-->
+	<link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
 	<link rel="stylesheet" th:href="@{/css/global.css}" />
 	<title>数据统计</title>
 </head>
@@ -30,11 +36,26 @@
 			<!-- 目前先加一个红色提醒来做bug提示，后续需要一个modal框来进行弹窗提示-->
 			<!-- 网站UV -->
 			<div class="container pl-5 pr-5 pt-3 pb-3 mt-3">
-				<h6 class="mt-3"><b class="square"></b> 网站 UV </h6><h6 style="color: red">请 注 意：开始时间不能大于结束时间 !</h6>
+				<h6 class="mt-3"><b class="square"></b> 网站 UV </h6>
+				<h6 class="mt-3" style="color: red">请 注 意：开始时间不能大于结束时间 !</h6>
 				<form class="form-inline mt-3" method="post" th:action="@{/data/uv}">
-					<input type="date" class="form-control" required name="start" th:value="${#dates.format(uvStartDate,'yyyy-MM-dd')}"/>
-					<input type="date" class="form-control ml-3" required name="end" th:value="${#dates.format(uvEndDate,'yyyy-MM-dd')}"/>
-					<button type="submit" class="btn btn-primary ml-3">开始统计</button>
+					<div class="layui-form">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<span class="layui-form-label" style="width: auto">开始日期</span>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" required name="start" id="test1" placeholder="yyyy-MM-dd" th:value="${#dates.format(uvStartDate,'yyyy-MM-dd')}">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<span class="layui-form-label" style="width: auto">结束日期</span>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" required name="end" id="test2" placeholder="yyyy-MM-dd" th:value="${#dates.format(uvStartDate,'yyyy-MM-dd')}">
+								</div>
+							</div>
+							<button type="submit" class="layui-btn layui-inline">开始统计</button>
+						</div>
+					</div>
 				</form>
 				<ul class="list-group mt-3 mb-3">
 					<li class="list-group-item d-flex justify-content-between align-items-center">
@@ -48,9 +69,23 @@
 			<div class="container pl-5 pr-5 pt-3 pb-3 mt-4">
 				<h6 class="mt-3"><b class="square"></b> 活跃用户</h6><h6 style="color: red">请 注 意：开始时间不能大于结束时间 !</h6>
 				<form class="form-inline mt-3" method="post" th:action="@{/data/dau}">
-					<input type="date" class="form-control" required name="start" th:value="${#dates.format(dauStartDate,'yyyy-MM-dd')}"/>
-					<input type="date" class="form-control ml-3" required name="end" th:value="${#dates.format(dauEndDate,'yyyy-MM-dd')}"/>
-					<button type="submit" class="btn btn-primary ml-3">开始统计</button>
+					<div class="layui-form">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<span class="layui-form-label" style="width: auto">开始日期</span>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" required name="start" id="test3" placeholder="yyyy-MM-dd" th:value="${#dates.format(dauStartDate,'yyyy-MM-dd')}">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<span class="layui-form-label" style="width: auto">结束日期</span>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" required name="end" id="test4" placeholder="yyyy-MM-dd" th:value="${#dates.format(dauEndDate,'yyyy-MM-dd')}">
+								</div>
+							</div>
+							<button type="submit" class="layui-btn layui-inline">开始统计</button>
+						</div>
+					</div>
 				</form>
 				<ul class="list-group mt-3 mb-3">
 					<li class="list-group-item d-flex justify-content-between align-items-center">
@@ -60,10 +95,51 @@
 				</ul>
 			</div>
 
+
 		</div>
 
 	</div>
 
+	<script>
+		layui.use('laydate', function() {
+			var laydate = layui.laydate;
+
+			//常规用法
+			laydate.render({
+				elem: '#test1',
+				max: getNowDate()
+			});
+			laydate.render({
+				elem: '#test2',
+				max: getNowDate()
+			})
+			laydate.render({
+				elem: '#test3',
+			})
+			laydate.render({
+				elem: '#test4',
+			})
+		});
+		
+		function getNowDate() {
+			var date = new Date();
+			var seperator1 = "-";
+			var seperator2 = ":";
+			var month = date.getMonth() + 1;
+			var strDate = date.getDate();
+			if (month >= 1 && month <= 9){
+				month = "0" + month;
+			}
+			if (strDate >= 0 && strDate <= 9){
+				strDate = "0" + strDate;
+			}
+			var currentdate = date.getFullYear() + seperator1 + month +
+					seperator1 + strDate + " " + date.getHours() + seperator2 +
+					date.getMonth() + seperator2 + date.getSeconds();
+
+			return currentdate;
+		}
+	</script>
 	<!-- 选项 1：jQuery 和 Bootstrap 集成包（集成了 Popper） -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>

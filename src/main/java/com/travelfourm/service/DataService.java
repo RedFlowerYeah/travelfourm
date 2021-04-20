@@ -26,13 +26,15 @@ public class DataService {
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
-    //将指定ip计入UV
+    /**
+     * 将指定ip计入UV*/
     public void recordUV(String ip){
         String redisKey = RedisKeyUtil.getUVkey(simpleDateFormat.format(new Date()));
         redisTemplate.opsForHyperLogLog().add(redisKey,ip);
     }
 
-    //统计日期范围内的UV
+    /**
+     * 统计日期范围内的UV*/
     /**
      * 此处存在bug，若是前一个日期>后一个日期，执行会报错*/
     public long calculateUV(Date start,Date end){
@@ -41,7 +43,8 @@ public class DataService {
             throw new IllegalArgumentException("参数不能为空！");
         }
 
-        //整理日期范围内的key
+        /**
+         * 整理日期范围内的key*/
         List<String> keyList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(start);
@@ -62,13 +65,15 @@ public class DataService {
         return redisTemplate.opsForHyperLogLog().size(redisKey);
     }
 
-    //将指定用户计入DAU
+    /**
+     * 将指定用户计入DAU*/
     public void recordDAU(int userId){
         String redisKey = RedisKeyUtil.getDAUKey(simpleDateFormat.format(new Date()));
-        redisTemplate.opsForValue().setBit(redisKey,userId,true);
+        redisTemplate.opsForValue().setBit(redisKey , userId , true);
     }
 
-    //统计指定日期范围内的DAU
+    /**
+     * 统计指定日期范围内的DAU*/
     public long calculateDAU(Date start,Date end){
         if (start == null || end == null){
             throw new IllegalArgumentException("参数不能为空!");
@@ -77,14 +82,15 @@ public class DataService {
         //整理该日期范围内的DAU
         List<byte[]> keyList = new ArrayList<>();
         Calendar calendar  = Calendar.getInstance();
-
+        calendar.setTime(start);
         while (!calendar.getTime().after(end)){
             String key = RedisKeyUtil.getUVkey(simpleDateFormat.format(calendar.getTime()));
             keyList.add(key.getBytes());
             calendar.add(Calendar.DATE,1);
         }
 
-        //进行OR运算
+        /**
+         * 进行OR运算*/
         return (long) redisTemplate.execute(new RedisCallback() {
             @Override
             public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {

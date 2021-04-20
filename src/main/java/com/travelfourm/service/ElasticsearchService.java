@@ -53,8 +53,11 @@ public class ElasticsearchService {
 
     /**
      * 分页查找帖子
-     * 先通过new一个NativeSearchQueryBuilder来构建一个查询
-     * 构建基本的排序机制*/
+     * 先通过new一个NativeSearchQueryBuilder来构建一个查询,是springdata中的一个查询
+     * QueryBuilders.multiMatchQuery表示对多个字段查询
+     * .withSort()构建基本的排序机制
+     * .withPageable()分页查询
+     * .withHighlightFields()表示高亮文本显示*/
     public Page<DiscussPost> searchDiscussPost(String keyword, int current, int limit){
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilders.multiMatchQuery(keyword,"title","content"))

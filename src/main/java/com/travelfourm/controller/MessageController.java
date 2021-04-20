@@ -57,7 +57,6 @@ public class MessageController implements CommunityConstant {
 
                 /**
                  * 创建一个HashMap用来存放相应的信息
-                 * 这里考虑是否要使用线程安全的方式来实现
                  * 将所需要的数据放置在map中*/
                 Map<String , Object> map = new HashMap<>();
                 map.put("conversation",message);
