@@ -53,7 +53,7 @@
 									<input type="text" class="layui-input" required name="end" id="test2" placeholder="yyyy-MM-dd" th:value="${#dates.format(uvStartDate,'yyyy-MM-dd')}">
 								</div>
 							</div>
-							<button type="submit" class="layui-btn layui-inline">开始统计</button>
+							<button type="submit" class="layui-btn layui-inline" style="background-color: #343a40!important;">开始统计</button>
 						</div>
 					</div>
 				</form>
@@ -67,7 +67,8 @@
 
 			<!-- 活跃用户 -->
 			<div class="container pl-5 pr-5 pt-3 pb-3 mt-4">
-				<h6 class="mt-3"><b class="square"></b> 活跃用户</h6><h6 style="color: red">请 注 意：开始时间不能大于结束时间 !</h6>
+				<h6 class="mt-3"><b class="square"></b> 活跃用户</h6>
+				<h6 class="mt-3" style="color: red">请 注 意：开始时间不能大于结束时间 !</h6>
 				<form class="form-inline mt-3" method="post" th:action="@{/data/dau}">
 					<div class="layui-form">
 						<div class="layui-form-item">
@@ -83,7 +84,7 @@
 									<input type="text" class="layui-input" required name="end" id="test4" placeholder="yyyy-MM-dd" th:value="${#dates.format(dauEndDate,'yyyy-MM-dd')}">
 								</div>
 							</div>
-							<button type="submit" class="layui-btn layui-inline">开始统计</button>
+							<button type="submit" class="layui-btn layui-inline" style="background-color: #343a40!important;">开始统计</button>
 						</div>
 					</div>
 				</form>
@@ -115,9 +116,11 @@
 			})
 			laydate.render({
 				elem: '#test3',
+				max:getNowDate()
 			})
 			laydate.render({
 				elem: '#test4',
+				max:getNowDate()
 			})
 		});
 		

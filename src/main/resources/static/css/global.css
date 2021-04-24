@@ -21,13 +21,6 @@ body {
 	padding: 0;
 }
 
-.dropdown:hover>.dropdown-menu{
-	display:block;
-}
-
-.dropdown>.dropdown-toggle:active{
-	pointer-events: none;
-}
 
 .weather-banner-header-right {
 	margin: 0;
