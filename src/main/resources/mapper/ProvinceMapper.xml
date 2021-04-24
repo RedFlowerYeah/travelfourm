@@ -3,8 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.travelfourm.dao.ProvinceMapper">
+
     <select id="selectProvince" resultType="Province">
         select id,province_name
         from province
     </select>
+
+    <insert id="insertProvince" parameterType="Province" keyProperty="id">
+        insert into province (province_name) values (#{provinceName})
+    </insert>
+
 </mapper>

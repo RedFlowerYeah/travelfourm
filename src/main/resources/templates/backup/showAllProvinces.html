@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/layui/layui.js}"></script>
+
+    <!--访问该页面时，为了防止csrf攻击，生成了csrf令牌-->
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+
+    <!--引入layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+
+    <!--图标库-->
+    <link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
+
+    <title>多板块信息</title>
+</head>
+<body  class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">论坛信息管理后台</div>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item layui-this">
+                    <a href="javascript:;">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                        操作
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a th:href="@{/index}">
+                                <i class="fa fa-home"aria-hidden="true"></i>
+                                返回论坛
+                            </a>
+                        </dd>
+                        <dd>
+                            <a th:href="@{/logout}">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                退出登录
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-side">
+            <div class="layui-side-scroll layui-bg-black">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;">论坛信息模块</a>
+                        <dl class="layui-nav-child">
+                            <dd><a th:href="@{/user/showLayui}">用户信息</a></dd>
+                            <dd><a th:href="@{/discuss/showLayui1}">帖子信息</a></dd>
+                            <dd><a th:href="@{/comment/showLayui2}">评论信息</a></dd>
+                            <dd><a th:href="@{/showLayui3}">多板块信息</a> </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <table id="demo" lay-filter="test"></table>
+            <script type="text/html" id="mytoolbar">
+                <button type="button" class="layui-btn layui-btn-sm" lay-event="saveProvince"><i class="layui-icon layui-icon-addition"></i>添加</button>
+<!--                <button type="button" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delRole"><i class="layui-icon layui-icon-delete"></i>删除</button>-->
+            </script>
+
+            <form class="layui-form" action="" id="provinceSaveForm" style="display: none">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">板块名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="provinceName" required  lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="button"  	class="layui-btn layui-btn-normal" lay-submit lay-filter="saveProvinceForm">保存</button>
+                        <button type="reset"  	class="layui-btn layui-btn-warm">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * 发送AJAX请求时，将csrf令牌设置到请求的消息头中*/
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function (e,xhr,options) {
+            xhr.setRequestHeader(header,token);
+        })
+
+
+        layui.use('table',function () {
+            var table=layui.table;
+            var form=layui.form;
+
+            var myTable = table.render({
+                elem: '#demo'
+                ,height: 350
+                ,url: 'showAllProvinces' //数据接口
+                ,page: true //开启分页
+                ,limits:[5,10,15,20,25,30]
+                ,toolbar: '#mytoolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+                ,cols: [
+                    [ //表头
+                        {field: 'id', title: '板块', width:80, sort: true, fixed: 'left',checkbox: true}
+                        ,{field: 'id', title: '板块编号', width:120, sort: true, fixed: 'left'}
+                        ,{field: 'provinceName', title: '板块名称',width:120}
+                    ]]
+            });
+                table.on('toolbar(test)',function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id)
+                        , data = checkStatus.data; //获取选中的数据
+                    var ids = [];
+                    switch (obj.event) {
+                        case 'saveProvince':
+                            layer.open(
+                                {
+                                    type: 1,
+                                    content: $("#provinceSaveForm"),
+                                    icon: 1,
+                                    maxmin: true,
+                                    title: "添加板块",
+                                    area: ['500px', '300px'],
+                                    shade: 0
+                                }
+                            )
+                            break;
+                    };
+                });
+
+                //监听提交
+                form.on('submit(saveProvinceForm)', function(data){
+                    //数据的提交，ajax方式
+                    console.log(data.field)
+                    $.ajax({
+                        url: 'saveProvince',//地址
+                        dataType: 'json',//数据类型
+                        type: 'POST',//类型
+                        data:data.field,
+                        //请求成功
+                        success: function (result) {
+                            if(result.code==0){
+                                //关闭弹出层
+                                layer.closeAll();
+                                //显示添加成功消息
+                                layer.msg(result.message,{icon:1})
+                                //重新加载数据表格
+                                myTable.reload();
+                            }else
+                            {
+                                //关闭弹出层
+                                layer.closeAll();
+                                layer.msg(result.message,{icon:5})
+                            }
+                        }
+                    });
+                    return false;
+                });
+        });
+
+    </script>
+    <script th:src="@{/js/backupGlobal.js}"></script>
+</body>
+</html>

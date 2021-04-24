@@ -24,4 +24,14 @@ public class ProvinceService {
     public List<Province> findProvince(){
         return provinceMapper.selectProvince();
     }
+
+    /**
+     * 添加多板块*/
+    public int addProvince(Province province){
+        if (province == null){
+            throw new IllegalArgumentException("参数不能为空！");
+        }
+
+        return provinceMapper.insertProvince(province);
+    }
 }
