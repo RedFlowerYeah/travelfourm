@@ -50,7 +50,6 @@ public class ElasticsearchService {
     public void deleteDiscussPost(int id){
         discussPostRepository.deleteById(id);
     }
-
     /**
      * 分页查找帖子
      * 先通过new一个NativeSearchQueryBuilder来构建一个查询,是springdata中的一个查询

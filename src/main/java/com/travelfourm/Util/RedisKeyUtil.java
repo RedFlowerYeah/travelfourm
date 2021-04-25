@@ -1,7 +1,8 @@
 package com.travelfourm.Util;
 
 /**
- * Redis中的缓存key-value值的名称*/
+ * Redis中的缓存key-value值的名称
+ * @author 34612*/
 public class RedisKeyUtil {
 
     private static final String SPLIT = ":";

@@ -51,7 +51,6 @@ function setTop() {
     $(document).ajaxSend(function (e, xhr, options) {
         //xhr发送异步请求的核心对象
         xhr.setRequestHeader(header, token);
-
     });
 
     $.post(
