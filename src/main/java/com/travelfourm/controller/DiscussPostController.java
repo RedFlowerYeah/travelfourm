@@ -297,6 +297,15 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     /**
+     * 修改帖子*/
+    @PostMapping("/updateModular")
+    @ResponseBody
+    public String setModular(int id,String modular){
+        discussPostService.updateModular(id,modular);
+
+        return CommunityUtil.getJsonString(0);
+    }
+    /**
      * 加精*/
     @PostMapping("/wonderful")
     @ResponseBody

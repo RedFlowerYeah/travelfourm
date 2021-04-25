@@ -2,6 +2,20 @@ $(function () {
     $("#topBtn").click(setTop);
     $("#wonderfulBtn").click(setWonderful);
     $("#deleteBtn").click(setDelete);
+    $("#updateBtn").click(setUpdate);
+    $(function() {
+        $(".selectpicker").selectpicker({
+            noneSelectedText : '请选择'    //默认显示内容
+        });
+
+        loadProvince();    //执行此函数，从后台获取数据，拼接成option标签，添加到select的里面
+
+        //初始化刷新数据
+        $(window).on('load', function() {
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+    });
 });
 
 function like(btn, entityType, entityId, entityUserId, postId) {
@@ -105,4 +119,56 @@ function setDelete() {
             }
         }
     );
+}
+
+function setUpdate() {
+    //发送AJAX请求之前，将CSRF的令牌设置到消息的请求头中
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function (e, xhr, options) {
+        //xhr发送异步请求的核心对象
+        xhr.setRequestHeader(header, token);
+    });
+
+    var modular = $("#province option:selected").val();
+    $.post(
+        CONTEXT_PATH + "/discuss/updateModular",
+        {"id": $("#postId").val(),"modular":modular},
+        function (data) {
+            data = $.parseJSON(data);
+            if (data.code == 0) {
+                window.location.reload();
+            }else{
+                alert(data.msg)
+            }
+        }
+    );
+}
+//加载板块选项
+function loadProvince(){
+    $.ajax({
+        url : CONTEXT_PATH + "/getProvince",    //后台controller中的请求路径
+        type : 'GET',
+        async : false,
+        datatype : 'json',
+        success : function(results) {
+            if(results){
+                var jsondata = results.data;
+                var netnames =[];
+                console.log(jsondata.length);
+                for(var i=0,len=jsondata.length;i<len;i++){
+                    var netdata  = jsondata[i];
+                    console.log(netdata)
+                    //拼接成多个<option><option/>
+                    netnames.push('<option value="'+netdata.provinceName+'">'+ netdata.provinceName+'</option>')
+                }
+                $("#province").html(netnames.join(''));    //根据parkID(根据你自己的ID写)填充到select标签中
+                $('#province').selectpicker('val', '');
+                $('#province').selectpicker('refresh');
+            }
+        },
+        error : function() {
+            alert('查询出错');
+        }
+    });
 }

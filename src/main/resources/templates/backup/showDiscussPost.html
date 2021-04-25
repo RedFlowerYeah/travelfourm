@@ -80,6 +80,12 @@
                 [ //表头
                     {field: 'id', title: '帖子编号', width:80, sort: true, fixed: 'left',checkbox: true}
                     ,{field: 'id', title: '帖子编号', width:120, sort: true, fixed: 'left'}
+                    ,{field: 'modular',title: '所属板块',width:120,templet:function (data) {
+                        if (data.modular == null || data.modular == 0)
+                            return '暂未分板块'
+                        else
+                            return data.modular
+                    }}
                     ,{field: 'title', title: '标题', width:200}
                     ,{field: 'content', title: '内容' , width:200}
                     ,{field: 'status', title:'帖子状态',width:200,templet:function (data) {
@@ -93,7 +99,7 @@
                     ,{field: 'commentCount', title: '评论总数',width:120 , sort:true}
                     ,{field: 'createTime', title: '创建时间', width:200, sort: true,
                     templet:"<div>{{layui.util.toDateString(d.createTime,'yyyy-MM-dd HH:mm:ss')}}</div>"}
-                    ,{field: 'score', title: '帖子积分', width:200,sort:true}
+                    ,{field: 'score', title: '帖子积分', width:120,sort:true}
                 ]]
         });
     });

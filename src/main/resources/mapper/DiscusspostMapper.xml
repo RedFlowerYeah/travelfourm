@@ -91,4 +91,7 @@
         update discuss_post set score = #{score} where id = #{id}
     </update>
 
+    <update id="updateModular">
+        update discuss_post set modular = #{modular} where id = #{id}
+    </update>
 </mapper>

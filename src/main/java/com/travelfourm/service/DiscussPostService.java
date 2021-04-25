@@ -233,4 +233,8 @@ public class DiscussPostService {
     public int updateScore(int id, double score) {
         return discussPostMapper.updateScore(id, score);
     }
+
+    public int updateModular(int id ,String modular){
+        return discussPostMapper.updateModular(id , modular);
+    }
 }

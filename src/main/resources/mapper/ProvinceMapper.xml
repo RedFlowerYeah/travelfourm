@@ -12,5 +12,4 @@
     <insert id="insertProvince" parameterType="Province" keyProperty="id">
         insert into province (province_name) values (#{provinceName})
     </insert>
-
 </mapper>
