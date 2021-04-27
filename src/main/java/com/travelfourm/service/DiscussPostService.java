@@ -12,6 +12,7 @@ import com.travelfourm.config.BaiduSensitiveConfig;
 import com.travelfourm.dao.DiscussPostMapper;
 import com.travelfourm.entity.DiscussPost;
 import com.travelfourm.entity.TextCheckReturn;
+import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
@@ -20,11 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
+import org.thymeleaf.context.Context;
 
 import javax.annotation.PostConstruct;
 import javax.xml.soap.Text;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -125,14 +128,20 @@ public class DiscussPostService {
         return discussPostMapper.selectDiscussPosts(userId, offset, limit,orderMode);
     }
 
+    /**
+     * 查找最热门的帖子*/
     public List<DiscussPost> findDiscussHot(int limit){
         return discussPostMapper.selectDiscussPostsHot(limit);
     }
 
+    /**
+     * 通过最热门模块查找帖子*/
     public List<DiscussPost> findDiscussHotByModular(String modular,int limit){
         return discussPostMapper.selectDiscussPostsHotByModular(modular,limit);
     }
 
+    /**
+     * 查找用户自己的忒帖子*/
     public int findDiscussPostRows(int userId){
 
         logger.debug("load post rows from DataBase");
@@ -234,6 +243,8 @@ public class DiscussPostService {
         return discussPostMapper.updateScore(id, score);
     }
 
+    /**
+     * 更新帖子所属板块*/
     public int updateModular(int id ,String modular){
         return discussPostMapper.updateModular(id , modular);
     }

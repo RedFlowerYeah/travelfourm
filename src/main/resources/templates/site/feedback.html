@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 必须的 meta 标签 -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap 的 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+
+    <!--访问该页面时，为了防止csrf攻击，生成了csrf令牌-->
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+
+    <!--图标库-->
+    <link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
+
+    <!-- Latest compiled and minified CSS 下拉列表 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+
+    <title>申诉帖子</title>
+</head>
+<body>
+<div class="nk-container">
+    <!-- 头部 -->
+    <header class="bg-info sticky-top" th:replace="/site/setting::nosearch">
+    </header>
+
+    <div class="main">
+        <div class="container pl-5 pr-5 pt-3 pb-3 mt-3 mb-3">
+            <h3 class="text-center text-dark border-bottom pb-3">用 户 申 诉</h3>
+            <form class="mt-5">
+                    <div class="form-group">
+                        <label for="title">申诉帖子名称</label>
+                        <input type="text" class="form-control" id="title" placeholder="请输入您要申诉的帖子名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="reason">申诉原因</label>
+                        <textarea class="form-control" id="reason" rows="15" placeholder="请输入您要申诉的原因"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="feedbackBtn">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/global.js}"></script>
+<script th:src="@{/js/feedback.js}"></script>
+</body>
+</html>

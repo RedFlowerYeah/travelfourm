@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>用户申诉</title>
+</head>
+<body>
+<div>
+    <p>
+        尊敬的管理员, 您好!
+    </p>
+    <p>
+        <a th:text="${username}">用户</a>用户提起申诉:</br>
+        申诉帖子名称为:<a th:text="${title}">帖子名称</a></br>
+        申诉原因为:<a th:text="${reason}">申诉原因</a></br>
+        请前往管理员后台进行查看帖子相关信息及相关评论
+    </p>
+</div>
+</body>
+</html>

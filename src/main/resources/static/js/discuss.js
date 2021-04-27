@@ -144,6 +144,7 @@ function setUpdate() {
         }
     );
 }
+
 //加载板块选项
 function loadProvince(){
     $.ajax({

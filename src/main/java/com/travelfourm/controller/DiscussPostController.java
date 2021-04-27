@@ -6,6 +6,10 @@ import com.travelfourm.Util.*;
 import com.travelfourm.entity.*;
 import com.travelfourm.event.EventProducer;
 import com.travelfourm.service.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.store.LockFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -305,6 +309,7 @@ public class DiscussPostController implements CommunityConstant {
 
         return CommunityUtil.getJsonString(0);
     }
+
     /**
      * 加精*/
     @PostMapping("/wonderful")
@@ -337,11 +342,19 @@ public class DiscussPostController implements CommunityConstant {
         DiscussPost post = discussPostService.findDiscussPostById(id);
         User user = userService.findUserById(post.getUserId());
 
-        // 激活邮件
+        /**
+         * 删除帖子邮件*/
         Context context = new Context();
         context.setVariable("email", user.getEmail());
+        context.setVariable("DiscussPostName",post.getTitle());
 
-        // http://localhost:8080/travelfourm/deletediscusspost
+        /**
+         * href地址：http://localhost:8080/travelfourm/discuss/feedback */
+        String url = domain + contextpath + "/discuss/feedback";
+        context.setVariable("url",url);
+
+        /**
+         * 邮件内容*/
         String content = templateEngine.process("/mail/deletediscusspost",context);
         mailClient.sendMail(user.getEmail(), "删除帖子", content);
 
@@ -376,6 +389,30 @@ public class DiscussPostController implements CommunityConstant {
                 .setEntityType(ENTITY_TYPE_POST)
                 .setEntityId(id);
         eventProducer.fireEvent(event);
+
+        return CommunityUtil.getJsonString(0);
+    }
+
+    /**
+     * 跳转反馈界面*/
+    @GetMapping("/feedback")
+    public String goFeedBack(){
+        return "/site/feedback";
+    }
+
+    /**
+     * 用户申诉*/
+    @PostMapping("/feedbackDiscussPost")
+    @ResponseBody
+    public String feedback(String title, String reason){
+        Context context = new Context();
+        context.setVariable("username",hostHolder.getUser().getUsername());
+
+        context.setVariable("title",title);
+        context.setVariable("reason",reason);
+
+        String content1 = templateEngine.process("/mail/userFeedback",context);
+        mailClient.sendMail("346125735@qq.com","用户申诉",content1);
 
         return CommunityUtil.getJsonString(0);
     }

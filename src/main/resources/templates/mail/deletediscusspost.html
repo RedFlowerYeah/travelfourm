@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <title>删除提醒</title>
@@ -10,7 +10,12 @@
             <b th:text="${email}">xxx@xxx.com</b>, 您好!
         </p>
         <p>
-            因为您违反了论坛网站的相关规定，因此管理员已拉黑您的帖子！请遵守论坛规则，如有疑问，可回复邮件！
+            您的帖子：<a th:text="${DiscussPostName}"></a>
+            </br>
+            因为您违反了论坛网站的相关规定，因此管理员已拉黑您的帖子！
+            请遵守论坛规则，如有疑问，可回复邮件或到网站中进行反馈!
+            </br>
+            <a th:href="${url}">此链接</a>点击此链接跳转到反馈界面进行反馈
         </p>
     </div>
 </body>
