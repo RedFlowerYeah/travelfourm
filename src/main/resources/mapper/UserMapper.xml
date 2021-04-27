@@ -32,7 +32,12 @@
         from tbl_user
         where email=#{email}
     </select>
-    
+
+    <select id="selectCountUser" resultType="int">
+        select count(id)
+        from tbl_user
+    </select>
+
     <insert id="insertUser" parameterType="User" keyProperty="id">
         insert into tbl_user (<include refid="insertFields"></include>)
         values (#{username},#{password},#{salt},#{email},#{type},#{status},#{activationcode},#{headerUrl},#{createTime})

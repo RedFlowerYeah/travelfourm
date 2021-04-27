@@ -56,6 +56,11 @@
         </if>
     </select>
 
+    <select id="selectCountDiscussPost" resultType="int">
+        select count(id)
+        from discuss_post
+    </select>
+
     <select id="selectDiscussPostById" resultType="DiscussPost">
         select <include refid="selectFields"></include>
         from discuss_post

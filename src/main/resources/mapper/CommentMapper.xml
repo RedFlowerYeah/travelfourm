@@ -31,6 +31,11 @@
           and entity_type = #{entityType}
     </select>
 
+    <select id="selectCountComment" resultType="int">
+        select count(id)
+        from comment
+    </select>
+
     <insert id="insertComment" parameterType="Comment">
         insert into comment (user_id, entity_type, entity_id, target_id, content, status, create_time)
         values (#{userId},#{entityType},#{entityId},#{targetId},#{content},#{status},#{createTime})

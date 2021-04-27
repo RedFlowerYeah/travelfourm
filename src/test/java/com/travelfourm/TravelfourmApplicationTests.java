@@ -6,10 +6,7 @@ import com.travelfourm.entity.Comment;
 import com.travelfourm.entity.DiscussPost;
 import com.travelfourm.entity.Province;
 import com.travelfourm.entity.User;
-import com.travelfourm.service.AlphaService;
-import com.travelfourm.service.CommentService;
-import com.travelfourm.service.DiscussPostService;
-import com.travelfourm.service.ProvinceService;
+import com.travelfourm.service.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
@@ -33,6 +30,9 @@ import java.util.List;
 public class TravelfourmApplicationTests implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
+
+    @Autowired
+    private UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(TravelfourmApplication.class);
     @Autowired
@@ -147,5 +147,11 @@ public class TravelfourmApplicationTests implements ApplicationContextAware {
        List<DiscussPost> discussPosts = discussPostService.findDiscussHot(3);
 
         logger.info(String.valueOf(discussPosts));
+    }
+
+    @Test
+    public void getCountUser(){
+        int count = userService.countUser();
+        logger.info(String.valueOf(count));
     }
 }

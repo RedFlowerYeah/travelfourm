@@ -24,6 +24,8 @@ public interface UserMapper {
 
     User selectByEmail(String email);
 
+    int selectCountUser();
+
     int insertUser(User user);
 
     int updateStatus(int id,int status);

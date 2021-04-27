@@ -13,6 +13,8 @@
     <!--图标库-->
     <link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
 
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.2/echarts.common.js"></script>
+
     <title>论坛后台管理</title>
 </head>
 <body class="layui-layout-body">
@@ -61,10 +63,60 @@
         </div>
         <div class="layui-body">
             <!-- 内容主体区域 -->
-            <h5>您好，欢迎您管理员！</h5>
+<!--            <h5>您好，欢迎您管理员！</h5>-->
+            <div id="main" style="width: 600px;height:400px;"></div>
+
         </div>
     </div>
 
     <script th:src="@{/js/backupGlobal.js}"></script>
+    <script type="text/javascript">
+        // 初始化ECharts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        myChart.setOption({
+            title: {
+                trigger: 'axis',
+                text: '旅游论坛网站数据统计'
+            },
+            tooltip: {},
+            legend: {
+                data:['数量']
+            },
+            xAxis: {
+                type: 'category',
+                data: ['用户','帖子','评论','版块']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                name: '数量',
+                type: 'bar',
+                barwidth: '60%',
+                data: []
+            }]
+        });
+
+        //加载时显示loading动画
+        myChart.showLoading();
+
+        // 利用ajax从后台给数组存值
+        $.get('http://localhost:8080/travelfourm/echarts').done(function (data) {
+            console.log(data);
+
+            myChart.hideLoading();
+            myChart.setOption({
+                series: [{
+                    data:data
+                }]
+            });
+        });
+    </script>
+
+    <!--引入ECharts来统计数据-->
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

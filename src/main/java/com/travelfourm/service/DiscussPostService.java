@@ -150,6 +150,12 @@ public class DiscussPostService {
     }
 
     /**
+     * 统计帖子*/
+    public int countDiscussPosts(){
+        return discussPostMapper.selectCountDiscussPost();
+    }
+
+    /**
      * 发布帖子*/
     public int addDiscussPost(DiscussPost discussPost){
         if (discussPost == null){

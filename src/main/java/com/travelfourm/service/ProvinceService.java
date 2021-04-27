@@ -21,8 +21,16 @@ public class ProvinceService {
     @Autowired
     private ProvinceMapper provinceMapper;
 
+    /**
+     * 查找所有版块*/
     public List<Province> findProvince(){
         return provinceMapper.selectProvince();
+    }
+
+    /**
+     * 统计所有版块*/
+    public int countProvinces(){
+        return provinceMapper.selectCountProvince();
     }
 
     /**

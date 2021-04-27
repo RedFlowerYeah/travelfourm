@@ -1,15 +1,16 @@
 package com.travelfourm.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
+import com.qiniu.util.Json;
 import com.travelfourm.Util.CommunityConstant;
 import com.travelfourm.Util.CommunityUtil;
 import com.travelfourm.entity.DiscussPost;
 import com.travelfourm.entity.Page;
 import com.travelfourm.entity.Province;
 import com.travelfourm.entity.User;
-import com.travelfourm.service.DiscussPostService;
-import com.travelfourm.service.LikeService;
-import com.travelfourm.service.ProvinceService;
-import com.travelfourm.service.UserService;
+import com.travelfourm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,8 +39,13 @@ public class HomeController implements CommunityConstant {
     private LikeService likeService;
 
     @Autowired
+    private CommentService commentService;
+
+    @Autowired
     private ProvinceService provinceService;
 
+    /**
+     * 主页*/
     @GetMapping("/index")
     public String getIndexPage(Model model, Page page,
                                @RequestParam(name = "orderMode",defaultValue = "0")int orderMode){
@@ -111,8 +117,29 @@ public class HomeController implements CommunityConstant {
         return "/backup/showUser";
     }
 
+    /**
+     * 查询疫情城市*/
     @GetMapping("/queryCVO")
     public String queryCVO(){
         return "/CVO/queryhsjg";
+    }
+
+    /**
+     * echarts表返回数据*/
+    @GetMapping("/echarts")
+    @ResponseBody
+    public List<Integer> getJuhe(){
+        int countUser = userService.countUser();
+        int countDiscussPosts = discussPostService.countDiscussPosts();
+        int countComment = commentService.countComment();
+        int countProvinces = provinceService.countProvinces();
+
+        List<Integer> count = new ArrayList<>();
+        count.add(countUser);
+        count.add(countDiscussPosts);
+        count.add(countComment);
+        count.add(countProvinces);
+
+        return count;
     }
 }

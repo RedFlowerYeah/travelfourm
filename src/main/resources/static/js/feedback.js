@@ -20,7 +20,9 @@ function sendFeedBack() {
             data = $.parseJSON(data);
             if (data.code == 0) {
                 alert("提交申诉成功，请耐心等待管理员审核结果！");
-                location.href = CONTEXT_PATH + "/index";
+                setTimeout(function () {
+                    location.href = CONTEXT_PATH + "/index";
+                },2000);
             } else {
                 alert(data.msg);
             }

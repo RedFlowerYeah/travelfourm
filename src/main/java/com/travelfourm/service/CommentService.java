@@ -137,6 +137,12 @@ public class CommentService implements CommunityConstant {
     }
 
     /**
+     * 统计评论总数*/
+    public int countComment(){
+        return commentMapper.selectCountComment();
+    }
+
+    /**
      * 删除评论*/
     public int deleteComment(int id){return  commentMapper.deleteComment(id);}
 }

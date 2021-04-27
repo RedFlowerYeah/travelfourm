@@ -192,6 +192,12 @@ public class UserService {
         redisTemplate.opsForValue().set(redisKey,loginTicket);
     }
 
+    /**
+     * 统计用户*/
+    public int countUser(){
+        return userMapper.selectCountUser();
+    }
+
     /**登录凭证
      * 后期可以废弃掉*/
     public LoginTicket findLoginTicket(String ticket){

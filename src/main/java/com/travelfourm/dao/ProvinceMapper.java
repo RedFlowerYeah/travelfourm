@@ -16,5 +16,7 @@ public interface ProvinceMapper {
 
     List<Province> selectProvince();
 
+    int selectCountProvince();
+
     int insertProvince(Province province);
 }
