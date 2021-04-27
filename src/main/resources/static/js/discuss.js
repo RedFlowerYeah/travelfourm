@@ -120,6 +120,7 @@ function setDelete() {
     );
 }
 
+//管理员更新用户帖子板块
 function setUpdate() {
     //发送AJAX请求之前，将CSRF的令牌设置到消息的请求头中
     var token = $("meta[name='_csrf']").attr("content");
