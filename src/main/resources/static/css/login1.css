@@ -1,0 +1,59 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: url("https://travelfourm.oss-cn-shenzhen.aliyuncs.com/bg.jpg");
+    background-size: auto;
+    font-family: sans-serif;
+}
+
+.title1{
+    text-align: center;
+    padding: 50px 0 20px;
+}
+
+.title1 h1{
+    margin: 0;
+    padding: 0;
+    color: #262626;
+    text-transform: uppercase;
+    font-size: 36px;
+}
+
+.loginBox{
+    width: 50%;
+    height: 400px;
+    background: #FFFFFF;
+    margin: 0 auto;
+    border: 2px solid #fff;
+    box-shadow: 0 15px 40px rgba(0,0,0,.5);
+}
+
+.loginBox .left1{
+    float: left;
+    width: 50%;
+    height: 400px;
+    background: url("https://travelfourm.oss-cn-shenzhen.aliyuncs.com/bg2.jpg");
+    background-size: cover;
+    box-sizing: border-box;
+}
+
+.loginBox .right1{
+    float: right;
+    width: 50%;
+    height: 400px;
+    box-sizing: border-box;
+}
+
+.formbox{
+    width: 100%;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    height: auto;
+    background: #fff;
+}
+
+.nk-container {
+    position: relative;
+    height: auto;
+    min-height: 100%;
+}

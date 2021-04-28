@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:http="http://www.w3.org/1999/xhtml">
 <head>
     <!-- 必须的 meta 标签 -->
     <meta charset="utf-8">
@@ -11,6 +11,8 @@
     <!--图标库-->
     <link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
 
+    <!--霓虹灯css-->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 
     <link rel="stylesheet" th:href="@{/css/global.css}" />
 
@@ -22,8 +24,8 @@
         </header>
 
         <div class="main">
-            <div class="container" style="background: linear-gradient(to bottom, #82addb 0%, #ebb2b1 100%);">
-                <h3 style="color: #b3d7ff;"  th:text="${reportModel.title}"></h3>
+            <div class="container" style="background: url(https://travelfourm.oss-cn-shenzhen.aliyuncs.com/sea-edge-79ab30e2.png)">
+                <h3 class="fa fa-cloud neon" th:text="${reportModel.title}"></h3>
 
                 <div class="weather-banner-header">
                     <p class="weather-banner-header-left">请选择城市:
@@ -47,7 +49,7 @@
 
                 <div class="weather-banner-content">
                     <div class="weather-banner-content-left">
-                        <span class="weather-banner-content-city" th:text="${reportModel.report.city}"></span>
+                        <span class="weather-banner-content-city neon" th:text="${reportModel.report.city}"></span>
                     </div>
                     <div class="weather-banner-content-right">
                         当 前 天 气 气 温 为 ：

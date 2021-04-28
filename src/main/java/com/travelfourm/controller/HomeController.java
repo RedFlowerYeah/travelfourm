@@ -129,11 +129,17 @@ public class HomeController implements CommunityConstant {
     @GetMapping("/echarts")
     @ResponseBody
     public List<Integer> getJuhe(){
+
+        /***
+         * 将统计数据用list来存储
+         */
         int countUser = userService.countUser();
         int countDiscussPosts = discussPostService.countDiscussPosts();
         int countComment = commentService.countComment();
         int countProvinces = provinceService.countProvinces();
 
+        /**
+         * 从list中取出对应数据的统计*/
         List<Integer> count = new ArrayList<>();
         count.add(countUser);
         count.add(countDiscussPosts);
@@ -141,5 +147,10 @@ public class HomeController implements CommunityConstant {
         count.add(countProvinces);
 
         return count;
+    }
+
+    @GetMapping("/loader")
+    public String getLoader(){
+        return "/site/loader";
     }
 }

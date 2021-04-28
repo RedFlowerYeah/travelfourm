@@ -25,16 +25,14 @@ function publish() {
 		xhr.setRequestHeader(header,token);
 	})
 
-	//获取标题和内容以及模块选中
-	var title = $("#recipient-name").val();
-	var content = $("#message-text").val();
-
-	var modular = $("#province option:selected").val();
-	//发送异步请求（post）
-	$.post(
-		CONTEXT_PATH + "/discuss/add",
-		{"title":title,"content":content,"modular":modular},
-		function (data){
+	//发送异步请求（post改写为ajax）
+	$.ajax({
+		url: CONTEXT_PATH + "/discuss/add",
+		async: true,
+		type: 'POST',
+		datatype: "json",
+		data: {title:$("#recipient-name").val(),content:$("#message-text").val(),modular:$("#province option:selected").val()},
+		success:function(data) {
 			data = $.parseJSON(data);
 			//在提示框中显示返回的消息
 			$("#hintBody").text(data.msg);
@@ -48,7 +46,7 @@ function publish() {
 				}
 			}, 2000);
 		}
-	);
+	});
 }
 
 function loadProvince(){
