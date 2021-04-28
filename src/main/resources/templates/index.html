@@ -19,6 +19,8 @@
     <link rel="stylesheet" th:href="@{/css/font-awesome-4.7.0/css/font-awesome.min.css}">
 
     <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/publish.css}">
+    <link rel="stylesheet" th:href="@{/css/button.css}">
     <title>SpringBoot旅游论坛首页</title>
     <style>
         /* Make the image fully responsive */
@@ -183,7 +185,12 @@
                         </a>
                     </li>
                 </ul>
-                <button type="button" class="btn btn-primary btn-sm position-absolute rt-0" data-toggle="modal" data-target="#publishModal" th:if="${loginUser!=null}">我要发布</button>
+
+<!--                <button type="button" class="btn btn-primary btn-sm position-absolute rt-0" data-toggle="modal" data-target="#publishModal" th:if="${loginUser!=null}">我要发布</button>-->
+                <button class="corner-button position-absolute rt-0" data-toggle="modal" data-target="#publishModal" th:if="${loginUser!=null}">
+                    <span>我要发布</span>
+                </button>
+                </br>
             </div>
 
             <!-- 弹出框发布帖子的输入框 -->
@@ -334,8 +341,12 @@
                         <div class="text-center">
                             疫情出行指南
                             <div class="row">
-                                <a class="text-info" style="margin-left: 70px" th:href="@{/CVO/city}">查看当前疫情城市</a>
-                                <a class="text-info" style="margin-left: 70px" th:href="@{/queryCVO}">查询核酸检测机构</a>
+<!--                                <a class="text-info" style="margin-left: 70px" th:href="@{/CVO/city}">查看当前疫情城市</a>-->
+<!--                                <a class="text-info" style="margin-left: 70px" th:href="@{/queryCVO}">查询核酸检测机构</a>-->
+                                <a th:href="@{/CVO/city}" style="background: #FFFFFF;text-transform:uppercase;font-size:14px
+                                ;margin-left: 85px" class="buttontest">查看当前疫情城市</a>
+                                <a th:href="@{/queryCVO}" style="background: #FFFFFF;text-transform:uppercase;font-size:14px
+                                ;margin-left: 85px" class="buttontest">查询核酸检测机构</a>
                             </div>
                         </div>
                     </div>
