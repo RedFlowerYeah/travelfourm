@@ -21,18 +21,13 @@
     <link rel="stylesheet" th:href="@{/css/global.css}" />
     <link rel="stylesheet" th:href="@{/css/publish.css}">
     <link rel="stylesheet" th:href="@{/css/button.css}">
+    <link rel="stylesheet" th:href="@{/css/clock.css}">
+    <link rel="stylesheet" th:href="@{/css/backtoTop.css}">
+
     <title>SpringBoot旅游论坛首页</title>
-    <style>
-        /* Make the image fully responsive */
-        .carousel-inner img {
-            width: 100%;
-            height: 100%;
-        }
-        .gotop{position: fixed;bottom: 10%;z-index: 100;width: 2rem;background:#007bff;color: #fff;padding: .5rem;border-radius: .5rem;font-size: .5rem;text-decoration: none;}
-        .gotop:hover,.gotop:active{background:#007bff!important;color: #fff;text-decoration: none}
-    </style>
 </head>
 <body>
+<div class="scrollTop" onclick="scrollToTop();"></div>
 <div class="nk-container">
     <!-- 头部 -->
     <header class="bg-dark sticky-top" th:fragment="header">
@@ -325,8 +320,34 @@
 
                 <!--右边部分-->
                 <div class="col-sm-3">
+                    <!--时钟部分-->
+                    <div id="clock">
+                        <h2>This time is now</h2>
+                        <div id="time">
+                            <div><span id="hour">00</span><span>Hours</span></div>
+                            <div><span id="minutes">00</span><span>Minutes</span></div>
+                            <div><span id="seconds">00</span><span>Seconds</span></div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        function clock() {
+                            var hours = document.getElementById('hour');
+                            var minutes = document.getElementById('minutes');
+                            var seconds = document.getElementById('seconds');
+
+                            var h = new Date().getHours();
+                            var m = new Date().getMinutes();
+                            var s = new Date().getSeconds();
+
+                            hours.innerHTML = h;
+                            minutes.innerHTML = m;
+                            seconds.innerHTML = s;
+                        }
+                        var interval = setInterval(clock,1000);
+                    </script>
+
                     <!-- 用户活跃列表 -->
-                    <div class="card bg-light" style="width: auto;">
+                    <div class="card bg-light" style="width: auto;margin-top: 120px">
                             <p class="text-center">活跃用户排行</p>
                         <li class="media pb-2 pt-2 mb-2" th:each="map1:${discussPosts1}">
                             <a style="margin-left: 50px;" th:href="@{|/user/profile/${map1.user.id}|}" >
@@ -335,27 +356,24 @@
                             <a style="margin-top: 8px" th:text="${map1.user.username}">测试</a>
                         </li>
                     </div>
+
+
                     <!-- 疫情出行指南 -->
-                    <div class="card" style="margin-top: 140px;width: auto;">
+                    <div class="card" style="margin-top: 105px;width: auto;">
                         <!-- 标题 -->
                         <div class="text-center">
                             疫情出行指南
                             <div class="row">
 <!--                                <a class="text-info" style="margin-left: 70px" th:href="@{/CVO/city}">查看当前疫情城市</a>-->
 <!--                                <a class="text-info" style="margin-left: 70px" th:href="@{/queryCVO}">查询核酸检测机构</a>-->
-                                <a th:href="@{/CVO/city}" style="background: #FFFFFF;text-transform:uppercase;font-size:14px
-                                ;margin-left: 85px" class="buttontest">查看当前疫情城市</a>
-                                <a th:href="@{/queryCVO}" style="background: #FFFFFF;text-transform:uppercase;font-size:14px
-                                ;margin-left: 85px" class="buttontest">查询核酸检测机构</a>
+                                <a class="buttontest" style="margin-left: 50px" th:href="@{/CVO/city}"><span>查看当前疫情城市</span></a>
+                                <a class="buttontest" style="margin-top: 60px;margin-left: 50px" th:href="@{/queryCVO}">
+                                    <span>查询核酸检测机构</span>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="float-right">
-
-                <a class="d-none d-sm-block gotop" href="javascript:scroll(0,0)">返回顶部</a>
             </div>
         </div>
     </div>
@@ -384,5 +402,18 @@
 
 <script th:src="@{/js/global.js}"></script>
 <script th:src="@{/js/index.js}"></script>
+<script type="text/javascript">
+    window.addEventListener('scroll',function () {
+        var scroll = document.querySelector('.scrollTop');
+        scroll.classList.toggle("active",window.scrollY > 500)
+    })
+
+    function scrollToTop() {
+        window.scrollTo({
+            top:0,
+            behavior: 'smooth'
+        })
+    }
+</script>
 </body>
 </html>

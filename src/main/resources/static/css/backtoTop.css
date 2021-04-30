@@ -1,0 +1,23 @@
+.scrollTop{
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 60px;
+    height: 60px;
+    background: #fff url("https://travelfourm.oss-cn-shenzhen.aliyuncs.com/up.png");
+    border-radius: 50%;
+    background-size: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    z-index: 10000;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.scrollTop.active{
+    bottom: 40px;
+    visibility: visible;
+    opacity: 1;
+}
