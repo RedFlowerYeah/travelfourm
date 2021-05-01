@@ -23,6 +23,7 @@
     <link rel="stylesheet" th:href="@{/css/button.css}">
     <link rel="stylesheet" th:href="@{/css/clock.css}">
     <link rel="stylesheet" th:href="@{/css/backtoTop.css}">
+    <link rel="stylesheet" th:href="@{/css/loading1.css}">
 
     <title>SpringBoot旅游论坛首页</title>
 </head>
@@ -126,8 +127,9 @@
 
     <!-- 内容 -->
     <div class="main">
+        <div id="loadDiv" class="lds-css" style="visibility:hidden">
+            <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
         <div class="container">
-
             <div class="row">
             <!-- 左边部分-->
             <div class="col-sm-9">
@@ -185,7 +187,7 @@
                 <button class="corner-button position-absolute rt-0" data-toggle="modal" data-target="#publishModal" th:if="${loginUser!=null}">
                     <span>我要发布</span>
                 </button>
-                </br>
+
             </div>
 
             <!-- 弹出框发布帖子的输入框 -->
@@ -402,18 +404,6 @@
 
 <script th:src="@{/js/global.js}"></script>
 <script th:src="@{/js/index.js}"></script>
-<script type="text/javascript">
-    window.addEventListener('scroll',function () {
-        var scroll = document.querySelector('.scrollTop');
-        scroll.classList.toggle("active",window.scrollY > 500)
-    })
-
-    function scrollToTop() {
-        window.scrollTo({
-            top:0,
-            behavior: 'smooth'
-        })
-    }
-</script>
+<script th:src="@{/js/backToTop.js}"></script>
 </body>
 </html>

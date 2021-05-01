@@ -1,5 +1,6 @@
 $(function(){
 	$("#publishBtn").click(publish);
+	closeLoading();
 	$(function() {
 		$(".selectpicker").selectpicker({
 			noneSelectedText : '请选择'    //默认显示内容
@@ -32,7 +33,11 @@ function publish() {
 		type: 'POST',
 		datatype: "json",
 		data: {title:$("#recipient-name").val(),content:$("#message-text").val(),modular:$("#province option:selected").val()},
+		beforeSend: function (XMLHttpRequest) {
+			loading();
+		},
 		success:function(data) {
+			closeLoading();
 			data = $.parseJSON(data);
 			//在提示框中显示返回的消息
 			$("#hintBody").text(data.msg);
@@ -75,4 +80,26 @@ function loadProvince(){
 			alert('查询出错');
 		}
 	});
+}
+
+// function loadingEffect() {
+// 	var loading = $('#loadDiv');
+// 	loading.hide();
+// 	$(document).ajaxStart(function () {
+// 		loading.show();
+// 	}).ajaxStop(function () {
+// 		loading.hide();
+// 	});
+// }
+
+function loading() {
+	document.getElementById("loadDiv").style.visibility="visible";//显示
+}
+
+function autoCloseLoading(){
+	setTimeout(function(){closeLoading()},15000);
+}
+
+function closeLoading() {
+	document.getElementById("loadDiv").style.visibility="hidden";//隐藏
 }
