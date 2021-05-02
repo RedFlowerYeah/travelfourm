@@ -20,6 +20,7 @@
 
 	<link rel="stylesheet" th:href="@{/css/global.css}" />
 	<link rel="stylesheet" th:href="@{/css/discuss-detail.css}">
+	<link rel="stylesheet" th:href="@{/css/loading1.css}">
 
 	<title>帖子详情</title>
 </head>
@@ -31,6 +32,8 @@
 
 		<!-- 内容 -->
 		<div class="main">
+			<div id="loadDiv" class="lds-css" style="visibility:hidden">
+				<div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
 			<!-- 帖子详情 -->
 			<div class="container">
 

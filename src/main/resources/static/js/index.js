@@ -16,6 +16,7 @@ $(function(){
 	});
 });
 
+//发布帖子
 function publish() {
 	$("#publishModal").modal("hide");
 
@@ -54,6 +55,7 @@ function publish() {
 	});
 }
 
+//加载省份
 function loadProvince(){
 	$.ajax({
 		url : CONTEXT_PATH + "/getProvince",    //后台controller中的请求路径

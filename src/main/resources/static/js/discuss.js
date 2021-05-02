@@ -3,6 +3,8 @@ $(function () {
     $("#wonderfulBtn").click(setWonderful);
     $("#deleteBtn").click(setDelete);
     $("#updateBtn").click(setUpdate);
+
+    closeLoading();
     $(function() {
         $(".selectpicker").selectpicker({
             noneSelectedText : '请选择'    //默认显示内容
@@ -18,6 +20,7 @@ $(function () {
     });
 });
 
+//点赞
 function like(btn, entityType, entityId, entityUserId, postId) {
     //发送AJAX请求之前，将CSRF的令牌设置到消息的请求头中
     var token = $("meta[name='_csrf']").attr("content");
@@ -105,19 +108,40 @@ function setDelete() {
 
     });
 
-    $.post(
-        CONTEXT_PATH + "/discuss/delete",
-        {"id":$("#postId").val()},
-        function (data) {
+    // $.post(
+    //     CONTEXT_PATH + "/discuss/delete",
+    //     {"id":$("#postId").val()},
+    //     function (data) {
+    //         data = $.parseJSON(data);
+    //         if (data.code == 0) {
+    //             window.location.reload();
+    //             location.href = CONTEXT_PATH + "/index";
+    //         }else{
+    //             alert(data.msg)
+    //         }
+    //     }
+    // );
+
+    $.ajax({
+        url:CONTEXT_PATH + "/discuss/delete",
+        async: true,
+        type: 'POST',
+        datatype: 'json',
+        data:{id:$("#postId").val()},
+        beforeSend:function (XMLRequest) {
+            loading();
+        },
+        success:function (data) {
+            closeLoading();
             data = $.parseJSON(data);
             if (data.code == 0) {
                 window.location.reload();
                 location.href = CONTEXT_PATH + "/index";
-            }else{
-                alert(data.msg)
+            }else {
+                alert(data.msg);
             }
         }
-    );
+    });
 }
 
 //管理员更新用户帖子板块
@@ -172,4 +196,16 @@ function loadProvince(){
             alert('查询出错');
         }
     });
+}
+
+function loading() {
+    document.getElementById("loadDiv").style.visibility="visible";//显示
+}
+
+function autoCloseLoading(){
+    setTimeout(function(){closeLoading()},15000);
+}
+
+function closeLoading() {
+    document.getElementById("loadDiv").style.visibility="hidden";//隐藏
 }
