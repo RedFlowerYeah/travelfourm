@@ -87,7 +87,7 @@
 
 									<!--此处暂时有bug，如果该用户未登陆，那么就不允许他点赞-->
 									<a href="javascript:;" th:onclick="|like(this,1,${post.id},${post.userId},${post.id});|" class="text-primary">
-										<b th:text="${likeStatus==1?' 已赞':' 赞'}">
+										<b th:text="${likeStatus==1?'已赞':' 赞'}">
 											赞
 										</b>
 										(<i th:text="${likeCount}"></i>)
@@ -133,7 +133,7 @@
 						</a>
 						<div class="media-body">
 							<div class="mt-0">
-								<span class="font-size-12 text-success" th:utext="${cvo.user.username}">掉脑袋切切</span>
+								<span class="font-size-14 text-success" th:utext="${cvo.user.username}">掉脑袋切切</span>
 								<span class="badge badge-secondary float-right floor">
 									<i th:text="${page.offset + cvoStat.count}">1</i>#
 								</span>
