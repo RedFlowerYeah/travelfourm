@@ -38,9 +38,6 @@ public class COV19Controller {
     private City2Service city2Service;
 
     @Autowired
-    private HsjcHospitalService hsjcHospitalService;
-
-    @Autowired
     private HsjcDataService hsjcDataService;
 
     @GetMapping("/city")

@@ -6,7 +6,6 @@ import com.travelfourm.vo.HsjcVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,8 +23,8 @@ public class HsjcDataService {
 
         HsjcVO hsjcVO = covhsjcVO.getResult();
 
-        List<HsjcHospitalVO> list = hsjcVO.getData();
+        List<HsjcHospitalVO> hospitalVOS = hsjcVO.getData();
 
-        return list;
+        return hospitalVOS;
     }
 }

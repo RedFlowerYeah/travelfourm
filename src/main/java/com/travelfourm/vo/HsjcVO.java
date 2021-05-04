@@ -1,7 +1,6 @@
 package com.travelfourm.vo;
 
 import lombok.Data;
-import org.apache.catalina.LifecycleState;
 
 import java.io.Serializable;
 import java.util.List;
