@@ -3,7 +3,8 @@ package com.travelfourm.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travelfourm.Util.RedisConstant;
 import com.travelfourm.Util.StatusCodeConstant;
-import com.travelfourm.vo.WeatherResponseVO;
+import com.travelfourm.vo.CovhsjcVO;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,83 +18,70 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @Author 34612
- * @CreateTime 2021/4/1 16:21
- * RestTemplate：用于HTTP通信。
- * 如果使用HttpClien进行http通信，不仅代码复杂，还得手动资源回收等。
- * RestTemplate是Spring提供的用于访问Rest服务的客户端，
- * RestTemplate提供了多种便捷访问远程Http服务的方法,能够大大提高客户端的编写效率。
- * 由于两个方法中都是通过RestTemplate进行http通信，并将返回的json数据转换为java对象，
- * 所以，便可将相同的代码进行抽取为一个共同的方法（重构）
+ * @CreateTime 2021/5/4 9:55
  */
-
+@Slf4j
 @Service
-public class WeatherService {
+public class HsjcHospitalService {
 
-    private static final Logger logger = LoggerFactory.getLogger(WeatherService.class);
-
-    private static final String WEATHER_URL = "http://wthrcdn.etouch.cn/weather_mini?";
+    private static final Logger logger = LoggerFactory.getLogger(HsjcHospitalService.class);
 
     @Autowired
     private RestTemplate restTemplate;
 
-    /**
-     * 增加Redis缓存*/
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    /**
-     * 根据id查询天气信息*/
-    public WeatherResponseVO getDataByCityId(String cityId){
-        String url = WEATHER_URL + "citykey=" + cityId;
+    private static final String CVO_HSJC = "http://apis.juhe.cn/springTravel/hsjg?";
 
-        return doGetWeather(url,WeatherResponseVO.class);
+    String key = "306c95c88704936d00d1c17284a93f7b";
+
+    public CovhsjcVO getCovHsjc(String cityId){
+        String url = CVO_HSJC + "key=" + key + "&city_id=" + cityId;
+
+        return doGetCovhsjc(url,CovhsjcVO.class);
     }
 
-    /**
-     * 方法重构
-     * <T> T表示返回值是一个泛型，传递啥，就返回啥类型的数据*/
-    private <T> T doGetWeather(String uri, Class<T> type) {
-        String key = uri;
+    private <T> T doGetCovhsjc(String url,Class<T> type){
+        String key = url;
         String strBody = null;
 
         ValueOperations<String ,String> ops = redisTemplate.opsForValue();
 
         /**
-         * 因为第三方接口调用有限制，所以先将数据存储到缓存中*/
+         * 先从缓存中查询数据*/
         if (redisTemplate.hasKey(key)){
-            logger.info("Redis缓存中存在天气预报");
+            log.info("Redis中存在缓存核酸检测机构信息");
             strBody = ops.get(key);
-        }else{
-            logger.info("Redis缓存中不存在天气预报，开始调用第三方接口");
+        }else {
+            log.info("Redis缓存中不存在缓存核酸检测机构信息，开始调用第三方接口");
 
             /**
-             * 缓存中没有数据，调用第三方api*/
-            ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
-
+             * 缓存中不存在数据，开始调用第三方接口*/
+            ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
             if (StatusCodeConstant.OK == responseEntity.getStatusCodeValue()) {
                 strBody = responseEntity.getBody();
             }
 
-            ops.set(key , strBody , RedisConstant.TIME_OUT, TimeUnit.SECONDS);
+            /**
+             * 写入Redis*/
+            ops.set(key,strBody, RedisConstant.TIME_OUT, TimeUnit.SECONDS);
         }
 
-        /**
-         * 使用了 objectMapper.readValue()方法将json字符串转换为java对象
-         * （json字符串中的key要与对象的属性名及类型相对应）*/
+
         ObjectMapper objectMapper = new ObjectMapper();
         T t = null;
-
         try {
             t = objectMapper.readValue(strBody, type);
         } catch (Exception e) {
-            logger.error("Error!", e);
+            log.error("Error!", e);
         }
         return t;
     }
 
     public void syncDataByCityId(String cityId) {
-        String uri = WEATHER_URL + "citykey=" + cityId;
-        saveWeatherData(uri);
+        String uri = CVO_HSJC + "key=" + key + "&city_id=" + cityId;
+        saveHsjc(uri);
     }
 
     /**
@@ -102,7 +90,7 @@ public class WeatherService {
      * @param uri
      * 考虑到接口的并发数问题，先选用部分城市，后续有需要可以接其他城市或其他接口
      */
-    private void saveWeatherData(String uri) {
+    private void saveHsjc(String uri) {
         String key = uri;
         String strBody = null;
         ValueOperations<String, String> ops = redisTemplate.opsForValue();

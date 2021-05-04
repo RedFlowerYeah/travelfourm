@@ -1,6 +1,7 @@
 package com.travelfourm.config;
 
 import com.travelfourm.quartz.CVODataSyncJob;
+import com.travelfourm.quartz.HsjcDataSyncJob;
 import com.travelfourm.quartz.PostScoreRefreshJob;
 import com.travelfourm.quartz.WeatherDataSyncJob;
 import org.quartz.*;
@@ -105,6 +106,35 @@ public class QuartzConfig {
         /**
          * 这里定时任务，60分钟去调一次api接口*/
         factoryBean.setRepeatInterval(1000 * 60 * 60);
+        factoryBean.setJobDataMap(new JobDataMap());
+        return factoryBean;
+    }
+
+    /**
+     * 刷新核酸检测机构
+     * @return
+     */
+    @Bean
+    public JobDetailFactoryBean HsjcRefreshJobDetail(){
+        JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
+        factoryBean.setJobClass(HsjcDataSyncJob.class);
+        factoryBean.setName("HsjcRefreshJob");
+        factoryBean.setGroup("HsjcJobGroup");
+        factoryBean.setDurability(true);
+        factoryBean.setRequestsRecovery(true);
+        return factoryBean;
+    }
+
+    @Bean
+    public SimpleTriggerFactoryBean HsjcRefreshTrigger(JobDetail HsjcRefreshJobDetail){
+        SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
+        factoryBean.setJobDetail(HsjcRefreshJobDetail);
+        factoryBean.setName("HsjcRefreshTrigger");
+        factoryBean.setGroup("HsjcTriggerGroup");
+
+        /**
+         * 这里定时任务，7天去调一次api接口*/
+        factoryBean.setRepeatInterval(1000 * 60 * 60 * 24 * 7);
         factoryBean.setJobDataMap(new JobDataMap());
         return factoryBean;
     }

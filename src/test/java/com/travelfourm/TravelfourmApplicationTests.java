@@ -7,6 +7,7 @@ import com.travelfourm.entity.DiscussPost;
 import com.travelfourm.entity.Province;
 import com.travelfourm.entity.User;
 import com.travelfourm.service.*;
+import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
@@ -153,5 +154,25 @@ public class TravelfourmApplicationTests implements ApplicationContextAware {
     public void getCountUser(){
         int count = userService.countUser();
         logger.info(String.valueOf(count));
+    }
+
+    @Autowired
+    private HsjcHospitalService hsjcHospitalService;
+
+    @Test
+    public void getHsjc(){
+
+        String cityId = "10028";
+
+        logger.info(String.valueOf(hsjcHospitalService.getCovHsjc(cityId)));
+    }
+
+    @Autowired
+    private City2Service city2Service;
+
+    @SneakyThrows
+    @Test
+    public void getCity2(){
+        logger.info(String.valueOf(city2Service.listCity1()));
     }
 }

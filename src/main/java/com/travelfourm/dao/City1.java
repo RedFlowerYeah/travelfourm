@@ -9,20 +9,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @Author 34612
- * @CreateTime 2021/4/1 18:47
- * 对接xml文件的citylist
+ * @CreateTime 2021/5/4 10:36
  */
-
 @Data
 @XmlRootElement(name = "d")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class City {
+public class City1 {
     @XmlAttribute(name = "d1")
     private String cityId;
     @XmlAttribute(name = "d2")
     private String cityName;
-    @XmlAttribute(name = "d3")
-    private String cityCode;
-    @XmlAttribute(name = "d4")
-    private String province;
 }

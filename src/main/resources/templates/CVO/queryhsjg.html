@@ -22,7 +22,15 @@
 
         <div class="main">
             <div class="container" style="background: linear-gradient(to bottom, #82addb 0%, #ebb2b1 100%);">
-                <div id="target"></div>
+                <p class="weather-banner-header-left">请选择城市:
+                    <select style="width: 80px" class="custom-select" id="selectCityId">
+                        <option th:each="city : ${reportModel.cityList}"
+                                th:value="${city.cityId}"
+                                th:text="${city.cityName}"
+                                th:selected="${city.cityId eq reportModel.cityId}">
+                        </option>
+                    </select>
+                </p>
         </div>
     </div>
 
