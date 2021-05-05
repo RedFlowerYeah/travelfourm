@@ -1,15 +1,12 @@
 package com.travelfourm.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.travelfourm.Util.*;
 import com.travelfourm.entity.*;
 import com.travelfourm.event.EventProducer;
 import com.travelfourm.service.*;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.store.LockFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -304,7 +301,7 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     /**
-     * 修改帖子*/
+     * 管理员修改帖子模块*/
     @PostMapping("/updateModular")
     @ResponseBody
     public String setModular(int id,String modular){
@@ -313,6 +310,8 @@ public class DiscussPostController implements CommunityConstant {
         return CommunityUtil.getJsonString(0);
     }
 
+    /**
+     * 用户修改帖子*/
     @PostMapping("/updateTest")
     @ResponseBody
     public String update(int id,String title,String content,String modular){
@@ -426,6 +425,17 @@ public class DiscussPostController implements CommunityConstant {
         mailClient.sendMail("346125735@qq.com","用户申诉",content1);
 
         return CommunityUtil.getJsonString(0);
+    }
+
+    /**
+     * 修改的查询接口
+     * @return*/
+    @GetMapping("/showSome")
+    @ResponseBody
+    public String showSome(int id){
+        DiscussPost discussPost = discussPostService.findDiscussPostById(id);
+        String str = JSON.toJSONString(discussPost);
+        return str;
     }
 
     /**表格跳转页面*/

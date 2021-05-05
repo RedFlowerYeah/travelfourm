@@ -148,9 +148,4 @@ public class HomeController implements CommunityConstant {
 
         return count;
     }
-
-    @GetMapping("/loader")
-    public String getLoader(){
-        return "/site/loader";
-    }
 }

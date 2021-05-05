@@ -56,6 +56,42 @@
 						<!--帖子列表-->
 						<li class="media media pb-3 pt-3 mb-3 border-bottom" th:each="map:${discussPosts}">
 
+							<!-- 修改模态框 -->
+							<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-lg" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="updateModalLabel">修改帖子信息</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<form id="updateForm">
+												<input type="hidden" id="postId">
+												<div class="form-group">
+													<label for="recipient-name" class="col-form-label">标题：</label>
+													<input type="text" class="form-control" id="recipient-name">
+												</div>
+												<div class="form-group">
+													<label for="message-text" class="col-form-label">正文：</label>
+													<textarea class="form-control" id="message-text" rows="15"></textarea>
+												</div>
+												<div class="form-group">
+													<!--目前提交的值有问题-->
+													<label class="col-form-label">请选择你所需要发布到的板块：</label>
+													<select id="province" name="province" class="selectpicker" type="text" data-live-search="true">
+													</select>
+												</div>
+											</form>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+											<button type="button" class="btn btn-primary" id="updateBtn1">修改</button>
+										</div>
+									</div>
+								</div>
+							</div>
 
 							<!--用户头像-->
 							<a th:href="@{|/user/profile/${map.user.id}|}">
@@ -65,10 +101,9 @@
 							<div class="media-body">
 
 								<div class="float-right">
-									<input type="hidden" id="postId" th:value="${map.post.id}">
 
 									<button type="button" class="fa fa-pencil-square-o btn btn-primary"
-											data-toggle="modal" data-target="#updateModal">
+											th:onclick="'javascript:query('+${map.post.id}+')'">
 										修改
 									</button>
 
@@ -77,41 +112,7 @@
 										删除
 									</button>
 
-									<!-- 修改模态框 -->
-									<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
-										<div class="modal-dialog modal-lg" role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title" id="updateModalLabel">修改帖子信息</h5>
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-														<span aria-hidden="true">&times;</span>
-													</button>
-												</div>
-												<div class="modal-body">
-													<form>
-														<div class="form-group">
-															<label for="recipient-name" class="col-form-label">标题：</label>
-															<input type="text" class="form-control" id="recipient-name" th:value="${map.post.title}">
-														</div>
-														<div class="form-group">
-															<label for="message-text" class="col-form-label">正文：</label>
-															<textarea class="form-control" id="message-text" rows="15" th:value="${map.post.content}"></textarea>
-														</div>
-														<div class="form-group">
-															<!--目前提交的值有问题-->
-															<label class="col-form-label">请选择你所需要发布到的板块：</label>
-															<select id="province" name="province" class="selectpicker" type="text" data-live-search="true">
-															</select>
-														</div>
-													</form>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-													<button type="button" class="btn btn-primary" id="updateBtn1">修改</button>
-												</div>
-											</div>
-										</div>
-									</div>
+
 									<!-- 模态框（也就是俗称的弹窗设定）此处用来管理员删除帖子并给邮箱发布相应的删除信息 -->
 									<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog">
@@ -169,16 +170,43 @@
 		</div>
 	</div>
 
-	<!-- 选项 1：jQuery 和 Bootstrap 集成包（集成了 Popper） -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<!-- 选项 1：jQuery 和 Bootstrap 集成包（集成了 Popper） -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
-	<script th:src="@{/js/global.js}"></script>
-	<script th:src="@{/js/discuss.js}"></script>
-	<script th:src="@{/js/delDiscussOrCom.js}"></script>
+<script th:src="@{/js/global.js}"></script>
+<script th:src="@{/js/discuss.js}"></script>
+<script th:src="@{/js/delDiscussOrCom.js}"></script>
+<script type="text/javascript">
+
+	$("body").on("hide.bs.modal","#updateModal",function(){   //当模态框关闭时执行
+		$(".modal-body").load(location.href+" .modal-body");//刷新局部div
+		window.location.reload(); // 刷新当前页面.
+		document.getElementById("updateForm").reset();//重置表单
+	});
+	function query(id) {
+		// alert('ajax请求之前');
+		$.ajax({
+			url:CONTEXT_PATH + "/discuss/showSome/",
+			type: 'GET',
+			dataType: 'JSON',
+			data:{"id":id},
+
+			success:function (data) {
+				$("#postId").val(data.id);
+				$("#recipient-name").val(data.title);
+				$("#message-text").val(data.content);
+				$("#updateModal").modal("show");
+			},
+			error:function () {
+				alert('请求错误，请查看请求参数');
+			},
+		});
+	}
+</script>
 </body>
 </html>

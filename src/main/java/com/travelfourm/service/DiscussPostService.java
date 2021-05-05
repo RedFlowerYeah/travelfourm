@@ -141,7 +141,7 @@ public class DiscussPostService {
     }
 
     /**
-     * 查找用户自己的忒帖子*/
+     * 查找用户自己的帖子*/
     public int findDiscussPostRows(int userId){
 
         logger.debug("load post rows from DataBase");
@@ -217,6 +217,12 @@ public class DiscussPostService {
      * 根据id查询帖子*/
     public DiscussPost findDiscussPostById(int id){
         return discussPostMapper.selectDiscussPostById(id);
+    }
+
+    /**
+     * 根据User_Id查询帖子*/
+    public List<DiscussPost> findDiscussPostByUserId(int userId){
+        return discussPostMapper.selectDiscussUseId(userId);
     }
 
     /**
