@@ -99,4 +99,8 @@
     <update id="updateModular">
         update discuss_post set modular = #{modular} where id = #{id}
     </update>
+
+    <update id="updateDiscussPostAll">
+        update discuss_post set title = #{title},content = #{content},modular = #{modular} where id = #{id}
+    </update>
 </mapper>

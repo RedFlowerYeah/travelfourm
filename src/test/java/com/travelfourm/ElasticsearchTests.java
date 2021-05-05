@@ -4,6 +4,7 @@ import com.travelfourm.dao.DiscussPostMapper;
 import com.travelfourm.dao.elasticsearch.DiscussPostRepository;
 
 import com.travelfourm.entity.DiscussPost;
+import com.travelfourm.service.ElasticsearchService;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,9 @@ public class ElasticsearchTests {
     private DiscussPostRepository discussRepository;
 
     @Autowired
+    private ElasticsearchService elasticsearchService;
+
+    @Autowired
     private ElasticsearchTemplate elasticTemplate;
 
     @Test
@@ -44,12 +48,6 @@ public class ElasticsearchTests {
 
     @Test
     public void testDelete(){
-        discussRepository.deleteById(178);
-        discussRepository.deleteById(179);
-        discussRepository.deleteById(180);
-        discussRepository.deleteById(181);
-        discussRepository.deleteById(182);
-        discussRepository.deleteById(183);
+        discussRepository.deleteById(223);
     }
-
 }

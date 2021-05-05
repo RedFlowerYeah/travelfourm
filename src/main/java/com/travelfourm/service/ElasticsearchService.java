@@ -1,5 +1,6 @@
 package com.travelfourm.service;
 
+import com.travelfourm.dao.DiscussPostMapper;
 import com.travelfourm.dao.elasticsearch.DiscussPostRepository;
 import com.travelfourm.entity.DiscussPost;
 import org.elasticsearch.action.search.SearchResponse;
@@ -39,6 +40,9 @@ public class ElasticsearchService {
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+    @Autowired
+    private DiscussPostMapper discussPostMapper;
+
     /**
      * 保存帖子*/
     public void saveDiscussPost(DiscussPost post){
@@ -50,6 +54,17 @@ public class ElasticsearchService {
     public void deleteDiscussPost(int id){
         discussPostRepository.deleteById(id);
     }
+
+    /**
+     * 更新帖子*/
+    public void updateDiscussPost(int id,String title,String content,String modular){
+        DiscussPost discussPost = discussPostMapper.selectDiscussPostById(id);
+        discussPost.setTitle(title);
+        discussPost.setContent(content);
+        discussPost.setModular(modular);
+        discussPostRepository.save(discussPost);
+    }
+
     /**
      * 分页查找帖子
      * 先通过new一个NativeSearchQueryBuilder来构建一个查询,是springdata中的一个查询

@@ -41,6 +41,9 @@ public class DiscussPostController implements CommunityConstant {
     private CommentService commentService;
 
     @Autowired
+    private ElasticsearchService elasticsearchService;
+
+    @Autowired
     private LikeService likeService;
 
     @Autowired
@@ -307,6 +310,14 @@ public class DiscussPostController implements CommunityConstant {
     public String setModular(int id,String modular){
         discussPostService.updateModular(id,modular);
 
+        return CommunityUtil.getJsonString(0);
+    }
+
+    @PostMapping("/updateTest")
+    @ResponseBody
+    public String update(int id,String title,String content,String modular){
+        elasticsearchService.updateDiscussPost(id,title,content,modular);
+        discussPostService.updateDiscussPostAll(id,title,content,modular);
         return CommunityUtil.getJsonString(0);
     }
 

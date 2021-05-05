@@ -46,4 +46,6 @@ public interface DiscussPostMapper {
     int updateScore(int id, double score);
 
     int updateModular(int id,String modular);
+
+    int updateDiscussPostAll(int id,String title,String content,String modular);
 }

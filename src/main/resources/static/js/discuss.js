@@ -3,6 +3,7 @@ $(function () {
     $("#wonderfulBtn").click(setWonderful);
     $("#deleteBtn").click(setDelete);
     $("#updateBtn").click(setUpdate);
+    $("#updateBtn1").click(setUpdate1);
 
     closeLoading();
     $(function() {
@@ -167,6 +168,31 @@ function setUpdate() {
             }
         }
     );
+}
+
+//用户更新帖子
+function setUpdate1() {
+    //发送AJAX请求之前，将CSRF的令牌设置到消息的请求头中
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function (e, xhr, options) {
+        //xhr发送异步请求的核心对象
+        xhr.setRequestHeader(header, token);
+    });
+
+    $.ajax({
+        url:CONTEXT_PATH + "/discuss/updateTest",
+        type:'POST',
+        async:false,
+        datatype:'json',
+        data:{id:$("#postId").val(),title:$("#recipient-name").val(),content:$("#message-text").val(),modular:$("#province").val()},
+        success:function (data) {
+            data = $.parseJSON(data);
+            //在提示框中显示返回的消息
+            $("#hintBody").text(data.msg);
+            window.location.reload();
+        }
+    })
 }
 
 //加载板块选项

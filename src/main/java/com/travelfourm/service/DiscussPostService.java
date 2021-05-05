@@ -254,4 +254,10 @@ public class DiscussPostService {
     public int updateModular(int id ,String modular){
         return discussPostMapper.updateModular(id , modular);
     }
+
+    /**
+     * 用户更新帖子*/
+    public int updateDiscussPostAll(int id,String title,String content,String modular){
+        return discussPostMapper.updateDiscussPostAll(id,title,content,modular);
+    }
 }
