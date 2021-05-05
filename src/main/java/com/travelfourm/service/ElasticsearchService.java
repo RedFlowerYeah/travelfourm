@@ -56,6 +56,13 @@ public class ElasticsearchService {
     }
 
     /**
+     * 更新帖子模块*/
+    public void updateDiscussPostModular(int id,String modular){
+        DiscussPost discussPost = discussPostMapper.selectDiscussPostById(id);
+        discussPost.setModular(modular);
+    }
+
+    /**
      * 更新帖子*/
     public void updateDiscussPost(int id,String title,String content,String modular){
         DiscussPost discussPost = discussPostMapper.selectDiscussPostById(id);

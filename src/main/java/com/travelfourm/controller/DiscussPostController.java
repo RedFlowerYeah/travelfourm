@@ -305,6 +305,7 @@ public class DiscussPostController implements CommunityConstant {
     @PostMapping("/updateModular")
     @ResponseBody
     public String setModular(int id,String modular){
+        elasticsearchService.updateDiscussPostModular(id,modular);
         discussPostService.updateModular(id,modular);
 
         return CommunityUtil.getJsonString(0);
