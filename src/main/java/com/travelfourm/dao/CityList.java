@@ -11,6 +11,8 @@ import java.util.List;
 /**
  * @Author 34612
  * @CreateTime 2021/4/1 18:47
+ * @XmlRootElement xml文件的根元素
+ * @XmlElement xml文件的所要转换的元素
  * 转换格式
  */
 @Data

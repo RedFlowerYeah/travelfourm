@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * @Author 34612
  * @CreateTime 2021/5/4 10:36
+ * 对接xml文件的citylist2
  */
 @Data
 @XmlRootElement(name = "d")

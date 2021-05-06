@@ -73,6 +73,23 @@ public class ElasticsearchService {
     }
 
     /**
+     * 更新帖子状态（此处为将被拉黑的帖子反馈通过后，更新为普通状态）*/
+    public void updateDiscussPostStatus(int id,int userId,String title,String content,int type,int status,Date createTime,int commentCount,double score,String modular){
+        DiscussPost discussPost = discussPostMapper.selectDiscussPostById(id);
+        discussPost.setUserId(userId);
+        discussPost.setTitle(title);
+        discussPost.setContent(content);
+        discussPost.setType(type);
+        discussPostMapper.updateStatus(id,0);
+        discussPost.setStatus(status);
+        discussPost.setCreateTime(createTime);
+        discussPost.setCommentCount(commentCount);
+        discussPost.setScore(score);
+        discussPost.setModular(modular);
+        discussPostRepository.save(discussPost);
+    }
+
+    /**
      * 分页查找帖子
      * 先通过new一个NativeSearchQueryBuilder来构建一个查询,是springdata中的一个查询
      * QueryBuilders.multiMatchQuery表示对多个字段查询

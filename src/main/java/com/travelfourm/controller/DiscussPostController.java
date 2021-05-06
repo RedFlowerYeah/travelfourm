@@ -1,6 +1,7 @@
 package com.travelfourm.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.travelfourm.Util.*;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -425,6 +427,13 @@ public class DiscussPostController implements CommunityConstant {
         String content1 = templateEngine.process("/mail/userFeedback",context);
         mailClient.sendMail("346125735@qq.com","用户申诉",content1);
 
+        return CommunityUtil.getJsonString(0);
+    }
+
+    @PostMapping("updateStatusTo0")
+    @ResponseBody
+    public String updateStatusTo0(int id, int userId, String title, String content, int type, int status,Date createTime, int commentCount, double score, String modular){
+        elasticsearchService.updateDiscussPostStatus(id, userId, title, content, type, status, createTime, commentCount, score, modular);
         return CommunityUtil.getJsonString(0);
     }
 

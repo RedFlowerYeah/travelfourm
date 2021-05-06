@@ -68,6 +68,8 @@ public class EventConsumer implements CommunityConstant {
         content.put("entityType",event.getEntityType());
         content.put("entityId",event.getEntityId());
 
+        /**
+         * 这里是判断如果事件不为空，则遍历此event对象中的集合并存放到hashmap中*/
         if (!event.getData().isEmpty()){
             for (Map.Entry<String,Object> entry:event.getData().entrySet()){
                 content.put(entry.getKey(),entry.getValue());
