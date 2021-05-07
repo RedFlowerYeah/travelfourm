@@ -106,7 +106,7 @@ public class DiscussPostController implements CommunityConstant {
         String redisKey = RedisKeyUtil.getPostScoreKey();
         redisTemplate.opsForSet().add(redisKey, post.getId());
 
-        // 报错的情况,将来统一处理.
+        // 报错的情况,统一处理.
         return CommunityUtil.getJsonString(0, "发布成功!");
 
     }
@@ -430,6 +430,8 @@ public class DiscussPostController implements CommunityConstant {
         return CommunityUtil.getJsonString(0);
     }
 
+    /**
+     * 管理员审核反馈通过后，可在后台将拉黑的帖子改为正常状态*/
     @PostMapping("updateStatusTo0")
     @ResponseBody
     public String updateStatusTo0(int id, int userId, String title, String content, int type, int status,Date createTime, int commentCount, double score, String modular){

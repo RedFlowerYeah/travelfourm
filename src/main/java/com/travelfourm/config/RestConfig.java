@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @Author 34612
  * @CreateTime 2021/4/1 15:52
+ * RestTemplate是Spring中的一个Http请求工具
  */
 
 @Configuration

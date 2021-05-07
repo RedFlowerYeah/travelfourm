@@ -183,16 +183,23 @@ public class DiscussPostService {
             String param = "text=" + URLEncoder.encode(title, "UTF-8");
             String param1 = "text=" + URLEncoder.encode(content,"UTF-8");
 
-            /**调用文本审核接口并取得结果（标题）*/
+            /**
+             * HttpUtil中的post为打开链接并提交内容
+             * 调用文本审核接口并取得结果（标题）*/
             String result = HttpUtil.post(BaiduSensitiveConfig.CHECK_TEXT_URL,access_token,param);
 
-            /**调用文本审核接口并取得结果（内容）*/
+            /**
+             * 调用文本审核接口并取得结果（内容）*/
             String result1 = HttpUtil.post(BaiduSensitiveConfig.CHECK_TEXT_URL,access_token,param1);
 
             /**JSON解析对象（标题和内容）*/
             TextCheckReturn tcr = JSONObject.parseObject(result, TextCheckReturn.class);
             TextCheckReturn tcr1 = JSONObject.parseObject(result1,TextCheckReturn.class);
 
+            /**
+             * 获取返回的成功类型是0或1
+             * 0表示正常
+             * 1表示含有敏感词*/
             Integer conclusionType = tcr.getConclusionType();
             Integer conclusionType1 = tcr1.getConclusionType();
 

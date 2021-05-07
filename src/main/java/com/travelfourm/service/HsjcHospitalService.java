@@ -64,7 +64,8 @@ public class HsjcHospitalService {
             }
 
             /**
-             * 写入Redis*/
+             * 写入Redis
+             * 这里目前保存的时间是1小时，不清楚修改之后保存会不会有报错，先留着*/
             ops.set(key,strBody, RedisConstant.TIME_OUT, TimeUnit.SECONDS);
         }
 

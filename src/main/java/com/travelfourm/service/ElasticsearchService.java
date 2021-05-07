@@ -29,6 +29,7 @@ import java.util.List;
 
 /**
  * @author 34612
+ * 存的是_doc（文档类型，实际上是json形式）
  */
 
 @Service

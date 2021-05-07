@@ -90,7 +90,8 @@ public class DataService {
         }
 
         /**
-         * 进行OR运算*/
+         * 进行OR运算
+         * （逻辑"或"运算）*/
         return (long) redisTemplate.execute(new RedisCallback() {
             @Override
             public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {

@@ -29,7 +29,7 @@
                     <div class="CVO-City">
                         <div class="CVO-card border-dark" th:each="high_list:${CVO.city.result.high_list}">
                             <a class="text-danger"> 高风险地区：</a>
-                            <div class="card-body text-dark" th:if="${high_list == null? '无高风险地区':' '}">
+                            <div class="card-body text-dark" >
                                 <p class="text-danger" th:text="${'疫情地区:' + high_list.area_name}"></p>
                                 <p class="text-dark">如下地区为高风险地区：</p>
                                 <p class="text-dark text-center" th:each="communitys:${high_list.communitys}" th:text="${ communitys}"></p>
@@ -41,7 +41,7 @@
                         <div class="row" style="margin-left: 120px">
                           <div class="CVO-card border-dark" th:each="middle_list:${CVO.city.result.middle_list}">
                               <a class="CVO-alert"> 中风险：</a>
-                              <div class="card-body text-dark" th:if="${middle_list == null? '无中风险地区' : ' '}">
+                              <div class="card-body text-dark" >
                                        <p class="CVO-alert" th:text="${'疫情地区:' + middle_list.area_name}"></p>
                                        <p class="text-dark">如下地区为中风险地区：</p>
                                        <p class="text-dark text-center" th:each="communitys:${middle_list.communitys}" th:text="${ communitys}"></p>
